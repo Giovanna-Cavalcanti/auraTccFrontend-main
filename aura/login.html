@@ -172,7 +172,7 @@
           // Salva token e nome separado no localStorage
           localStorage.setItem('token', data.token);
           localStorage.setItem('platformUserName', data.paciente.nomeCompleto); 
-          localStorage.setItem('userId', data.paciente._id);
+          localStorage.setItem('pacienteId', data.paciente._id);
 
           // Redireciona para a home
           window.location.href = 'home.html';

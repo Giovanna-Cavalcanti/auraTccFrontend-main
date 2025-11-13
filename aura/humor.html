@@ -805,95 +805,93 @@
         });
 
 // ============================================
-            // INTEGRAÇÃO COM BACKEND - REGISTRO DE HUMOR
-            // ============================================
+// INTEGRAÇÃO COM BACKEND - REGISTRO DE HUMOR
+// ============================================
 
-            // Função para registrar humor
-            async function registrarHumor(humorSelecionado) {
+// --- Função para obter o ID do paciente do localStorage ---
+function getPacienteId() {
+    const id = localStorage.getItem("pacienteId");
+    if (!id) {
+        alert("⚠️ ID do paciente não encontrado. Faça login novamente.");
+        throw new Error("Paciente ID não encontrado no localStorage.");
+    }
+    return id;
+}
+
+// --- Função para registrar humor ---
+async function registrarHumor(humorSelecionado) {
     try {
-        // IMPORTANTE: Substituir pelo ID real do paciente
-        // Em produção, pegar do localStorage ou JWT token
-        const pacienteId = "68a619fee09cd6f8b93f16c8"; // ID DE EXEMPLO
+        const pacienteId = getPacienteId(); // ← pega dinamicamente
 
-            // Dados que serão enviados
-            const dados = {
-                pacienteId: pacienteId,
+        const dados = {
+            pacienteId: pacienteId,
             humor: humorSelecionado
         };
 
-            console.log("Enviando humor:", dados);
+        console.log("Enviando humor:", dados);
 
-            // Fazer requisição para o backend
-            const response = await fetch('https://auratccbackend.onrender.com/api/humor', {
-                method: 'POST',
+        const response = await fetch('https://auratccbackend.onrender.com/api/humor', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-                // Se tiver autenticação JWT, adicionar aqui:
-                // 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(dados)
         });
 
-            const resultado = await response.json();
-            console.log("Resposta do servidor:", resultado);
+        const resultado = await response.json();
+        console.log("Resposta do servidor:", resultado);
 
-            if (response.ok) {
-                alert('✅ Humor registrado com sucesso!');
-            // Opcional: Atualizar a interface
+        if (response.ok) {
+            alert('✅ Humor registrado com sucesso!');
             mostrarHumorAtual(humorSelecionado);
         } else {
-                alert('❌ Erro ao registrar humor: ' + (resultado.error || 'Tente novamente'));
+            alert('❌ Erro ao registrar humor: ' + (resultado.error || 'Tente novamente'));
         }
-        
+
     } catch (error) {
-                console.error('Erro:', error);
-            alert('❌ Erro ao conectar com o servidor');
+        console.error('Erro:', error);
+        alert('❌ Erro ao conectar com o servidor');
     }
 }
 
-            // Função para carregar humores do paciente
-            async function carregarHumores() {
+// --- Função para carregar humores do paciente ---
+async function carregarHumores() {
     try {
-        const pacienteId = "68a619fee09cd6f8b93f16c8"; // ID DE EXEMPLO
+        const pacienteId = getPacienteId(); // ← pega dinamicamente
 
-            const response = await fetch(`https://auratccbackend.onrender.com/api/humor/${pacienteId}`, {
-                method: 'GET',
+        const response = await fetch(`https://auratccbackend.onrender.com/api/humor/${pacienteId}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-                // Se tiver autenticação JWT, adicionar aqui:
-                // 'Authorization': `Bearer ${token}`
             }
         });
 
-            const humores = await response.json();
-            console.log("Humores do paciente:", humores);
+        const humores = await response.json();
+        console.log("Humores do paciente:", humores);
 
-            if (response.ok) {
-                // Aqui você pode exibir os humores na tela
-                // Por exemplo, criar um gráfico ou lista
-                exibirHistoricoHumores(humores);
+        if (response.ok) {
+            exibirHistoricoHumores(humores);
         }
-        
+
     } catch (error) {
-                console.error('Erro ao carregar humores:', error);
+        console.error('Erro ao carregar humores:', error);
     }
 }
 
-            // Função auxiliar para mostrar humor atual (opcional)
-            function mostrarHumorAtual(humor) {
-    // Adicionar visual feedback na tela
+// --- Função auxiliar para mostrar humor atual ---
+function mostrarHumorAtual(humor) {
     const emojis = {
-                "Muito feliz": "😄",
-            "Feliz": "😊",
-            "Neutro": "😐",
-            "Triste": "😢",
-            "Muito triste": "😭"
+        "Muito feliz": "😄",
+        "Feliz": "😊",
+        "Neutro": "😐",
+        "Triste": "😢",
+        "Muito triste": "😭"
     };
 
-            console.log(`Humor registrado: ${emojis[humor]} ${humor}`);
+    console.log(`Humor registrado: ${emojis[humor]} ${humor}`);
 }
 
-// Função auxiliar para exibir histórico (opcional)
+// --- Função auxiliar para exibir histórico ---
 function exibirHistoricoHumores(humores) {
     console.log("Total de registros:", humores.length);
 }
@@ -902,26 +900,14 @@ function exibirHistoricoHumores(humores) {
 // EVENTOS DOS BOTÕES
 // ============================================
 
-// Adicionar eventos quando a página carregar
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎯 Página de humor carregada!");
-    
-    // EXEMPLO: Se você tiver botões de humor no HTML
-    // Adicione IDs aos botões, exemplo:
-    // <button id="btn-muito-feliz" onclick="registrarHumor('Muito feliz')">😄</button>
-    // <button id="btn-feliz" onclick="registrarHumor('Feliz')">😊</button>
-    // <button id="btn-neutro" onclick="registrarHumor('Neutro')">😐</button>
-    // <button id="btn-triste" onclick="registrarHumor('Triste')">😢</button>
-    // <button id="btn-muito-triste" onclick="registrarHumor('Muito triste')">😭</button>
-    
-    // Carregar humores anteriores ao abrir a página
+    console.log(localStorage.getItem('pacienteId'));
     carregarHumores();
 });
 
-// TESTE RÁPIDO: Para testar se está funcionando, abra o Console do navegador (F12)
-// e digite: registrarHumor('Feliz')
 console.log("✅ Script de humor carregado com sucesso!");
-    </script>
+</script>
 
 </body>
 
