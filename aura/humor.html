@@ -508,402 +508,450 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // --- Funções de Persistência de Dados (Local Storage) ---
-
-            function loadMoodData() {
-                const storedData = localStorage.getItem('dailyMoods');
-                try {
-                    return storedData ? JSON.parse(storedData) : {};
-                } catch (e) {
-                    console.error("Erro ao carregar dados do localStorage:", e);
-                    return {};
-                }
-            }
-
-            function saveMoodData(data) {
-                localStorage.setItem('dailyMoods', JSON.stringify(data));
-            }
-
-            // --- Variáveis de Estado (Inicialização com Local Storage) ---
-            let dailyMoods = loadMoodData();
-
-            const today = new Date();
-            const todayKey = today.toISOString().split('T')[0];
-            let selectedMood = null;
-            let selectedValue = null;
-            let selectedEmoji = null;
-            let moodChartInstance = null;
-
-            // Mapeamento de Valor para Rótulo (para o eixo Y do gráfico)
-            const moodLabels = {
-                5: "Muito Feliz",
-                4: "Feliz",
-                3: "Neutro",
-                2: "Triste",
-                1: "Muito Triste"
-            };
-
-            // --- Elementos do DOM ---
-            const btnOpenMoodModal = document.getElementById('btnOpenMoodModal');
-            const moodSelectModal = document.getElementById('moodSelectModal');
-            const moodConfirmModal = document.getElementById('moodConfirmModal');
-            const moodOptions = document.querySelectorAll('.mood-option');
-            const btnRegisterMood = document.getElementById('btnRegisterMood');
-            const moodHistoryList = document.getElementById('moodHistoryList');
-
-            // Elementos de Configurações (CORRIGIDOS)
-            const settingsBtn = document.getElementById('settingsBtn'); // ID corrigido
-            const settingsModal = document.getElementById('settingsModal');
-            const btnClearData = document.getElementById('btnClearData');
-
-            // --- Funções de Modal ---
-
-            function openModal(modal) {
-                modal.style.display = 'flex';
-            }
-
-            function closeModal(modal) {
-                modal.style.display = 'none';
-            }
-
-            // REMOVIDAS as funções toggleSidebar e listeners relacionados à sidebar recolhível.
-
-            // Configura botões de fechar modais
-            const closeButtons = document.querySelectorAll('[id^="btnCloseMood"], #btnCloseSettingsModal');
-            closeButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    closeModal(moodSelectModal);
-                    closeModal(moodConfirmModal);
-                    closeModal(settingsModal);
-                });
-            });
-
-            // --- Lógica de Abrir Configurações (CORRIGIDO) ---
-            if (settingsBtn) {
-                settingsBtn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Impede a navegação do link (se existisse)
-                    openModal(settingsModal); // Abre o modal
-                });
-            }
-
-
-            // --- Funções de Renderização e Lógica ---
-
-            function prepareChartData() {
-                const chartLabels = [];
-                const chartData = [];
-
-                const dates = [];
-                for (let i = 6; i >= 0; i--) {
-                    const d = new Date(today);
-                    d.setDate(today.getDate() - i);
-                    dates.push(d.toISOString().split('T')[0]);
-                }
-
-                dates.forEach(dateKey => {
-                    const moodEntry = dailyMoods[dateKey];
-                    const d = new Date(dateKey + 'T00:00:00');
-
-                    chartLabels.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
-                    chartData.push(moodEntry ? moodEntry.value : 3);
-                });
-
-                return { labels: chartLabels, data: chartData };
-            }
-
-            function renderMoodChart() {
-                const data = prepareChartData();
-                const ctx = document.getElementById('moodChart').getContext('2d');
-
-                if (moodChartInstance) {
-                    moodChartInstance.destroy();
-                }
-
-                // Usando cores do tema para o gráfico
-                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--btn-primary').trim();
-                const secondaryColor = '#A3B18A'; // Cor de ponto (do CSS original)
-                const textColor = getComputedStyle(document.documentElement).getPropertyValue('--brown-dark').trim();
-                const gridColor = '#E3E8DB';
-
-                moodChartInstance = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Nível de Humor',
-                            data: data.data,
-                            backgroundColor: `${primaryColor}66`,
-                            borderColor: primaryColor,
-                            borderWidth: 3,
-                            tension: 0.4,
-                            pointRadius: 6,
-                            pointBackgroundColor: secondaryColor,
-                            fill: true,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                min: 1,
-                                max: 5,
-                                ticks: {
-                                    callback: function (value) {
-                                        return moodLabels[value] || '';
-                                    },
-                                    stepSize: 1,
-                                    color: textColor,
-                                },
-                                grid: {
-                                    color: gridColor,
-                                }
-                            },
-                            x: {
-                                grid: { display: false, },
-                                ticks: { color: textColor }
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        return `Humor: ${moodLabels[context.parsed.y]}`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            function renderMoodHistory() {
-                moodHistoryList.innerHTML = '';
-
-                // CORREÇÃO NO CÓDIGO DO USUÁRIO: Ajustando a cor do texto da data para ser consistente
-                const dateTextColor = '#6B7A5C'; // Cor do texto da data (text-[#6B7A5C] não é Tailwind, mas a cor foi mantida)
-
-                Object.keys(dailyMoods)
-                    .sort((a, b) => new Date(b) - new Date(a))
-                    .forEach(dateKey => {
-                        const moodEntry = dailyMoods[dateKey];
-                        const dateFormatted = new Date(dateKey + 'T00:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
-
-                        const li = document.createElement('div');
-                        li.className = 'history-item';
-
-                        li.innerHTML = `
-                        <span class="text-sm font-medium" style="color: ${dateTextColor};">${dateFormatted}</span>
-                        <div class="history-emoji-container">
-                           ${moodEntry.emoji} <span>${moodEntry.mood}</span>
-                        </div>
-                    `;
-                        moodHistoryList.appendChild(li);
-                    });
-            }
-
-            function openMoodSelectModal() {
-                selectedMood = null;
-                selectedValue = null;
-                selectedEmoji = null;
-                btnRegisterMood.disabled = true;
-                btnRegisterMood.classList.add('opacity-50', 'cursor-not-allowed');
-                moodOptions.forEach(o => o.classList.remove('selected'));
-
-                const currentMood = dailyMoods[todayKey];
-                let confirmation = true;
-
-                if (currentMood) {
-                    confirmation = confirm(`Você já registrou o humor de hoje (${currentMood.mood}). Deseja alterar?`);
-
-                    if (confirmation) {
-                        const currentOption = document.querySelector(`.mood-option[data-mood="${currentMood.mood}"]`);
-                        if (currentOption) {
-                            currentOption.classList.add('selected');
-                            selectedMood = currentMood.mood;
-                            selectedValue = currentMood.value;
-                            selectedEmoji = currentOption.querySelector('.mood-emoji-svg').outerHTML;
-
-                            btnRegisterMood.disabled = false;
-                            btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
-                        }
-                    }
-                }
-
-                if (confirmation) {
-                    openModal(moodSelectModal);
-                }
-            }
-
-            function clearMoodData() {
-                if (confirm("Tem certeza que deseja apagar TODOS os seus registros de humor? Esta ação é irreversível.")) {
-                    dailyMoods = {};
-                    saveMoodData(dailyMoods);
-
-                    renderMoodChart();
-                    renderMoodHistory();
-
-                    closeModal(settingsModal);
-                    alert("Todos os registros de humor foram apagados com sucesso!");
-                }
-            }
-
-
-            // --- Event Listeners ---
-
-            // 1. Abrir Modal de Humor
-            btnOpenMoodModal.addEventListener('click', openMoodSelectModal);
-
-            // 2. Seleção de Humor
-            moodOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    moodOptions.forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-
-                    selectedMood = option.getAttribute('data-mood');
-                    selectedValue = parseInt(option.getAttribute('data-value'));
-
-                    selectedEmoji = option.querySelector('.mood-emoji-svg').outerHTML;
-
-                    btnRegisterMood.disabled = false;
-                    btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
-                });
-            });
-
-            // 3. Registro de Humor
-            btnRegisterMood.addEventListener('click', () => {
-                if (!selectedMood) return;
-
-                dailyMoods[todayKey] = {
-                    mood: selectedMood,
-                    emoji: selectedEmoji,
-                    value: selectedValue
-                };
-                saveMoodData(dailyMoods);
-
-                closeModal(moodSelectModal);
-                openModal(moodConfirmModal);
-
-                renderMoodChart();
-                renderMoodHistory();
-
-                setTimeout(() => {
-                    closeModal(moodConfirmModal);
-                }, 2000);
-            });
-
-            // 4. Botão de Limpar Dados nas Configurações
-            btnClearData.addEventListener('click', clearMoodData);
-
-
-            // --- Inicialização ---
-            renderMoodChart();
-            renderMoodHistory();
-        });
-
 // ============================================
-// INTEGRAÇÃO COM BACKEND - REGISTRO DE HUMOR
+// FUNÇÕES DE BACKEND (DECLARADAS PRIMEIRO)
 // ============================================
 
-// --- Função para obter o ID do paciente do localStorage ---
+// --- Função para obter o token ---
+function getToken() {
+  return localStorage.getItem('token');
+}
+
+// --- Função para obter o ID do paciente ---
 function getPacienteId() {
-    const id = localStorage.getItem("pacienteId");
-    if (!id) {
-        alert("⚠️ ID do paciente não encontrado. Faça login novamente.");
-        throw new Error("Paciente ID não encontrado no localStorage.");
-    }
-    return id;
+  const id = localStorage.getItem("pacienteId");
+  if (!id) {
+    alert("⚠️ ID do paciente não encontrado. Faça login novamente.");
+    throw new Error("Paciente ID não encontrado no localStorage.");
+  }
+  return id;
 }
 
 // --- Função para registrar humor ---
 async function registrarHumor(humorSelecionado) {
-    try {
-        const pacienteId = getPacienteId(); // ← pega dinamicamente
-
-        const dados = {
-            pacienteId: pacienteId,
-            humor: humorSelecionado
-        };
-
-        console.log("Enviando humor:", dados);
-
-        const response = await fetch('https://auratccbackend.onrender.com/api/humor', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        });
-
-        const resultado = await response.json();
-        console.log("Resposta do servidor:", resultado);
-
-        if (response.ok) {
-            alert('✅ Humor registrado com sucesso!');
-            mostrarHumorAtual(humorSelecionado);
-        } else {
-            alert('❌ Erro ao registrar humor: ' + (resultado.error || 'Tente novamente'));
-        }
-
-    } catch (error) {
-        console.error('Erro:', error);
-        alert('❌ Erro ao conectar com o servidor');
+  try {
+    // Garante que é string e remove espaços
+    const humorStr = String(humorSelecionado).trim();
+    
+    if (!humorStr) {
+      throw new Error('Humor vazio - cancelando envio.');
     }
-}
 
-// --- Função para carregar humores do paciente ---
-async function carregarHumores() {
-    try {
-        const pacienteId = getPacienteId(); // ← pega dinamicamente
+    const pacienteId = getPacienteId();
 
-        const response = await fetch(`https://auratccbackend.onrender.com/api/humor/${pacienteId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const humores = await response.json();
-        console.log("Humores do paciente:", humores);
-
-        if (response.ok) {
-            exibirHistoricoHumores(humores);
-        }
-
-    } catch (error) {
-        console.error('Erro ao carregar humores:', error);
-    }
-}
-
-// --- Função auxiliar para mostrar humor atual ---
-function mostrarHumorAtual(humor) {
-    const emojis = {
-        "Muito feliz": "😄",
-        "Feliz": "😊",
-        "Neutro": "😐",
-        "Triste": "😢",
-        "Muito triste": "😭"
+    // Monta payload
+    const dados = {
+      pacienteId: pacienteId,
+      humor: humorStr
     };
 
-    console.log(`Humor registrado: ${emojis[humor]} ${humor}`);
+    console.log("📤 [REGISTRO] Enviando payload:", dados);
+
+    const headers = { 'Content-Type': 'application/json' };
+    const token = getToken();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    // Faz a requisição
+    const response = await fetch('https://auratccbackend.onrender.com/api/humor', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(dados)
+    });
+
+    const text = await response.text();
+    let resultado;
+    
+    try {
+      resultado = text ? JSON.parse(text) : {};
+    } catch (err) {
+      resultado = { raw: text };
+    }
+
+    console.log("📥 [REGISTRO] Resposta do servidor:", resultado, "status:", response.status);
+
+    if (response.ok) {
+      console.log('✅ Humor registrado com sucesso no backend!');
+      mostrarHumorAtual(humorStr);
+      return true;
+    } else {
+      const msg = resultado.message || resultado.error || JSON.stringify(resultado);
+      console.error('❌ Erro do servidor:', msg);
+      alert('❌ Erro ao registrar humor: ' + msg);
+      return false;
+    }
+
+  } catch (error) {
+    console.error('❌ Erro em registrarHumor:', error);
+    alert('❌ Erro ao conectar com o servidor');
+    return false;
+  }
 }
 
-// --- Função auxiliar para exibir histórico ---
+// --- Função para carregar humores (CORRIGIDA - NÃO CHAMA MAIS AUTOMATICAMENTE) ---
+async function carregarHumores() {
+  try {
+    const pacienteId = getPacienteId();
+    
+    // IMPORTANTE: Verifica se seu backend tem um endpoint GET separado
+    // Se não tiver, comente esta função ou ajuste o endpoint
+    console.log("📋 Carregando histórico de humores...");
+
+    const headers = { 'Content-Type': 'application/json' };
+    const token = getToken();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    // OPÇÃO 1: Se seu backend tem um endpoint GET /api/humor/:pacienteId
+    const response = await fetch(`https://auratccbackend.onrender.com/api/humor/${pacienteId}`, {
+      method: 'GET',
+      headers: headers
+    });
+
+    // OPÇÃO 2: Se precisa usar POST, certifique-se que o backend diferencia
+    // entre "registrar" e "buscar" de alguma forma (query param, endpoint diferente, etc)
+    
+    const text = await response.text();
+    let humores;
+    
+    try {
+      humores = text ? JSON.parse(text) : [];
+    } catch (err) {
+      console.warn('Resposta não-JSON:', text);
+      return;
+    }
+
+    console.log("📥 Humores recebidos:", humores);
+
+    if (response.ok) {
+      exibirHistoricoHumores(humores);
+    }
+
+  } catch (error) {
+    console.error('❌ Erro ao carregar humores:', error);
+  }
+}
+
+// --- Funções auxiliares ---
+function mostrarHumorAtual(humor) {
+  const emojis = {
+    "Muito Feliz": "😄",
+    "Feliz": "😊",
+    "Neutro": "😐",
+    "Triste": "😢",
+    "Muito Triste": "😭"
+  };
+  console.log(`✅ Humor registrado: ${emojis[humor] || '😊'} ${humor}`);
+}
+
 function exibirHistoricoHumores(humores) {
-    console.log("Total de registros:", humores.length);
+  console.log("📊 Total de registros:", humores.length);
 }
 
 // ============================================
-// EVENTOS DOS BOTÕES
+// CÓDIGO PRINCIPAL DO DOM
 // ============================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("🎯 Página de humor carregada!");
-    console.log(localStorage.getItem('pacienteId'));
-    carregarHumores();
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("🎯 Página de humor carregada!");
+  console.log("👤 Paciente ID:", localStorage.getItem('pacienteId'));
+
+  // --- Funções de Persistência Local ---
+  function loadMoodData() {
+    const storedData = localStorage.getItem('dailyMoods');
+    try {
+      return storedData ? JSON.parse(storedData) : {};
+    } catch (e) {
+      console.error("Erro ao carregar localStorage:", e);
+      return {};
+    }
+  }
+
+  function saveMoodData(data) {
+    localStorage.setItem('dailyMoods', JSON.stringify(data));
+  }
+
+  // --- Variáveis de Estado ---
+  let dailyMoods = loadMoodData();
+  const today = new Date();
+  const todayKey = today.toISOString().split('T')[0];
+  let selectedMood = null;
+  let selectedValue = null;
+  let selectedEmoji = null;
+  let moodChartInstance = null;
+
+  const moodLabels = {
+    5: "Muito Feliz",
+    4: "Feliz",
+    3: "Neutro",
+    2: "Triste",
+    1: "Muito Triste"
+  };
+
+  // --- Elementos do DOM ---
+  const btnOpenMoodModal = document.getElementById('btnOpenMoodModal');
+  const moodSelectModal = document.getElementById('moodSelectModal');
+  const moodConfirmModal = document.getElementById('moodConfirmModal');
+  const moodOptions = document.querySelectorAll('.mood-option');
+  const btnRegisterMood = document.getElementById('btnRegisterMood');
+  const moodHistoryList = document.getElementById('moodHistoryList');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsModal = document.getElementById('settingsModal');
+  const btnClearData = document.getElementById('btnClearData');
+
+  // --- Funções de Modal ---
+  function openModal(modal) {
+    modal.style.display = 'flex';
+  }
+
+  function closeModal(modal) {
+    modal.style.display = 'none';
+  }
+
+  // --- Botões de Fechar ---
+  const closeButtons = document.querySelectorAll('[id^="btnCloseMood"], #btnCloseSettingsModal');
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeModal(moodSelectModal);
+      closeModal(moodConfirmModal);
+      closeModal(settingsModal);
+    });
+  });
+
+  // --- Botão de Configurações ---
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(settingsModal);
+    });
+  }
+
+  // --- Funções de Renderização ---
+  function prepareChartData() {
+    const chartLabels = [];
+    const chartData = [];
+    const dates = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      dates.push(d.toISOString().split('T')[0]);
+    }
+
+    dates.forEach(dateKey => {
+      const moodEntry = dailyMoods[dateKey];
+      const d = new Date(dateKey + 'T00:00:00');
+      chartLabels.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
+      chartData.push(moodEntry ? moodEntry.value : 3);
+    });
+
+    return { labels: chartLabels, data: chartData };
+  }
+
+  function renderMoodChart() {
+    const data = prepareChartData();
+    const ctx = document.getElementById('moodChart').getContext('2d');
+
+    if (moodChartInstance) {
+      moodChartInstance.destroy();
+    }
+
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--btn-primary').trim();
+    const secondaryColor = '#A3B18A';
+    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--brown-dark').trim();
+    const gridColor = '#E3E8DB';
+
+    moodChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Nível de Humor',
+          data: data.data,
+          backgroundColor: `${primaryColor}66`,
+          borderColor: primaryColor,
+          borderWidth: 3,
+          tension: 0.4,
+          pointRadius: 6,
+          pointBackgroundColor: secondaryColor,
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            min: 1,
+            max: 5,
+            ticks: {
+              callback: function (value) {
+                return moodLabels[value] || '';
+              },
+              stepSize: 1,
+              color: textColor,
+            },
+            grid: { color: gridColor }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: textColor }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return `Humor: ${moodLabels[context.parsed.y]}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function renderMoodHistory() {
+    moodHistoryList.innerHTML = '';
+    const dateTextColor = '#6B7A5C';
+
+    Object.keys(dailyMoods)
+      .sort((a, b) => new Date(b) - new Date(a))
+      .forEach(dateKey => {
+        const moodEntry = dailyMoods[dateKey];
+        const dateFormatted = new Date(dateKey + 'T00:00:00').toLocaleDateString('pt-BR', { 
+          day: 'numeric', 
+          month: 'long', 
+          year: 'numeric' 
+        });
+
+        const li = document.createElement('div');
+        li.className = 'history-item';
+        li.innerHTML = `
+          <span class="text-sm font-medium" style="color: ${dateTextColor};">${dateFormatted}</span>
+          <div class="history-emoji-container">
+            ${moodEntry.emoji} <span>${moodEntry.mood}</span>
+          </div>
+        `;
+        moodHistoryList.appendChild(li);
+      });
+  }
+
+  function openMoodSelectModal() {
+    selectedMood = null;
+    selectedValue = null;
+    selectedEmoji = null;
+    btnRegisterMood.disabled = true;
+    btnRegisterMood.classList.add('opacity-50', 'cursor-not-allowed');
+    moodOptions.forEach(o => o.classList.remove('selected'));
+
+    const currentMood = dailyMoods[todayKey];
+    let confirmation = true;
+
+    if (currentMood) {
+      confirmation = confirm(`Você já registrou o humor de hoje (${currentMood.mood}). Deseja alterar?`);
+
+      if (confirmation) {
+        const currentOption = document.querySelector(`.mood-option[data-mood="${currentMood.mood}"]`);
+        if (currentOption) {
+          currentOption.classList.add('selected');
+          selectedMood = currentMood.mood;
+          selectedValue = currentMood.value;
+          selectedEmoji = currentOption.querySelector('.mood-emoji-svg').outerHTML;
+          btnRegisterMood.disabled = false;
+          btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      }
+    }
+
+    if (confirmation) {
+      openModal(moodSelectModal);
+    }
+  }
+
+  function clearMoodData() {
+    if (confirm("Tem certeza que deseja apagar TODOS os seus registros de humor? Esta ação é irreversível.")) {
+      dailyMoods = {};
+      saveMoodData(dailyMoods);
+      renderMoodChart();
+      renderMoodHistory();
+      closeModal(settingsModal);
+      alert("Todos os registros de humor foram apagados com sucesso!");
+    }
+  }
+
+  // --- Event Listeners ---
+
+  // 1. Abrir Modal
+  btnOpenMoodModal.addEventListener('click', openMoodSelectModal);
+
+  // 2. Seleção de Humor
+  moodOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      moodOptions.forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+
+      selectedMood = option.getAttribute('data-mood');
+      selectedValue = parseInt(option.getAttribute('data-value'));
+      selectedEmoji = option.querySelector('.mood-emoji-svg').outerHTML;
+
+      btnRegisterMood.disabled = false;
+      btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
+    });
+  });
+
+  // 3. Registro de Humor (CORRIGIDO - SEM CARREGAR HUMORES DEPOIS)
+  btnRegisterMood.addEventListener('click', async () => {
+    if (!selectedMood) {
+      console.error('❌ Nenhum humor selecionado!');
+      return;
+    }
+
+    const moodToSend = String(selectedMood).trim();
+    console.log('🎯 Humor selecionado para envio:', moodToSend);
+
+    // Salva localmente
+    dailyMoods[todayKey] = {
+      mood: moodToSend,
+      emoji: selectedEmoji,
+      value: selectedValue
+    };
+    saveMoodData(dailyMoods);
+
+    // Fecha modal e mostra confirmação
+    closeModal(moodSelectModal);
+    openModal(moodConfirmModal);
+
+    // Atualiza UI local
+    renderMoodChart();
+    renderMoodHistory();
+
+    // Envia para o backend
+    try {
+      const success = await registrarHumor(moodToSend);
+      if (success) {
+        console.log("✅ Humor sincronizado com sucesso!");
+        // NÃO chama carregarHumores() aqui para evitar sobrescrever!
+      }
+    } catch (err) {
+      console.error("❌ Erro ao sincronizar:", err);
+      alert("Registro salvo localmente, mas houve erro ao sincronizar com o servidor.");
+    }
+
+    // Fecha confirmação
+    setTimeout(() => {
+      closeModal(moodConfirmModal);
+    }, 2000);
+  });
+
+  // 4. Limpar Dados
+  btnClearData.addEventListener('click', clearMoodData);
+
+  // --- Inicialização ---
+  renderMoodChart();
+  renderMoodHistory();
+  
+  // REMOVIDO: carregarHumores() na inicialização
+  // Você pode criar um botão específico para "Carregar Histórico do Servidor" se precisar
 });
 
 console.log("✅ Script de humor carregado com sucesso!");
