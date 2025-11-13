@@ -7,11 +7,41 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
   <link rel="stylesheet" href="css/cadastro.css" />
+  <style>
+    .input-error {
+      border-color: #ef4444 !important; /* Tailwind red-500 */
+      box-shadow: 0 0 0 1px #ef4444 !important;
+    }
+    .input-custom {
+      border: 1px solid #d1d5db; /* gray-300 */
+      padding: 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .input-custom:focus {
+      outline: none;
+      border-color: #a3e635; /* lime-300 */
+      box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.4); /* soft shadow for focus */
+    }
+    .btn-submit {
+        background-color: #758352; /* Cor de fundo principal */
+        color: white;
+        font-weight: bold;
+        padding: 12px 24px;
+        transition: background-color 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) {
+        background-color: #5d6840; /* Cor mais escura no hover */
+    }
+    .btn-submit:disabled {
+        background-color: #a1a1aa; /* Cor cinza para desabilitado */
+        cursor: not-allowed;
+    }
+  </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gray-50">
   <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2 relative">
 
-    <!-- Painel de formulário -->
     <section class="flex flex-col p-6 md:p-12 justify-center gap-4">
       <header class="flex items-center gap-3 mb-4">
         <img 
@@ -22,21 +52,17 @@
         <span class="font-semibold text-xl select-none">AURA</span>
       </header>
 
-      <!-- Barra de progresso -->
       <div class="w-full h-2 rounded-full bg-gray-200 overflow-hidden">
         <div id="progress-bar" class="h-2 bg-[#758352] rounded-full transition-all duration-500 w-1/2"></div>
       </div>
 
-      <!-- Título -->
       <h1 class="text-3xl font-extrabold leading-tight select-none">Crie uma conta</h1>
       <h2 class="text-gray-400 text-sm font-normal max-w-xs select-none md:max-w-full">
         Preencha os dados abaixo para criar sua conta.
       </h2>
 
-      <!-- FORM MULTI-STEP -->
       <form id="cadastroForm" class="flex flex-col gap-5 max-w-md w-full" novalidate>
         
-        <!-- === ETAPA 1 === -->
         <div id="step1" class="flex flex-col gap-5">
           <label for="name" class="font-semibold text-sm select-none">Nome Completo</label>
           <input id="name" name="name" type="text" required autocomplete="name" class="input-custom" />
@@ -45,15 +71,18 @@
             <div class="flex-grow">
               <label for="cpf" class="font-semibold text-sm select-none">CPF</label>
               <input id="cpf" name="cpf" type="text" maxlength="14" required autocomplete="off" class="input-custom" />
+              <div id="cpf-feedback" class="text-xs mt-1"></div>
             </div>
             <div class="flex-grow">
               <label for="crp" class="font-semibold text-sm select-none">CRP</label>
               <input id="crp" name="crp" type="text" required autocomplete="off" class="input-custom" />
+              <div id="crp-feedback" class="text-xs mt-1"></div>
             </div>
           </div> 
 
           <label for="email" class="font-semibold text-sm select-none">Email</label>
           <input id="email" name="email" type="email" required autocomplete="email" class="input-custom" />
+          <div id="email-feedback" class="text-xs mt-1"></div>
 
           <div class="flex flex-col md:flex-row gap-5">
             <div class="flex-grow">
@@ -65,21 +94,21 @@
               <input id="password-confirm" name="password-confirm" type="password" required autocomplete="new-password" class="input-custom" />
             </div>
           </div>
+          <div id="password-feedback" class="text-xs mt-1"></div>
 
           <button type="button" id="nextBtn" class="btn-submit w-full rounded-lg mt-4" aria-label="Botão para continuar">
             Continuar
           </button>
         </div>
 
-        <!-- === ETAPA 2 === -->
         <div id="step2" class="flex flex-col gap-5 hidden">
           <label class="font-semibold text-sm select-none">Qual é o seu tipo de atuação?</label>
           <div class="flex gap-4">
             <label class="flex items-center gap-2">
-              <input type="radio" name="atuacao" value="clinica" class="accent-lime-400"/> Atuação em Clínica
+              <input type="radio" name="atuacao" value="clinica" class="accent-lime-400" required/> Atuação em Clínica
             </label>
             <label class="flex items-center gap-2">
-              <input type="radio" name="atuacao" value="atendimento próprio" class="accent-lime-400"/> Atendimento próprio
+              <input type="radio" name="atuacao" value="atendimento próprio" class="accent-lime-400" required/> Atendimento próprio
             </label>
           </div>
 
@@ -92,16 +121,28 @@
             <option value="400+">Acima de R$ 400</option>
           </select>
 
-          <label class="font-semibold text-sm select-none">Quais convênios você atende?</label>
-          <select name="convenio" class="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-lime-400">
-            <option value="" disabled selected>Selecione...</option>
-            <option value="unimed">Unimed</option>
-            <option value="bradesco">Bradesco Saúde</option>
-            <option value="amil">Amil</option>
-            <option value="sulamerica">SulAmérica</option>
-            <option value="hapvida">Hapvida</option>
-          </select>
-
+          <label class="font-semibold text-sm select-none">Quais convênios você atende? (Selecione um ou mais)</label>
+          <div class="grid grid-cols-2 gap-3 p-3 border rounded-lg">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="convenio" value="unimed" class="accent-lime-400"/> Unimed
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="convenio" value="bradesco" class="accent-lime-400"/> Bradesco Saúde
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="convenio" value="amil" class="accent-lime-400"/> Amil
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="convenio" value="sulamerica" class="accent-lime-400"/> SulAmérica
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="convenio" value="hapvida" class="accent-lime-400"/> Hapvida
+            </label>
+             <label class="flex items-center gap-2">
+              <input type="checkbox" name="convenio" value="particular" class="accent-lime-400"/> Particular (Apenas)
+            </label>
+          </div>
+          
           <label class="font-semibold text-sm select-none">Qual é a sua modalidade de atendimento?</label>
           <div class="flex gap-4">
             <label class="flex items-center gap-2">
@@ -127,11 +168,10 @@
       </form>
 
       <p class="text-sm text-gray-400 text-center mt-4">Já tem uma conta? 
-        <a href="login.html" class="forgot-link">Login</a>
+        <a href="login_prof.html" class="forgot-link text-[#758352] hover:text-[#5d6840]">Login</a>
       </p>
     </section>
 
-    <!-- Painel ilustrativo -->
     <section id="img-section" class="hidden md:flex items-center justify-center p-12">
       <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
         <img 
@@ -146,8 +186,28 @@
   </main>
 
 <script>
-// Máscara CPF (formatação para visualização)
+const BASE_URL = "https://auratccbackend.onrender.com/api/profissionais";
+
+// =======================================================
+// VARIÁVEIS E MÁSCARAS
+// =======================================================
+
 const cpfInput = document.getElementById("cpf");
+const crpInput = document.getElementById("crp");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const passwordConfirmInput = document.getElementById("password-confirm");
+
+const nextBtn = document.getElementById("nextBtn");
+const step1 = document.getElementById("step1");
+const step2 = document.getElementById("step2");
+const progressBar = document.getElementById("progress-bar");
+const form = document.getElementById("cadastroForm");
+
+let emailValid = false;
+let crpValid = false;
+
+// Máscara CPF
 cpfInput.addEventListener("input", () => {
   let v = cpfInput.value.replace(/\D/g, "");
   if (v.length > 11) v = v.slice(0, 11);
@@ -157,65 +217,269 @@ cpfInput.addEventListener("input", () => {
   cpfInput.value = v;
 });
 
-const step1 = document.getElementById("step1");
-const step2 = document.getElementById("step2");
-const nextBtn = document.getElementById("nextBtn");
-const backBtn = document.getElementById("backBtn");
-const progressBar = document.getElementById("progress-bar");
+// =======================================================
+// VALIDAÇÃO MATEMÁTICA DO CPF
+// =======================================================
+
+function validateCPF(cpf) {
+    const cpfClean = cpf.replace(/[^\d]+/g,''); 
+
+    if(cpfClean.length !== 11) return false;
+    if (/^(\d)\1{10}$/.test(cpfClean)) return false;
+
+    let sum = 0;
+    let remainder;
+
+    // Valida 1º dígito verificador
+    for (let i = 1; i <= 9; i++) {
+        sum = sum + parseInt(cpfClean.substring(i - 1, i)) * (11 - i);
+    }
+    remainder = (sum * 10) % 11;
+
+    if ((remainder === 10) || (remainder === 11)) remainder = 0;
+    if (remainder !== parseInt(cpfClean.substring(9, 10))) return false;
+
+    sum = 0;
+
+    // Valida 2º dígito verificador
+    for (let i = 1; i <= 10; i++) {
+        sum = sum + parseInt(cpfClean.substring(i - 1, i)) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+
+    if ((remainder === 10) || (remainder === 11)) remainder = 0;
+    if (remainder !== parseInt(cpfClean.substring(10, 11))) return false;
+    
+    return true; 
+}
+
+// =======================================================
+// FUNÇÕES DE FEEDBACK E VALIDAÇÕES EM TEMPO REAL (CRP e Email)
+// =======================================================
+
+// Função genérica para feedback
+function setFeedback(elementId, message, type = 'error') {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.textContent = message;
+    const inputEl = document.getElementById(elementId.replace('-feedback', ''));
+
+    if (type === 'error') {
+        el.className = 'text-red-500 text-xs mt-1';
+        inputEl.classList.add('input-error');
+    } else if (type === 'success') {
+        el.className = 'text-green-600 text-xs mt-1';
+        inputEl.classList.remove('input-error');
+    } else { // info
+         el.className = 'text-gray-500 text-xs mt-1';
+         inputEl.classList.remove('input-error');
+    }
+}
+
+function clearFeedback(elementId) {
+    document.getElementById(elementId).textContent = '';
+    document.getElementById(elementId.replace('-feedback', '')).classList.remove('input-error');
+}
+
+// ---------------------------
+// VERIFICAÇÃO DE EMAIL
+// ---------------------------
+emailInput.addEventListener("input", async () => {
+    const email = emailInput.value.trim();
+    if (!/\S+@\S+\.\S+/.test(email)) {
+        setFeedback('email-feedback', 'Email inválido. Ex: nome@dominio.com', 'error');
+        emailValid = false;
+        return;
+    }
+    
+    setFeedback('email-feedback', 'Verificando disponibilidade...', 'info');
+    
+    try {
+        // Assume endpoint para checar email
+        const response = await fetch(`${BASE_URL}/check-email`, {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ email })
+        });
+
+        if (response.ok) {
+            setFeedback('email-feedback', 'Email disponível.', 'success');
+            emailValid = true;
+        } else if (response.status === 409) {
+            setFeedback('email-feedback', '❌ Este email já está cadastrado.', 'error');
+            emailValid = false;
+        } else {
+            setFeedback('email-feedback', 'Erro ao verificar email.', 'error');
+            emailValid = false;
+        }
+    } catch (error) {
+        setFeedback('email-feedback', 'Falha na conexão com o servidor. Tente novamente.', 'error');
+        emailValid = false;
+    }
+});
+emailInput.addEventListener("blur", () => {
+    if (!emailInput.value.trim()) {
+        clearFeedback('email-feedback');
+        emailValid = false;
+    } else if (!emailValid) {
+        emailInput.dispatchEvent(new Event('input'));
+    }
+});
+
+
+// ---------------------------
+// VERIFICAÇÃO DE CRP
+// ---------------------------
+crpInput.addEventListener("input", async () => {
+    const crp = crpInput.value.trim();
+    
+    if (crp.length < 5) {
+        setFeedback('crp-feedback', 'O CRP deve ter pelo menos 5 caracteres.', 'error');
+        crpValid = false;
+        return;
+    }
+    
+    setFeedback('crp-feedback', 'Verificando validade e disponibilidade...', 'info');
+
+    try {
+        // Assume endpoint para checar CRP
+        const response = await fetch(`${BASE_URL}/check-crp`, {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ crp })
+        });
+        
+        if (response.ok) {
+            setFeedback('crp-feedback', 'CRP válido e disponível.', 'success');
+            crpValid = true;
+        } else if (response.status === 409) {
+            setFeedback('crp-feedback', '❌ Este CRP já está cadastrado.', 'error');
+            crpValid = false;
+        } else {
+            setFeedback('crp-feedback', 'CRP inválido ou erro de servidor.', 'error');
+            crpValid = false;
+        }
+    } catch (error) {
+        setFeedback('crp-feedback', 'Falha na conexão com o servidor. Tente novamente.', 'error');
+        crpValid = false;
+    }
+});
+crpInput.addEventListener("blur", () => {
+    if (!crpInput.value.trim()) {
+        clearFeedback('crp-feedback');
+        crpValid = false;
+    } else if (!crpValid) {
+        crpInput.dispatchEvent(new Event('input'));
+    }
+});
+
+// ---------------------------
+// VERIFICAÇÃO DE SENHA
+// ---------------------------
+function checkPasswordMatch() {
+    const senha = passwordInput.value;
+    const confirmacaoSenha = passwordConfirmInput.value;
+    
+    if (!senha && !confirmacaoSenha) {
+        clearFeedback('password-feedback');
+        return false;
+    }
+
+    if (senha.length < 6) {
+        setFeedback('password-feedback', 'A senha deve ter pelo menos 6 caracteres.', 'error');
+        return false;
+    }
+    
+    if (senha !== confirmacaoSenha) {
+        setFeedback('password-feedback', 'As senhas não coincidem.', 'error');
+        return false;
+    } else {
+        setFeedback('password-feedback', 'Senhas válidas.', 'success');
+        return true;
+    }
+}
+passwordInput.addEventListener('input', checkPasswordMatch);
+passwordConfirmInput.addEventListener('input', checkPasswordMatch);
+
+
+// =======================================================
+// NAVEGAÇÃO ENTRE ETAPAS
+// =======================================================
 
 nextBtn.addEventListener("click", () => {
-  step1.classList.add("hidden");
-  step2.classList.remove("hidden");
-  progressBar.classList.add("w-full");
-  progressBar.classList.remove("w-1/2");
+    // 1. Coleta e validação básica de campos da Etapa 1
+    const nomeCompleto = document.getElementById("name").value.trim();
+    const cpfFormatado = cpfInput.value.trim();
+    
+    const senhaValida = checkPasswordMatch();
+
+    // Checagem de campos vazios
+    if (!nomeCompleto || !cpfFormatado || !crpInput.value.trim() || !emailInput.value.trim() || !passwordInput.value || !passwordConfirmInput.value) {
+        alert("⚠️ Por favor, preencha todos os campos obrigatórios da Etapa 1.");
+        return;
+    }
+    
+    // Validação Matemática do CPF
+    if (!validateCPF(cpfFormatado)) {
+        alert("⚠️ O CPF informado é inválido. Por favor, verifique o número.");
+        cpfInput.classList.add('input-error');
+        return;
+    } else {
+        cpfInput.classList.remove('input-error');
+    }
+
+    // Validação de disponibilidade de Email/CRP e match de Senhas
+    if (!senhaValida || !crpValid || !emailValid) {
+        alert("⚠️ Corrija os erros de validação (Email, CRP ou Senhas) antes de continuar. Clique nos campos para revalidar.");
+        return;
+    }
+    
+    // 2. Se tudo estiver OK, avança
+    step1.classList.add("hidden");
+    step2.classList.remove("hidden");
+    progressBar.classList.add("w-full");
+    progressBar.classList.remove("w-1/2");
 });
 
-backBtn.addEventListener("click", () => {
-  step2.classList.add("hidden");
-  step1.classList.remove("hidden");
-  progressBar.classList.add("w-1/2");
-  progressBar.classList.remove("w-full");
+document.getElementById("backBtn").addEventListener("click", () => {
+    step2.classList.add("hidden");
+    step1.classList.remove("hidden");
+    progressBar.classList.add("w-1/2");
+    progressBar.classList.remove("w-full");
 });
 
-// SUBMIT
-const form = document.getElementById("cadastroForm");
+// =======================================================
+// SUBMIT FINAL
+// =======================================================
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Coleta dados
+  // Coleta dados da Etapa 1 (já validados)
   const nomeCompleto = document.getElementById("name").value.trim();
-  const cpfFormatado = cpfInput.value.trim();
-  const cpfNumerico = cpfFormatado.replace(/\D/g, ""); // ✅ Remove formatação
-  const crp = document.getElementById("crp").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const senha = document.getElementById("password").value;
-  const confirmacaoSenha = document.getElementById("password-confirm").value;
+  const cpfNumerico = cpfInput.value.replace(/\D/g, "");
+  const crp = crpInput.value.trim();
+  const email = emailInput.value.trim();
+  const senha = passwordInput.value;
 
+  // Coleta dados da Etapa 2
   const tipoAtuacao = document.querySelector('input[name="atuacao"]:checked')?.value;
   const valorConsulta = document.querySelector('select[name="valor"]').value;
-  const convenioSelecionado = document.querySelector('select[name="convenio"]').value;
-  const convenios = convenioSelecionado ? [convenioSelecionado] : [];
+  
+  // Coleta Múltiplos Convênios
+  const convenios = Array.from(document.querySelectorAll('input[name="convenio"]:checked')).map(el => el.value);
+  
   const modalidadesAtendimento = Array.from(document.querySelectorAll('input[name="modalidade"]:checked')).map(el => el.value);
 
-  // === Validações Frontend ===
-  if (!nomeCompleto || !cpfNumerico || !crp || !email || !senha || !confirmacaoSenha || !tipoAtuacao || !valorConsulta) {
-    alert("⚠️ Preencha todos os campos obrigatórios!");
+  // Validações Finais
+  if (!tipoAtuacao || !valorConsulta) {
+    alert("⚠️ Por favor, preencha todos os campos obrigatórios da Etapa 2!");
     return;
   }
-
-  if (!/^\d{11}$/.test(cpfNumerico)) {
-    alert("⚠️ CPF inválido. Use apenas números (11 dígitos).");
-    return;
-  }
-
-  if (senha !== confirmacaoSenha) {
-    alert("⚠️ As senhas não coincidem!");
-    return;
-  }
-
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    alert("⚠️ Email inválido!");
-    return;
+  
+  if (modalidadesAtendimento.length === 0) {
+      alert("⚠️ Selecione pelo menos uma modalidade de atendimento (Online, Presencial, ou Híbrido).");
+      return;
   }
 
   // Monta payload final
@@ -232,7 +496,11 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch("https://auratccbackend.onrender.com/api/profissionais", {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.textContent = 'Cadastrando...';
+    submitBtn.disabled = true;
+
+    const response = await fetch(BASE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -241,14 +509,18 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
 
     if (response.ok) {
-      alert("✅ Cadastro realizado com sucesso!");
+      alert("✅ Cadastro realizado com sucesso! Faça login para continuar.");
       window.location.href = "login_prof.html";
     } else {
-      alert("❌ Erro: " + (data.erro || JSON.stringify(data)));
+      alert("❌ Erro no cadastro: " + (data.message || data.erro || JSON.stringify(data)));
     }
   } catch (error) {
-    console.error(error);
-    alert("❌ Falha na conexão com o servidor.");
+    console.error("Erro de Rede:", error);
+    alert("❌ Falha na conexão com o servidor. Tente novamente.");
+  } finally {
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.textContent = 'Cadastrar';
+      submitBtn.disabled = false;
   }
 });
 </script>

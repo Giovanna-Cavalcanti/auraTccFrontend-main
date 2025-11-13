@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Aura</title>
+    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Variáveis de Cores (Cores base necessárias para o visual) */
+        :root {
+            --color-sidebar: #7B8A6F; /* Verde Musgo Escuro */
+            --color-background: #F8F5EE; /* Creme/Bege */
+            --color-container-bg: #FFFFFF;
+            --color-primary-text: #5C4C3E; /* Marrom Escuro */
+            --color-link-text: #60A5FA; 
+            --color-icon-text: #7B8A6F; 
+            --text-dark: #4a2f19; /* Cor do texto no botão de configurações */
+        }
+        
+        body,
+        html {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+
+        /* 1. Estrutura Principal da Aplicação */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex; /* Habilita o layout lado a lado */
+            background: var(--color-background);
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* 2. Menu Lateral (Sidebar) - Substitui #sidebar-container */
+        .sidebar {
+            background-color: var(--color-sidebar);
+            width: 100px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 6px 0 15px rgba(0, 0, 0, 0.1); 
+            flex-shrink: 0; 
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin: 10px 0;
+            background-color: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        
+        /* Corrigindo o estilo da imagem do logo para o novo menu */
+        .sidebar img {
+            width: 68px;
+            height: 28px;
+        }
+
+        .sidebar .icons {
+            margin-top: 130%;
+        }
+        
+        .spacer {
+            flex: 1;
+        }
+
+        /* 3. Área de Conteúdo Principal (Ajustado o PADDING para aumentar a área branca) */
+        main.content {
+            flex-grow: 1;
+            padding: 24px 24px; /* NOVO: Reduzido de 32px 48px para 24px 24px */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: var(--color-background);
+            color: var(--color-primary-text);
+            position: relative; 
+            overflow-y: hidden;
+            min-height: 100vh;
+        }
+
+        /* 4. Container de Conteúdo Branco (Recebe agora padding menor do pai) */
+        #main-content-container { 
+            background-color: var(--color-container-bg); 
+            border-radius: 2rem; 
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 5. Botão de Configurações (AJUSTADO O RIGHT PARA 32PX) */
+        .settings-btn {
+            position: absolute;
+            top: 24px;   
+            right: 32px; /* ANTES: 24px | AGORA: 32px (movido 8px para a direita) */
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10; 
+        }
+
+        .settings-btn:hover {
+            opacity: 1;
+        }
+
+        /* Classes que você tinha originalmente */
+        .setting-item {
+            color: var(--color-primary-text);
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .setting-item:hover { color: #4A3E35; }
+        
+        .setting-link { color: var(--color-link-text); cursor: pointer; transition: opacity 0.15s; }
+        .setting-link:hover { opacity: 0.8; }
+
+        /* Switch Customizado (Toggle Switch) - Mantido */
+        .toggle-switch {
+            @apply relative inline-block w-12 h-6 cursor-pointer flex-shrink-0;
+        }
+
+        .toggle-switch input {
+            @apply opacity-0 w-0 h-0;
+        }
+
+        .slider {
+            @apply absolute top-0 left-0 right-0 bottom-0 bg-gray-300 rounded-full transition duration-300;
+        }
+
+        .slider:before {
+            @apply absolute content-[''] h-5 w-5 left-0.5 bottom-0.5 bg-white rounded-full transition duration-300 shadow-md;
+        }
+
+        input:checked + .slider {
+            background-color: var(--color-icon-text);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px); 
+        }
+        
+        /* Modal Backdrop */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+        }
+        
+        /* Classes para Modais de Ação */
+        .modal-action-btn {
+            @apply px-4 py-2 rounded-lg font-semibold transition duration-150 shadow-md;
+        }
+    </style>
+</head>
+
+<body class="h-screen overflow-hidden">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#7B8A6F',
+                        background: '#F8F5EE',
+                        primaryText: '#5C4C3E',
+                        iconText: '#7B8A6F',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <div class="app-container" role="main">
+
+        <nav class="sidebar">
+            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+            <div class="icons">
+                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+                        style="width: 35px; height: 25px; margin-top:50%"></a>
+                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+                        style="width: 38px; margin-top: 160%;"></a>
+            </div>
+            <div class="spacer"></div>
+            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+        </nav>
+
+        <main class="content" role="region" aria-label="Página de Configurações">
+            
+            <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+
+            <div id="main-content-container" class="h-full w-full p-12 overflow-y-auto flex flex-col">
+                
+                <div class="flex justify-between items-start mb-12">
+                    <h1 class="text-4xl font-extrabold text-primaryText">Configurações</h1>
+                </div>
+
+                <div class="grid grid-cols-2 gap-x-24 gap-y-10 flex-1">
+
+                    <div class="space-y-10">
+                        
+                        <div>
+                            <h2 class="text-2xl font-bold text-primaryText mb-4">Informações da Conta</h2>
+                            <div class="space-y-3 text-lg text-gray-700">
+                                <p class="flex items-center space-x-2 font-semibold">
+                                    <i data-lucide="user" class="w-5 h-5 text-iconText"></i>
+                                    <span id="display-name-config">Nome: Usuário Teste</span>
+                                </p>
+                                <p class="text-sm">E-mail: <span id="email-config">user@email.com</span></p>
+                                <a href="Perfil.html" class="setting-link text-sm font-semibold" title="Ir para Edição de Perfil">
+                                    Editar minhas informações
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h2 class="text-2xl font-bold text-primaryText mb-4">Notificações e Personalização</h2>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center setting-item">
+                                    <span class="flex-1" data-modal-info="modal-lembretes">Receber lembretes de consultas</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-lembretes">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex justify-between items-center setting-item">
+                                    <span class="flex-1" data-modal-info="modal-resumo">Notificações semanais de resumo emocional</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-resumo" >
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex justify-between items-center setting-item">
+                                    <span class="flex-1" data-modal-info="modal-escuro">Modo escuro</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-escuro">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-bold text-primaryText mb-4">Acessibilidade</h2>
+                            <div class="space-y-4">
+                                <p data-modal="modal-contraste" class="setting-item">Modo de alto constraste</p>
+                                <p data-modal="modal-fonte" class="setting-item">Aumentar o tamanho da fonte</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="space-y-10">
+                        
+                        <div>
+                            <h2 class="text-2xl font-bold text-primaryText mb-4">Interações</h2>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center setting-item" data-modal="modal-curtidas">
+                                    <span class="flex-1">Publicações curtidas</span>
+                                    <i data-lucide="heart" class="w-5 h-5 text-gray-500"></i>
+                                </div>
+                                <div class="flex justify-between items-center setting-item" data-modal="modal-salvas">
+                                    <span class="flex-1">Publicações salvas</span>
+                                    <i data-lucide="bookmark" class="w-5 h-5 text-gray-500"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-bold text-primaryText mb-4">Privacidade e Segurança</h2>
+                            <div class="space-y-4">
+                                <p id="btn-reset-password" data-modal="modal-reset-password" class="setting-link font-semibold">
+                                    Redefinir senha
+                                </p>
+                                <p id="btn-delete-account" data-modal="modal-delete-account" class="setting-item text-red-600 font-semibold">
+                                    Deletar conta
+                                </p>
+                                <a href="termos.html">
+                                <p data-modal="modal-terms" class="setting-item">Termos de uso</p>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="info-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full text-center transform transition-transform duration-300 scale-95">
+            <h3 id="info-modal-title" class="text-2xl font-bold text-primaryText mb-3">Título do Modal</h3>
+            <p id="info-modal-content" class="text-gray-600 mb-6">Conteúdo padrão do modal.</p>
+            <button id="info-modal-close-btn" class="modal-action-btn bg-sidebar text-white hover:bg-iconText">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <div id="reset-password-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 scale-95">
+            <h3 class="text-2xl font-bold text-primaryText mb-6 text-center">Redefinir Senha</h3>
+            <form id="reset-password-form" class="space-y-4">
+                <div>
+                    <label for="new-password" class="block text-sm font-semibold text-primaryText mb-2">Nova Senha</label>
+                    <input type="password" id="new-password" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-iconText">
+                </div>
+                <div>
+                    <label for="confirm-password" class="block text-sm font-semibold text-primaryText mb-2">Confirmar Nova Senha</label>
+                    <input type="password" id="confirm-password" required placeholder="Repita a nova senha" class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-iconText">
+                </div>
+                <div class="pt-4 flex justify-between space-x-2">
+                    <button type="button" id="reset-cancel-btn" class="modal-action-btn flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300">Cancelar</button>
+                    <button type="submit" class="modal-action-btn flex-1 bg-sidebar text-white hover:bg-iconText">Redefinir</button>
+                </div>
+                <p id="reset-error-msg" class="text-red-500 text-sm mt-2 hidden"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-account-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center transform transition-transform duration-300 scale-95">
+            <i data-lucide="alert-triangle" class="w-10 h-10 text-red-500 mx-auto mb-4"></i>
+            <h3 class="text-2xl font-bold text-primaryText mb-3">Excluir Conta Permanentemente?</h3>
+            <p class="text-gray-600 mb-6">Esta ação é irreversível. Todos os seus dados, histórico e progresso serão perdidos. Você tem certeza?</p>
+            
+            <div id="delete-step-1">
+                <p class="text-sm text-red-500 mb-4 font-semibold">Para confirmar, digite "DELETAR" abaixo.</p>
+                <input type="text" id="delete-confirmation-input" placeholder="DELETAR" class="w-full border-2 border-gray-300 p-3 rounded-lg text-center mb-4 uppercase focus:outline-none focus:border-red-500">
+                <div class="flex justify-between space-x-2">
+                    <button type="button" id="delete-cancel-btn" class="modal-action-btn flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300">Cancelar</button>
+                    <button type="button" id="delete-confirm-btn" class="modal-action-btn flex-1 bg-red-600 text-white hover:bg-red-700 disabled:opacity-50" disabled>Confirmar Exclusão</button>
+                </div>
+            </div>
+            <p id="delete-success-msg" class="text-green-500 text-lg mt-4 hidden">Conta deletada com sucesso! Redirecionando...</p>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Mapeamento de Modais Informativos ---
+        const modalMap = {
+            'modal-contraste': { title: 'Modo de Alto Constraste', content: 'Ativar esquema de cores de alto contraste para melhorar a legibilidade e acessibilidade para usuários com baixa visão.' },
+            'modal-fonte': { title: 'Ajuste de Tamanho da Fonte', content: 'Permite ajustar o tamanho padrão do texto na aplicação para maior acessibilidade e conforto de leitura.' },
+            'modal-curtidas': { title: 'Publicações Curtidas', content: 'Você será redirecionado para a lista completa de artigos, posts e conteúdos que você marcou como "curtidos".' },
+            'modal-salvas': { title: 'Publicações Salvas', content: 'Você será redirecionado para a sua coleção pessoal de artigos e conteúdos salvos para visualização posterior.' },
+            'modal-terms': { title: 'Termos de Uso e Privacidade', content: 'Um link será aberto em uma nova aba com o contrato completo de Termos de Uso e Políticas de Privacidade da aplicação.' },
+            'modal-lembretes': { title: 'Gerenciamento de Lembretes', content: 'Esta opção permite ativar ou desativar lembretes automáticos para suas consultas e atividades agendadas.' },
+            'modal-resumo': { title: 'Notificações Semanais', content: 'Ativar esta opção fará com que você receba um e-mail semanal contendo um resumo do seu progresso emocional.' },
+            'modal-escuro': { title: 'Modo Escuro (Dark Mode)', content: 'Alternar o tema da aplicação para cores escuras, ideal para conforto visual em ambientes com pouca luz.' },
+        };
+
+        const infoModal = document.getElementById('info-modal');
+        const infoModalTitle = document.getElementById('info-modal-title');
+        const infoModalContent = document.getElementById('info-modal-content');
+        
+        // --- FUNÇÕES DE MODAL INFORMATIVO (e outros modais) ---
+        function showInfoModal(key) {
+            const data = modalMap[key];
+            if (!data) return;
+
+            infoModalTitle.textContent = data.title;
+            infoModalContent.textContent = data.content;
+
+            infoModal.classList.remove('hidden');
+            infoModal.classList.add('flex');
+            infoModal.querySelector('div').classList.remove('scale-95');
+            infoModal.querySelector('div').classList.add('scale-100');
+        }
+        
+        function hideInfoModal() {
+            infoModal.querySelector('div').classList.remove('scale-100');
+            infoModal.querySelector('div').classList.add('scale-95');
+
+            setTimeout(() => {
+                infoModal.classList.remove('flex');
+                infoModal.classList.add('hidden');
+            }, 300);
+        }
+        
+        document.getElementById('info-modal-close-btn').addEventListener('click', hideInfoModal);
+        infoModal.addEventListener('click', (e) => {
+            if (e.target.id === 'info-modal') hideInfoModal();
+        });
+
+        // --- Lógica do Modal de Redefinição de Senha ---
+        const resetPasswordModal = document.getElementById('reset-password-modal');
+        const resetForm = document.getElementById('reset-password-form');
+        const resetCancelBtn = document.getElementById('reset-cancel-btn');
+        const resetErrorMsg = document.getElementById('reset-error-msg');
+
+        document.getElementById('btn-reset-password').addEventListener('click', () => {
+            resetPasswordModal.classList.remove('hidden');
+            resetPasswordModal.classList.add('flex');
+            resetPasswordModal.querySelector('div').classList.remove('scale-95');
+            resetPasswordModal.querySelector('div').classList.add('scale-100');
+            resetErrorMsg.classList.add('hidden');
+            resetForm.reset();
+        });
+        resetCancelBtn.addEventListener('click', () => {
+            resetPasswordModal.classList.remove('flex');
+            resetPasswordModal.classList.add('hidden');
+        });
+        resetPasswordModal.addEventListener('click', (e) => {
+             if (e.target.id === 'reset-password-modal') resetCancelBtn.click();
+        });
+        resetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            resetErrorMsg.classList.add('hidden');
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (newPassword !== confirmPassword) {
+                resetErrorMsg.textContent = 'As senhas não coincidem.';
+                resetErrorMsg.classList.remove('hidden');
+                return;
+            }
+            if (newPassword.length < 6) {
+                resetErrorMsg.textContent = 'A nova senha deve ter no mínimo 6 caracteres.';
+                resetErrorMsg.classList.remove('hidden');
+                return;
+            }
+            alert('Senha redefinida com sucesso!');
+            resetCancelBtn.click();
+        });
+
+        // --- Lógica do Modal de Deletar Conta ---
+        const deleteAccountModal = document.getElementById('delete-account-modal');
+        const deleteInput = document.getElementById('delete-confirmation-input');
+        const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+        const deleteCancelBtn = document.getElementById('delete-cancel-btn');
+        const deleteSuccessMsg = document.getElementById('delete-success-msg');
+        
+        document.getElementById('btn-delete-account').addEventListener('click', () => {
+            deleteAccountModal.classList.remove('hidden');
+            deleteAccountModal.classList.add('flex');
+            deleteAccountModal.querySelector('div').classList.remove('scale-95');
+            deleteAccountModal.querySelector('div').classList.add('scale-100');
+            deleteSuccessMsg.classList.add('hidden');
+            document.getElementById('delete-step-1').classList.remove('hidden');
+            deleteInput.value = '';
+            deleteConfirmBtn.disabled = true;
+        });
+
+        deleteCancelBtn.addEventListener('click', () => {
+            deleteAccountModal.classList.remove('flex');
+            deleteAccountModal.classList.add('hidden');
+        });
+        
+        deleteAccountModal.addEventListener('click', (e) => {
+             if (e.target.id === 'delete-account-modal') deleteCancelBtn.click();
+        });
+
+        deleteInput.addEventListener('input', () => {
+            deleteConfirmBtn.disabled = deleteInput.value.toUpperCase() !== 'DELETAR';
+        });
+
+        deleteConfirmBtn.addEventListener('click', () => {
+            if (deleteInput.value.toUpperCase() === 'DELETAR') {
+                document.getElementById('delete-step-1').classList.add('hidden');
+                deleteSuccessMsg.classList.remove('hidden');
+                
+                // Simula exclusão total no LocalStorage
+                localStorage.clear(); 
+
+                console.log('Conta deletada. Redirecionando...');
+                setTimeout(() => {
+                    alert('Sua conta foi deletada com sucesso. Você será desconectado.');
+                    deleteAccountModal.classList.remove('flex');
+                    deleteAccountModal.classList.add('hidden');
+                    loadSettingsAndProfile(); // Recarrega os padrões após a limpeza
+                }, 2000);
+            }
+        });
+
+        // --- Lógica de LocalStorage e Inicialização ---
+        
+        function loadSettingsAndProfile() {
+            // 1. CARREGA DADOS DO PERFIL (Todos os campos)
+            const defaultData = { 
+                name: "Usuário Teste", 
+                email: "user@email.com",
+            };
+            const profileData = JSON.parse(localStorage.getItem('profileData')) || defaultData;
+            
+            document.getElementById('display-name-config').textContent = `Nome: ${profileData.name}`;
+            document.getElementById('email-config').textContent = profileData.email;
+            
+            // 2. CARREGA ESTADO DOS TOGGLES
+            const savedSettings = JSON.parse(localStorage.getItem('userSettings')) || {};
+            
+            // Define o estado inicial dos toggles com base no LocalStorage ou desativado
+            document.getElementById('toggle-lembretes').checked = savedSettings.lembretes || false;
+            document.getElementById('toggle-resumo').checked = savedSettings.resumo || false;
+            document.getElementById('toggle-escuro').checked = savedSettings.escuro || false;
+        }
+
+        function attachSettingsListeners() {
+            // Listeners para os itens de Modais Informativos (Acessibilidade, Interações e Toggles)
+            document.querySelectorAll('p[data-modal], [data-modal-info]').forEach(element => {
+                element.addEventListener('click', (e) => {
+                    if (e.currentTarget.id === 'btn-reset-password' || e.currentTarget.id === 'btn-delete-account') {
+                        return; 
+                    }
+                    const modalKey = element.getAttribute('data-modal') || element.getAttribute('data-modal-info');
+                    showInfoModal(modalKey);
+                });
+            });
+            
+            // Lógica de Toggle (Switch) para salvar o estado
+            document.querySelectorAll('.toggle-switch input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const settingKey = e.target.id.replace('toggle-', '');
+                    const isChecked = e.target.checked;
+
+                    let savedSettings = JSON.parse(localStorage.getItem('userSettings')) || {};
+                    savedSettings[settingKey] = isChecked;
+                    localStorage.setItem('userSettings', JSON.stringify(savedSettings));
+
+                    console.log(`Configuração ${settingKey} alterada para: ${isChecked}.`);
+                });
+            });
+        }
+
+
+        window.onload = () => {
+            lucide.createIcons();
+            loadSettingsAndProfile(); 
+            attachSettingsListeners();
+        };
+
+    </script>
+
+</body>
+</html>

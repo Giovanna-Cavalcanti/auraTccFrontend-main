@@ -2,1013 +2,1210 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <title>Home - Aura</title>
-  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Custom green tones matching the screenshot */
-    :root {
-      --green-bg: #758352;
-      /* Sidebar background */
-      --green-border: #7d9466;
-      /* Sidebar border */
-      --bg-main: #f6f2ed;
-      /* Main background */
-      --text-dark: #4a2f19;
-      /* Dark brown text */
-      --text-light: #5d4a3d;
-      /* Medium brown text */
-      --box-bg: #ffffff;
-      /* White squares background */
-      --box-light-bg: #f0f0ef;
-      --btn-bg: #d9c8b9;
-      /* Add button background */
-      --btn-hover-bg: #c7b19a;
-      --input-bg: #fff;
-      --icon-color: #4a2f19;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <title>Home - Aura</title>
+    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom green tones matching the screenshot */
+        :root {
+            --green-bg: #758352;
+            /* Sidebar background */
+            --green-border: #7d9466;
+            /* Sidebar border */
+            --bg-main: #f6f2ed;
+            /* Main background */
+            --text-dark: #4a2f19;
+            /* Dark brown text */
+            --text-light: #5d4a3d;
+            /* Medium brown text */
+            --box-bg: #ffffff;
+            /* White squares background */
+            --box-light-bg: #f0f0ef;
+            --btn-bg: #d9c8b9;
+            /* Add button background */
+            --btn-hover-bg: #c7b19a;
+            --input-bg: #fff;
+            --icon-color: #4a2f19;
 
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: var(--bg-main);
-      font-family: 'Urbanist', sans-serif;
-      color: var(--text-dark);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      user-select: none;
-    }
+            /* NOVAS CORES PARA OS BOTÕES DE MÉTRICAS (Baseado no screenshot) */
+            --icon-bg-1: #e9f0e1;
+            /* Fundo do ícone (Triagem) - Verde muito claro */
+            --icon-color-1: #6b8e23;
+            /* Cor do ícone (Triagem) - Verde mais escuro */
+            --icon-bg-2: #f9ede7;
+            /* Fundo do ícone (Humor/Diário) - Bege/Rosa claro */
+            --icon-color-2: #ab7f66;
+            /* Cor do ícone (Humor/Diário) - Marrom/Pêssego */
+            --icon-bg-3: #e8f5e7;
+            /* Fundo do ícone (Atividades) - Verde claro */
+            --icon-color-3: #6fa86f;
+            /* Cor do ícone (Atividades) - Verde mais vibrante */
+        }
 
-    /* Container full screen with border radius and border */
-    .app-container {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      background: var(--bg-main);
-      border-radius: 0;
-      overflow: hidden;
-      box-sizing: border-box;
-    }
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--bg-main);
+            font-family: 'Urbanist', sans-serif;
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+        }
 
-    /* Sidebar styles */
-    .sidebar {
-      background-color: #73804F;
-      width: 100px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-    }
+        /* Container full screen with border radius and border */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            background: var(--bg-main);
+            border-radius: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
 
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      margin: 10px 0;
-      background-color: transparent;
-      border-radius: 12px;
-      cursor: pointer;
-    }
+        /* Sidebar styles */
+        .sidebar {
+            background-color: #73804F;
+            width: 100px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
 
-    .sidebar img {
-      width: 68px;
-      height: 28px;
-    }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin: 10px 0;
+            background-color: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+        }
 
-    .sidebar .icons {
-      margin-top: 130%;
-    }
+        .sidebar img {
+            width: 68px;
+            height: 28px;
+        }
 
-    .spacer {
-      flex: 1;
-    }
+        .sidebar .icons {
+            margin-top: 130%;
+        }
 
-    /* Main content panel */
-    main.content {
-      flex-grow: 1;
-      padding: 32px 48px;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      background: var(--bg-main);
-      color: var(--text-dark);
-      position: relative;
-      overflow-y: auto;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
+        .spacer {
+            flex: 1;
+        }
 
-    /* Top right gear/settings icon */
-    main.content .settings-icon {
-      position: absolute;
-      top: 32px;
-      right: 48px;
-      width: 28px;
-      height: 28px;
-      stroke: var(--text-dark);
-      stroke-width: 1.6;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity 0.3s ease;
-    }
+        /* Main content panel */
+        main.content {
+            flex-grow: 1;
+            padding: 32px 48px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            position: relative;
+            overflow-y: auto;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
 
-    main.content .settings-icon:hover {
-      opacity: 1;
-    }
+        /* Top right gear/settings icon */
+        main.content .settings-icon {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            width: 28px;
+            height: 28px;
+            stroke: var(--text-dark);
+            stroke-width: 1.6;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
 
-    /* Date text */
-    main.content .date {
-      font-weight: 550;
-      font-size: 21px;
-      margin-bottom: 5%;
-      user-select: none;
-      color: #4F3422;
-    }
+        main.content .settings-icon:hover {
+            opacity: 1;
+        }
 
-    /* User greeting container */
-    .greeting-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 36px;
-    }
+        /* Date text */
+        main.content .date {
+            font-weight: 550;
+            font-size: 21px;
+            margin-bottom: 5%;
+            user-select: none;
+            color: #4F3422;
+        }
 
-    /* User icon circle background */
-    .user-icon-circle {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      background-color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: var(--text-dark);
-      font-size: 26px;
-      user-select: none;
-      box-shadow: 0 0 6px #d9d2c6;
-    }
+        /* User greeting container */
+        .greeting-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 36px;
+        }
 
-    /* Greeting text - Olá, <Name> */
-    .greeting-text {
-      font-weight: 900;
-      font-size: 33px;
-      user-select: none;
-    }
+        /* User icon circle background */
+        .user-icon-circle {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+            font-size: 26px;
+            user-select: none;
+            box-shadow: 0 0 6px #d9d2c6;
+        }
 
-    /* Wave emoji with margin left */
-    .greeting-wave {
-      width: 35px;
-      height: 35px;
-      user-select: none;
-    }
+        /* Greeting text - Olá, <Name> */
+        .greeting-text {
+            font-weight: 900;
+            font-size: 33px;
+            user-select: none;
+        }
 
-    /* Search/new chat input */
-    /* Container do novo chat com avatar */
-    .new-chat-container {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      max-width: 1500px;
-      /* aumenta a caixa */
-      background-color: var(--input-bg);
-      padding: 6px 12px;
-      box-shadow: 0 0 5px #d9d2c6;
-      border-radius: 16px;
-      /* caixa branca com cantos arredondados */
-      box-sizing: border-box;
-      margin-bottom: 24px;
-    }
+        /* Wave emoji with margin left */
+        .greeting-wave {
+            width: 35px;
+            height: 35px;
+            user-select: none;
+        }
 
-    /* Avatar do chat */
-    .chat-avatar {
-      width: 48px;
-      /* maior tamanho */
-      height: 48px;
-      flex-shrink: 0;
-      border-radius: 12px;
-      /* leve arredondado */
-      overflow: hidden;
-      cursor: pointer;
-    }
+        /* Search/new chat input */
+        /* Container do novo chat com avatar */
+        .new-chat-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1500px;
+            /* aumenta a caixa */
+            background-color: var(--input-bg);
+            padding: 6px 12px;
+            box-shadow: 0 0 5px #d9d2c6;
+            border-radius: 16px;
+            /* caixa branca com cantos arredondados */
+            box-sizing: border-box;
+            margin-bottom: 24px;
+        }
 
-    .chat-avatar img {
-      width: 100%;
-      height: 100%;
-      margin-left: auto;
-      object-fit: right;
-      margin-top: 5px;
-    }
+        /* Avatar do chat */
+        .chat-avatar {
+            width: 48px;
+            /* maior tamanho */
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            /* leve arredondado */
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-    /* Input de chat ajustado */
-    .new-chat-input {
-      flex-grow: 1;
-      height: 40px;
-      border: none;
-      outline: none;
-      font-size: 15px;
-      background: transparent;
-      /* para ficar dentro da caixa branca */
-      color: #4a2f19;
-      margin-left: 12px
-    }
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            object-fit: right;
+            margin-top: 5px;
+        }
 
-    /* Section titles */
-    .section-title {
-      font-weight: 700;
-      font-size: 18px;
-      margin-top: 48px;
-      margin-bottom: 24px;
-      user-select: none;
-    }
+        /* Input de chat ajustado */
+        .new-chat-input {
+            flex-grow: 1;
+            height: 40px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            /* para ficar dentro da caixa branca */
+            color: #4a2f19;
+            margin-left: 12px
+        }
 
-    /* Metrics container */
-    .metrics-container {
-      display: flex;
-      gap: 52px;
-      user-select: none;
-      align-items: stretch;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
+        /* Section titles */
+        .section-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            user-select: none;
+        }
 
-    .metric-box {
-      align-items: center;
-      position: relative;
-      /* permite posicionar o ícone dentro do card */
-      padding: 16px 20px;
-      background: var(--box-bg);
-      border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      font-size: 20px;
-      font-weight: 650;
-      color: var(--text-dark);
-      cursor: pointer;
-      justify-content: flex-start;
-      transition: background-color 0.2s ease;
-      width: 400px;
-      /* ajuste se necessário */
-      height: 200px;
-      /* altura fixa para manter a proporção */
-    }
+        /* Metrics container - NOVO LAYOUT */
+        .metrics-container {
+            display: flex;
+            gap: 20px;
+            user-select: none;
+            align-items: stretch;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
 
-    .metric-box:hover {
-      background-color: var(--box-light-bg);
-    }
+        /* Novo estilo para o Cartão de Métrica - AGORA OCUPANDO A LARGURA */
+        /* Aplicado a <button> e <a> diretamente (que são os flex items) */
+        .metric-box {
+            /* flex-grow: 1 faz com que ocupem o espaço disponível. 
+               23% permite 4 cartões com espaçamento de 20px (gap). */
+            flex: 1 1 23%;
+            min-width: 180px;
 
-    .metric-icon {
-      position: absolute;
-      bottom: 16px;
-      /* distância da borda inferior */
-      right: 20px;
-      /* distância da borda direita */
-      width: 35px;
-      height: 35px;
-      stroke: var(--text-dark);
-    }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 32px 24px;
+            background: var(--box-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+            height: 250px;
+            box-sizing: border-box;
+            
+            /* Remove a decoração de link e bordas de botão */
+            text-decoration: none;
+            border: none;
+            background-color: var(--box-bg); 
+        }
 
-    .metric-label {
-      display: block;
-      font-size: 16px;
-      line-height: 1.25;
-      color: var(--text-dark);
-      margin: 0;
-      padding-right: 70px;
-      text-align: left;
-    }
+        .metric-box:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            background-color: var(--box-bg);
+        }
+
+        /* Estilo do círculo do ícone */
+        .icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        /* Estilos específicos para cada tipo de card, usando as cores da paleta */
+        .metric-box.triagem .icon-circle {
+            background-color: var(--icon-bg-1);
+        }
+
+        .metric-box.humor .icon-circle {
+            background-color: var(--icon-bg-2);
+        }
+
+        .metric-box.diario .icon-circle {
+            background-color: var(--icon-bg-2);
+        }
+
+        .metric-box.atividades .icon-circle {
+            background-color: var(--icon-bg-3);
+        }
+
+        /* SVG do ícone */
+        .icon-circle svg {
+            width: 30px;
+            height: 30px;
+            stroke-width: 1.5;
+        }
+
+        .metric-box.triagem svg {
+            stroke: var(--icon-color-1);
+            fill: none;
+        }
+
+        .metric-box.humor svg {
+            /* O ícone de humor terá o círculo (cara) preenchido e os olhos e boca apenas contorno */
+            fill: none;
+            stroke: var(--icon-color-2);
+            stroke-width: 1.5;
+        }
+
+        /* A face do humor deve ser desenhada no SVG, mas o círculo maior do ícone deve ter a cor de fundo */
+        .metric-box.diario svg {
+            stroke: var(--icon-color-2);
+            fill: none;
+        }
+
+        .metric-box.atividades svg {
+            stroke: var(--icon-color-3);
+            fill: none;
+        }
+
+        /* Rótulo principal (Título) */
+        .metric-title {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 1.2;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        /* Subtítulo */
+        .metric-subtitle {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.4;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Fim dos Novos Estilos de Métricas */
 
 
-    /* Reminders container */
-    .reminders-container {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px 24px;
-      user-select: none;
-      max-height: 300px;
-      /* altura máxima */
-      overflow-y: auto;
-      /* scroll vertical */
-      padding-right: 4px;
-    }
+        /* Reminders container */
+        .reminders-container {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 24px;
+            user-select: none;
+            max-height: 300px;
+            /* altura máxima */
+            overflow-y: auto;
+            /* scroll vertical */
+            padding-right: 4px;
+        }
 
-    /* Reminder card */
-    .reminder-card {
-      background: var(--box-bg);
-      border-radius: 16px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 0 6px #d9d2c6;
-      padding-left: 16px;
-      cursor: default;
-      user-select: none;
-      box-sizing: border-box;
-      position: relative;
-      padding-right: 60px;
-    }
+        /* Reminder card */
+        .reminder-card {
+            background: var(--box-bg);
+            border-radius: 16px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 0 6px #d9d2c6;
+            padding-left: 16px;
+            cursor: pointer;
+            /* Alterado para indicar que é clicável */
+            user-select: none;
+            box-sizing: border-box;
+            position: relative;
+            padding-right: 60px;
+            transition: background-color 0.2s ease;
+        }
 
-    .reminder-icon {
-      background: #dfd4c9;
-      border-radius: 8px;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: var(--text-dark);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke: #4a2f19;
-      flex-shrink: 0;
-      filter: drop-shadow(0 0 1px #c7b19a);
-    }
+        .reminder-card:hover {
+            /* Adicionado hover para feedback visual */
+            background-color: var(--box-light-bg);
+        }
 
-    /* Reminder text container */
-    .reminder-text {
-      display: flex;
-      flex-direction: column;
-      font-size: 16px;
-      line-height: 1.2;
-      color: var(--text-light);
-    }
+        .reminder-icon {
+            background: #dfd4c9;
+            border-radius: 8px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke: #4a2f19;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 1px #c7b19a);
+        }
 
-    .reminder-title {
-      font-weight: 700;
-      color: var(--text-dark);
-      user-select: text;
-    }
+        /* Reminder text container */
+        .reminder-text {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            line-height: 1.2;
+            color: var(--text-light);
+            pointer-events: none;
+            /* Garante que o clique passe para o card */
+        }
 
-    .reminder-card.completed {
-      opacity: 0.5;
-      text-decoration: line-through;
-    }
+        .reminder-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            user-select: text;
+        }
 
-    /* Button "Adicionar" (Add) */
-    .add-reminder-btn {
-      font-weight: 600;
-      font-size: 14px;
-      background-color: var(--btn-bg);
-      padding: 6px 16px;
-      border-radius: 24px;
-      color: var(--text-dark);
-      cursor: pointer;
-      align-self: flex-start;
-      border: none;
-      margin-top: 100px;
-      margin-left: auto;
-      box-shadow: 0 0 6px #d9d2c6;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background-color 0.3s ease;
-    }
+        .reminder-card.completed {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
 
-    .add-reminder-btn:hover {
-      background-color: var(--btn-hover-bg);
-    }
+        /* Button "Adicionar" (Add) */
+        .add-reminder-btn {
+            font-weight: 600;
+            font-size: 14px;
+            background-color: var(--btn-bg);
+            padding: 6px 16px;
+            border-radius: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
+            align-self: flex-start;
+            border: none;
+            margin-top: 100px;
+            margin-left: auto;
+            box-shadow: 0 0 6px #d9d2c6;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.3s ease;
+        }
 
-    .add-reminder-btn:focus {
-      outline: 2px solid var(--green-border);
-      outline-offset: 2px;
-    }
+        .add-reminder-btn:hover {
+            background-color: var(--btn-hover-bg);
+        }
 
-    /* Reminder actions (check + delete) */
-    .reminder-actions {
-      position: absolute;
-      right: 12px;
-      display: flex;
-      gap: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
+        .add-reminder-btn:focus {
+            outline: 2px solid var(--green-border);
+            outline-offset: 2px;
+        }
 
-    .reminder-actions button {
-      border: none;
-      background: none;
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-    }
+        /* Reminder actions (check + delete) */
+        .reminder-actions {
+            position: absolute;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
 
-    .add-reminder-btn {
-      margin-top: 16px;
-    }
+        .reminder-actions button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
 
-    /* Icon plus circle for the add button */
-    .add-icon-circle {
-      border: 1.5px solid var(--text-dark);
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        .add-reminder-btn {
+            margin-top: 16px;
+        }
 
-    .add-icon-circle svg {
-      stroke: var(--text-dark);
-      stroke-width: 1.6;
-    }
+        /* Icon plus circle for the add button */
+        .add-icon-circle {
+            border: 1.5px solid var(--text-dark);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    /*Configuração*/
-    .settings-btn {
-      position: absolute;
-      top: 32px;
-      right: 48px;
-      width: 32px;
-      height: 32px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      color: var(--text-dark);
-      opacity: 0.7;
-      transition: opacity 0.3s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        .add-icon-circle svg {
+            stroke: var(--text-dark);
+            stroke-width: 1.6;
+        }
 
-    .settings-btn:hover {
-      opacity: 1;
-    }
+        /*Configuração*/
+        .settings-btn {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
+        .settings-btn:hover {
+            opacity: 1;
+        }
 
-    /* Caixa do modal */
-    .modal-content {
-      background: #f9f9f9;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 1100px;
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
 
-    /* Cabeçalho */
-    .modal-header {
-      background: #6b7f59;
-      color: white;
-      font-size: 32px;
-      font-weight: bold;
-      padding: 48px;
-      border-radius: 10px 10px 0 0;
-    }
+        /* Caixa do modal */
+        .modal-content {
+            background: #f9f9f9;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1100px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
 
-    /* Botão fechar */
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 32px;
-      font-weight: bold;
-      color: white;
-      cursor: pointer;
-    }
+        /* Cabeçalho */
+        .modal-header {
+            background: #6b7f59;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            padding: 48px;
+            border-radius: 10px 10px 0 0;
+        }
 
-    /* Perguntas */
-    .question {
-      margin: 20px 30px;
-    }
+        /* Botão fechar */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
 
-    .question p {
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
+        /* Perguntas */
+        .question {
+            margin: 20px 30px;
+        }
 
-    label {
-      display: block;
-      margin: 4px 0;
-      cursor: pointer;
-    }
+        .question p {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-    button[type="submit"] {
-      margin-top: 15px;
-      margin-left: 45%;
-      margin-bottom: 15px;
-      padding: 10px 20px;
-      background: #4f6d4f;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+        label {
+            display: block;
+            margin: 4px 0;
+            cursor: pointer;
+        }
 
-    /* Modal de confirmação */
-    .confirm-content {
-      background: #f9f6f3;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 900px;
-      height: 70%;
-      max-height: 900px;
-      padding: 40px 20px;
-      text-align: center;
-      position: relative;
-    }
+        button[type="submit"] {
+            margin-top: 15px;
+            margin-left: 45%;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background: #4f6d4f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
-    .confirm-content .close {
-      color: #333;
-      top: 15px;
-      right: 20px;
-    }
+        /* Modal de confirmação */
+        .confirm-content {
+            background: #f9f6f3;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            height: 70%;
+            max-height: 900px;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
 
-    .checkmark {
-      font-size: 60px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #6b7f59;
-      margin-bottom: 15px;
-    }
+        .confirm-content .close {
+            color: #333;
+            top: 15px;
+            right: 20px;
+        }
 
-    .confirm-content h2 {
-      color: #4b3b2b;
-      position: absolute;
-      top: 60%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+        .checkmark {
+            font-size: 60px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #6b7f59;
+            margin-bottom: 15px;
+        }
 
-    #lembreteModal .modal-content {
-  max-width: 600px;
-  padding: 0;
-  border-radius: 20px;
-  overflow: hidden;
-   overflow-y: auto;  
-}
+        .confirm-content h2 {
+            color: #4b3b2b;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-  </style>
+        #lembreteModal .modal-content {
+            max-width: 600px;
+            padding: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="app-container" role="main">
-    <nav class="sidebar">
-      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-      <div class="icons">
-        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-            style="width: 35px; height: 25px; margin-top:50%"></a>
-        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-            style="width: 38px; margin-top: 160%;"></a>
-      </div>
-      <div class="spacer"></div>
-      <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-    </nav>
+    <div class="app-container" role="main">
+        <nav class="sidebar">
+            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+            <div class="icons">
+                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+                        style="width: 35px; height: 25px; margin-top:50%"></a>
+                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+                        style="width: 38px; margin-top: 160%;"></a>
+            </div>
+            <div class="spacer"></div>
+            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+        </nav>
 
-    <main class="content" role="region" aria-label="Página inicial da plataforma">
-      <time class="date" aria-live="polite" id="date-display" datetime=""></time>
+        <main class="content" role="region" aria-label="Página inicial da plataforma">
+            <time class="date" aria-live="polite" id="date-display" datetime=""></time>
 
-      <section aria-label="Saudação do usuário" class="greeting-container">
-        <div class="user-icon-circle" aria-hidden="true" role="img" title="Ícone de usuário">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" width="29" height="32"
-            viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
-            <path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
-          </svg>
-        </div>
-        <div class="greeting-text" id="greeting-text" aria-live="polite"></div>
-        <div class="greeting-wave" aria-hidden="true">
-          <img src="img/home/olá dr.png" alt="mão">
-        </div>
-      </section>
+            <section aria-label="Saudação do usuário" class="greeting-container">
+                <div class="user-icon-circle" aria-hidden="true" role="img" title="Ícone de usuário">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" width="29" height="32"
+                        viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+                        <path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
+                    </svg>
+                </div>
+                <div class="greeting-text" id="greeting-text" aria-live="polite"></div>
+                <div class="greeting-wave" aria-hidden="true">
+                    <img src="img/home/olá dr.png" alt="mão">
+                </div>
+            </section>
 
-      <!-- Botão de Configurações no canto superior direito -->
-      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path
-            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-          </path>
-        </svg>
-      </button>
+            <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+              <a href="Configuracoes.html">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+                </a>
+            </button>
 
 
-      <div class="new-chat-container">
-        <div class="chat-avatar" title="Converse com Aurora" tabindex="0" role="button"
-          aria-label="Abrir chat com Aurora">
-          <img src="img/Aurora - avatar.png" alt="Aurora" />
-        </div>
-        <a href="aurora.html" type="search" class="new-chat-input" id="newChatInput" aria-label="Novo chat" placeholder="Novo chat"
-          autocomplete="off"> Converse com Aurora </a>
-      </div>
-
-      <section aria-label="Métricas da plataforma">
-        <h2 class="section-title">Métricas</h2>
-        <div class="metrics-container" role="group"
-          aria-label="Botões das funcionalidades: Screening, Diary, Setting Mood">
-          <button class="metric-box" type="button" aria-describedby="desc-screening" tabindex="0" id="openModalBtn"
-            onclick="abrirTriagem()">
-            <img src="img/metricas/LUPA.png" alt="" class="metric-icon" fill="none" stroke="var(--green-bg)"
-              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" role="img"
-              aria-hidden="true" focusable="false">
-            <circle cx="5" cy="19" r="2"></circle>
-            <circle cx="12" cy="5" r="2"></circle>
-            <circle cx="19" cy="14" r="2"></circle>
-            <path d="M5 17v-6a1 1 0 0 1 1-1h2"></path>
-            <path d="M12 7v6"></path>
-            <path d="M19 16v1a1 1 0 0 1-1 1h-2"></path>
-            <path d="M5 17h14"></path>
-            </svg>
-            <span class="metric-label" id="desc-screening">Faça uma triagem</span>
-          </button>
-
-          <a href="diario.html">
-          <button class="metric-box" type="button" aria-describedby="desc-diary" tabindex="0" id="btn-diary"
-            aria-label="Configuração de humor">
-            <img src="img/metricas/cara.png" alt="" class="metric-icon" fill="none" stroke="var(--green-bg)"
-              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" role="img"
-              aria-hidden="true" focusable="false">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <span class="metric-label" id="desc-diary">Registre seu humor</span>
-          </button>
-          </a>
-
-          <a href="atividade.html">
-          <button class="metric-box" type="button" aria-describedby="desc-setting-mood" tabindex="0"
-            id="btn-setting-mood" aria-label="Diário">
-            <svg class="metric-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--green-bg)"
-              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" role="img"
-              aria-hidden="true" focusable="false">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <span class="metric-label" id="desc-setting-mood">Veja as suas atividades</span>
-          </button>
-          </a>
-        </div>
-      </section>
-
-      <section aria-label="Lembretes do usuário" class="reminders-section">
-        <div class="section-header" style="display:flex; justify-content: space-between; align-items: flex-end;">
-          <h2 class="section-title" style="margin-bottom: 12px;">Lembretes</h2>
-          <button class="add-reminder-btn" style="margin-top: 40px;" type="button" id="addReminderBtn"
-            aria-label="Adicionar lembrete" title="Adicionar lembrete" onclick="">
-            Adicionar
-            <span class="add-icon-circle" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-            </span>
-          </button>
-        </div>
-
-        <div class="reminders-container" id="remindersContainer" aria-live="polite" aria-atomic="true">
-          <!-- Reminder items dynamically inserted here -->
-        </div>
-      </section>
-
-      <div class="modal" id="triagemModal">
-        <div class="modal-content">
-          <div class="modal-header">
-            Triagem
-            <span class="close" id="closeModal">&times;</span>
-          </div>
-
-          <form id="triagemForm">
-            <!-- Pergunta 1 -->
-            <div class="question">
-              <p>Qual seu principal motivo por estar buscando suporte?</p>
-              <label><input type="radio" name="motivo" value="Lidar melhor com emoções"> Lidar melhor com
-                emoções</label>
-              <label><input type="radio" name="motivo" value="Ansiedade"> Ansiedade</label>
-              <label><input type="radio" name="motivo" value="Problemas familiares"> Problemas familiares</label>
-              <label><input type="radio" name="motivo" value="Outro"> Outro</label>
+            <div class="new-chat-container">
+                <div class="chat-avatar" title="Converse com Aurora" tabindex="0" role="button"
+                    aria-label="Abrir chat com Aurora">
+                    <img src="img/Aurora - avatar.png" alt="Aurora" />
+                </div>
+                <a href="aurora.html" type="search" class="new-chat-input" id="newChatInput" aria-label="Novo chat"
+                    placeholder="Novo chat" autocomplete="off"> Converse com Aurora </a>
             </div>
 
-            <!-- Pergunta 2 -->
-            <div class="question">
-              <p>Há quanto tempo você percebe e está sentindo esses sintomas?</p>
-              <label><input type="radio" name="tempoSintomas" value="Menos de 1 semana"> Menos de 1 semana</label>
-              <label><input type="radio" name="tempoSintomas" value="1 a 4 semanas"> 1 a 4 semanas</label>
-              <label><input type="radio" name="tempoSintomas" value="1 a 3 meses"> 1 a 3 meses</label>
-              <label><input type="radio" name="tempoSintomas" value="Mais de 3 meses"> Mais de 3 meses</label>
+            <section aria-label="Métricas da plataforma">
+                <h2 class="section-title">Métricas</h2>
+                <div class="metrics-container" role="group"
+                    aria-label="Botões das funcionalidades: Triagem, Humor, Diário e Atividades">
+
+                    <button class="metric-box triagem" type="button" onclick="abrirTriagem()">
+                        <div class="icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <span class="metric-title">Faça uma triagem</span>
+                        <span class="metric-subtitle">Avalie seu estado emocional atual</span>
+                    </button>
+
+                    <a href="humor.html" class="metric-box humor" aria-label="Registre seu humor">
+                        <div class="icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                <circle cx="9" cy="9" r="1" fill="var(--icon-color-2)" stroke="none"></circle>
+                                <circle cx="15" cy="9" r="1" fill="var(--icon-color-2)" stroke="none"></circle>
+                            </svg>
+                        </div>
+                        <span class="metric-title">Registre seu humor</span>
+                        <span class="metric-subtitle">Como você está se sentindo hoje?</span>
+                    </a>
+
+                    <a href="diario.html" class="metric-box diario" aria-label="Escreva no seu diário">
+                        <div class="icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <span class="metric-title">Escreva no seu diário</span>
+                        <span class="metric-subtitle">Registre seus pensamentos e emoções</span>
+                    </a>
+
+                    <a href="Atividade_vis.html" class="metric-box atividades" aria-label="Registre atividades">
+                        <div class="icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M17 5H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"></path>
+                                <path d="M12 9v6"></path>
+                                <path d="M10 13l2-2 2 2"></path>
+                            </svg>
+                        </div>
+                        <span class="metric-title">Registre atividades</span>
+                        <span class="metric-subtitle">Monitore seus hábitos diários</span>
+                    </a>
+
+                </div>
+            </section>
+
+            <section aria-label="Lembretes do usuário" class="reminders-section">
+                <div class="section-header" style="display:flex; justify-content: space-between; align-items: flex-end;">
+                    <h2 class="section-title" style="margin-bottom: 12px;">Lembretes</h2>
+                    <button class="add-reminder-btn" style="margin-top: 40px;" type="button" id="addReminderBtn"
+                        aria-label="Adicionar lembrete" title="Adicionar lembrete" onclick="">
+                        Adicionar
+                        <span class="add-icon-circle" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" viewBox="0 0 24 24">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="reminders-container" id="remindersContainer" aria-live="polite" aria-atomic="true">
+                    </div>
+            </section>
+
+            <div class="modal" id="triagemModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Triagem
+                        <span class="close" id="closeModal">&times;</span>
+                    </div>
+
+                    <form id="triagemForm">
+                        <div class="question">
+                            <p>Qual seu principal motivo por estar buscando suporte?</p>
+                            <label><input type="radio" name="motivo" value="Lidar melhor com emoções"> Lidar melhor com
+                                emoções</label>
+                            <label><input type="radio" name="motivo" value="Ansiedade"> Ansiedade</label>
+                            <label><input type="radio" name="motivo" value="Problemas familiares"> Problemas
+                                familiares</label>
+                            <label><input type="radio" name="motivo" value="Outro"> Outro</label>
+                        </div>
+
+                        <div class="question">
+                            <p>Há quanto tempo você percebe e está sentindo esses sintomas?</p>
+                            <label><input type="radio" name="tempoSintomas" value="Menos de 1 semana"> Menos de 1
+                                semana</label>
+                            <label><input type="radio" name="tempoSintomas" value="1 a 4 semanas"> 1 a 4 semanas</label>
+                            <label><input type="radio" name="tempoSintomas" value="1 a 3 meses"> 1 a 3 meses</label>
+                            <label><input type="radio" name="tempoSintomas" value="Mais de 3 meses"> Mais de 3
+                                meses</label>
+                        </div>
+
+                        <div class="question">
+                            <p>Com que frequência você sente os sintomas mencionados?</p>
+                            <label><input type="radio" name="frequencia" value="Raramente"> Raramente</label>
+                            <label><input type="radio" name="frequencia" value="Algumas vezes por semana"> Algumas
+                                vezes por
+                                semana</label>
+                            <label><input type="radio" name="frequencia" value="Todos os dias"> Todos os dias</label>
+                            <label><input type="radio" name="frequencia" value="Não sei dizer"> Não sei dizer</label>
+                        </div>
+
+                        <div class="question">
+                            <p>Você tem preferência de gênero para o(a) profissional?</p>
+                            <label><input type="radio" name="genero" value="Feminino"> Sim, feminino</label>
+                            <label><input type="radio" name="genero" value="Masculino"> Sim, masculino</label>
+                            <label><input type="radio" name="genero" value="Sem preferência"> Sem preferência</label>
+                        </div>
+
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
             </div>
 
-            <!-- Pergunta 3 -->
-            <div class="question">
-              <p>Com que frequência você sente os sintomas mencionados?</p>
-              <label><input type="radio" name="frequencia" value="Raramente"> Raramente</label>
-              <label><input type="radio" name="frequencia" value="Algumas vezes por semana"> Algumas vezes por
-                semana</label>
-              <label><input type="radio" name="frequencia" value="Todos os dias"> Todos os dias</label>
-              <label><input type="radio" name="frequencia" value="Não sei dizer"> Não sei dizer</label>
+            <div class="modal" id="confirmModal">
+                <div class="confirm-content">
+                    <span class="close" id="closeConfirm">&times;</span>
+                    <div class="checkmark">✔</div>
+                    <h2>Triagem Enviada!</h2>
+                </div>
             </div>
 
-            <!-- Pergunta 4 -->
-            <div class="question">
-              <p>Você tem preferência de gênero para o(a) profissional?</p>
-              <label><input type="radio" name="genero" value="Feminino"> Sim, feminino</label>
-              <label><input type="radio" name="genero" value="Masculino"> Sim, masculino</label>
-              <label><input type="radio" name="genero" value="Sem preferência"> Sem preferência</label>
+            <div class="modal" id="lembreteModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Novo Lembrete
+                        <span class="close" id="closeLembrete">&times;</span>
+                    </div>
+
+                    <form id="formLembrete" class="p-6 flex flex-col gap-4">
+                        <div>
+                            <label class="font-semibold">Tipo:</label>
+                            <select class="w-full p-2 rounded-lg bg-[#f4f2ef]" required name="reminder-type">
+                                <option value="Consulta">Consulta</option>
+                                <option value="Exame">Exame</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold">Local:</label>
+                            <input type="text" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Digite o local"
+                                required name="reminder-location">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold">Doutor:</label>
+                            <input type="text" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Nome do doutor"
+                                required name="reminder-doctor">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="font-semibold">Data:</label>
+                                <input type="date" class="w-full p-2 rounded-lg bg-[#f4f2ef]" required
+                                    name="reminder-date">
+                            </div>
+                            <div>
+                                <label class="font-semibold">Horário:</label>
+                                <input type="time" class="w-full p-2 rounded-lg bg-[#f4f2ef]" required
+                                    name="reminder-time">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold">Observações:</label>
+                            <textarea rows="3" class="w-full p-2 rounded-lg bg-[#f4f2ef]"
+                                placeholder="Digite algo se necessário..." name="reminder-notes"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="bg-[#4a2f19] text-white py-3 rounded-xl font-semibold hover:bg-[#2a1f15]">Salvar
+                            Lembrete</button>
+                    </form>
+                </div>
             </div>
 
-            <button type="submit">Enviar</button>
-          </form>
-        </div>
-      </div>
+            <div class="modal" id="confirmModal2">
+                <div class="confirm-content">
+                    <span class="close" id="closeConfirm2">&times;</span>
+                    <div class="checkmark">✔</div>
+                    <h2>Lembrete Criado!</h2>
+                </div>
+            </div>
+            <div class="modal" id="viewReminderModal">
+                <div class="modal-content"
+                    style="max-width: 600px; padding: 0; border-radius: 20px; overflow: hidden;">
+                    <div class="modal-header">
+                        Detalhes do Lembrete
+                        <span class="close" id="closeViewReminder">&times;</span>
+                    </div>
 
-      <!-- Modal de confirmação -->
-      <div class="modal" id="confirmModal">
-        <div class="confirm-content">
-          <span class="close" id="closeConfirm">&times;</span>
-          <div class="checkmark">✔</div>
-          <h2>Triagem Enviada!</h2>
-        </div>
-      </div>
+                    <div class="p-6 flex flex-col gap-4 text-left">
+                        <div class="border-b pb-2">
+                            <p class="font-semibold text-xl text-[#4a2f19]" id="view-reminder-title"></p>
+                            <p class="text-sm text-gray-600" id="view-reminder-type-location"></p>
+                        </div>
 
-      <!-- Modal de Criar Lembrete -->
-<div class="modal" id="lembreteModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      Novo Lembrete
-      <span class="close" id="closeLembrete">&times;</span>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="font-semibold text-[#4a2f19]">Data:</label>
+                                <p id="view-reminder-date" class="bg-[#f4f2ef] p-2 rounded-lg text-lg"></p>
+                            </div>
+                            <div>
+                                <label class="font-semibold text-[#4a2f19]">Horário:</label>
+                                <p id="view-reminder-time" class="bg-[#f4f2ef] p-2 rounded-lg text-lg"></p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-[#4a2f19]">Doutor:</label>
+                            <p id="view-reminder-doctor" class="bg-[#f4f2ef] p-2 rounded-lg text-lg"></p>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-[#4a2f19]">Observações:</label>
+                            <p id="view-reminder-notes"
+                                class="bg-[#f4f2ef] p-2 rounded-lg min-h-[50px] whitespace-pre-wrap text-lg"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </main>
     </div>
 
-    <form id="formLembrete" class="p-6 flex flex-col gap-4">
-      <div>
-        <label class="font-semibold">Tipo:</label>
-        <select class="w-full p-2 rounded-lg bg-[#f4f2ef]" required>
-          <option value="Consulta">Consulta</option>
-          <option value="Exame">Exame</option>
-          <option value="Outro">Outro</option>
-        </select>
-      </div>
+    <script>
+        (function () {
+            const userNameKey = 'platformUserName';
+            const remindersStorageKey = 'platformReminders';
+            const defaultUser = 'Usuário';
 
-      <div>
-        <label class="font-semibold">Local:</label>
-        <input type="text" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Digite o local" required>
-      </div>
+            // --- USER / DATA ---
+            function getUserName() {
+                let name = localStorage.getItem(userNameKey);
+                if (!name) {
+                    localStorage.setItem(userNameKey, defaultUser);
+                    name = defaultUser;
+                }
+                return name;
+            }
 
-      <div>
-        <label class="font-semibold">Doutor:</label>
-        <input type="text" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Nome do doutor" required>
-      </div>
+            const dateDisplay = document.getElementById('date-display');
+            const greetingText = document.getElementById('greeting-text');
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="font-semibold">Data:</label>
-          <input type="date" class="w-full p-2 rounded-lg bg-[#f4f2ef]" required>
-        </div>
-        <div>
-          <label class="font-semibold">Horário:</label>
-          <input type="time" class="w-full p-2 rounded-lg bg-[#f4f2ef]" required>
-        </div>
-      </div>
+            function formatDate(date) {
+                const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return `${days[date.getDay()]}, ${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+            }
+            function updateDate() {
+                const now = new Date();
+                dateDisplay.textContent = formatDate(now);
+                dateDisplay.setAttribute('datetime', now.toISOString());
+            }
+            function updateGreeting() {
+                greetingText.textContent = `Olá, ${getUserName()} `;
+            }
 
-      <div>
-        <label class="font-semibold">Observações:</label>
-        <textarea rows="3" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Digite algo se necessário..."></textarea>
-      </div>
+            // --- REMINDERS DATA HANDLING ---
+            function loadReminders() {
+                const json = localStorage.getItem(remindersStorageKey);
+                if (json) {
+                    try { return JSON.parse(json); } catch { return []; }
+                }
+                return [];
+            }
+            function saveReminders(reminders) {
+                localStorage.setItem(remindersStorageKey, JSON.stringify(reminders));
+            }
 
-      <button type="submit" class="bg-[#4a2f19] text-white py-3 rounded-xl font-semibold hover:bg-[#2a1f15]">Salvar Lembrete</button>
-    </form>
-  
-  </div>
+            const reminderIconSVG = `
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#4a2f19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>`;
 
-   <!-- Modal de confirmação -->
-      <div class="modal" id="confirmModal2">
-        <div class="confirm-content">
-          <span class="close" id="closeConfirm">&times;</span>
-          <div class="checkmark">✔</div>
-          <h2>Lembrete Criado!</h2>
-        </div>
-      </div>
+            function renderReminders(reminders) {
+                const container = document.getElementById('remindersContainer');
+                container.innerHTML = '';
+                reminders.forEach(reminder => {
+                    const reminderDiv = document.createElement('div');
+                    reminderDiv.className = 'reminder-card';
+                    if (reminder.completed) reminderDiv.classList.add('completed');
 
-</div>
-
-
-    </main>
-  </div>
-
-  <script>
-    // const userId = localStorage.getItem('userId');
-    // console.log('ID do paciente logado:', userId);
-
-(function () {
-  const userNameKey = 'platformUserName';
-  const remindersStorageKey = 'platformReminders';
-
-  // --- USER / DATA ---
-  function getUserName() {
-    let name = localStorage.getItem(userNameKey);
-    if (!name) {
-      localStorage.setItem(userNameKey, defaultUser);
-      name = defaultUser;
-    }
-    return name;
-  }
-
-  const dateDisplay = document.getElementById('date-display');
-  const greetingText = document.getElementById('greeting-text');
-
-  function formatDate(date) {
-    const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-    return `${days[date.getDay()]}, ${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]}, ${date.getFullYear()}`;
-  }
-  function updateDate() {
-    const now = new Date();
-    dateDisplay.textContent = formatDate(now);
-    dateDisplay.setAttribute('datetime', now.toISOString());
-  }
-  function updateGreeting() {
-    greetingText.textContent = `Olá, ${getUserName()} `;
-  }
-
-  // --- REMINDERS ---
-  function loadReminders() {
-    const json = localStorage.getItem(remindersStorageKey);
-    if (json) {
-      try { return JSON.parse(json); } catch { return []; }
-    }
-    return [];
-  }
-  function saveReminders(reminders) {
-    localStorage.setItem(remindersStorageKey, JSON.stringify(reminders));
-  }
-
-  const reminderIconSVG = `
-    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#4a2f19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-      <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
-      <line x1="16" y1="2" x2="16" y2="6"></line>
-      <line x1="8" y1="2" x2="8" y2="6"></line>
-      <line x1="3" y1="10" x2="21" y2="10"></line>
-    </svg>`;
-
-  function renderReminders(reminders) {
-    const container = document.getElementById('remindersContainer');
-    container.innerHTML = '';
-    reminders.forEach(reminder => {
-      const reminderDiv = document.createElement('div');
-      reminderDiv.className = 'reminder-card';
-      if (reminder.completed) reminderDiv.classList.add('completed');
-
-      reminderDiv.innerHTML = `
-        <div class="reminder-icon">${reminderIconSVG}</div>
-        <div class="reminder-text">
-          <div class="reminder-title">${reminder.title}</div>
-          <div>${reminder.description}</div>
-        </div>
-        <div class="reminder-actions" style="margin-left:auto; display:flex; gap:8px;">
-          <button class="complete-btn" title="Concluir">✔</button>
-          <button class="delete-btn" title="Excluir">✖</button>
-        </div>
-      `;
-      container.appendChild(reminderDiv);
-
-      // completar
-      reminderDiv.querySelector('.complete-btn').addEventListener('click', () => {
-        reminder.completed = !reminder.completed;
-        saveReminders(reminders);
-        renderReminders(reminders);
-      });
-      // excluir
-      reminderDiv.querySelector('.delete-btn').addEventListener('click', () => {
-        const updated = reminders.filter(r => r.id !== reminder.id);
-        saveReminders(updated);
-        renderReminders(updated);
-      });
-    });
-  }
-
-  // --- MODAL ---
-  const lembreteModal = document.getElementById("lembreteModal");
-  const addReminderBtn = document.getElementById("addReminderBtn");
-  const closeLembrete = document.getElementById("closeLembrete");
-  const formLembrete = document.getElementById("formLembrete");
+                    // Formatação da data e hora para exibição concisa no cartão
+                    const datePart = reminder.date ? reminder.date.split('-').reverse().join('/') : '';
+                    const timePart = reminder.time || '';
+                    const displayDescription = `${reminder.doctor || ''} ${datePart} ${timePart}`.trim();
 
 
-  // Novo: modal de confirmação
-  const confirmModal2 = document.getElementById("confirmModal2");
+                    reminderDiv.innerHTML = `
+                      <div class="reminder-icon">${reminderIconSVG}</div>
+                      <div class="reminder-text">
+                        <div class="reminder-title">${reminder.type} - ${reminder.location}</div>
+                        <div>${displayDescription}</div>
+                      </div>
+                      <div class="reminder-actions" style="margin-left:auto; display:flex; gap:8px;">
+                        <button class="complete-btn" title="Concluir">✔</button>
+                        <button class="delete-btn" title="Excluir">✖</button>
+                      </div>
+                    `;
 
-  addReminderBtn.addEventListener("click", () => {
-    lembreteModal.style.display = "flex";
-  });
-  closeLembrete.addEventListener("click", () => {
-    lembreteModal.style.display = "none";
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target === lembreteModal) lembreteModal.style.display = "none";
-  });
-
-  formLembrete.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const reminders = loadReminders();
-    const newId = reminders.length ? reminders[reminders.length - 1].id + 1 : 1;
-
-    const lembrete = {
-      id: newId,
-      title: formLembrete.querySelector("select").value + " - " +
-             formLembrete.querySelector("input[placeholder='Digite o local']").value,
-      description:
-        formLembrete.querySelector("input[placeholder='Nome do doutor']").value + " | " +
-        formLembrete.querySelector("input[type='date']").value + " " +
-        formLembrete.querySelector("input[type='time']").value + " " +
-        (formLembrete.querySelector("textarea").value || "")
-    };
-
-    reminders.push(lembrete);
-    saveReminders(reminders);
-    renderReminders(reminders);
-
-    formLembrete.reset();
-    lembreteModal.style.display = "none";
-
-     // Abrir modal de confirmação
-    confirmModal2.style.display = "none";
-  });
-
-  // --- INIT ---
-  function init() {
-    updateDate();
-    updateGreeting();
-    renderReminders(loadReminders());
-  }
-  window.addEventListener('load', init);
-
-})();
-</script>
+                    // Adiciona o Event Listener para abrir o modal de visualização
+                    // Clicar no cartão, exceto nos botões de ação
+                    reminderDiv.addEventListener('click', (e) => {
+                        if (e.target.closest('.reminder-actions') === null) {
+                            showViewReminderModal(reminder);
+                        }
+                    });
 
 
+                    container.appendChild(reminderDiv);
 
-  <script>
-    const modal = document.getElementById("triagemModal");
-    const confirmModal = document.getElementById("confirmModal");
-    const openBtn = document.getElementById("openModalBtn");
-    const closeBtn = document.getElementById("closeModal");
-    const closeConfirmBtn = document.getElementById("closeConfirm");
+                    // completar
+                    reminderDiv.querySelector('.complete-btn').addEventListener('click', (e) => {
+                        e.stopPropagation(); // Previne o clique no card de abrir o modal de visualização
+                        reminder.completed = !reminder.completed;
+                        saveReminders(reminders);
+                        renderReminders(reminders);
+                    });
+                    // excluir
+                    reminderDiv.querySelector('.delete-btn').addEventListener('click', (e) => {
+                        e.stopPropagation(); // Previne o clique no card de abrir o modal de visualização
+                        const updated = reminders.filter(r => r.id !== reminder.id);
+                        saveReminders(updated);
+                        renderReminders(updated);
+                    });
+                });
+            }
 
-    // Abrir modal
-    openBtn.onclick = function () {
-      modal.style.display = "flex";
-    };
+            // --- MODAL: VIEW REMINDER ---
+            const viewReminderModal = document.getElementById("viewReminderModal");
+            const closeViewReminder = document.getElementById("closeViewReminder");
 
-    // Fechar modal no botão X
-    closeBtn.onclick = function () {
-      modal.style.display = "none";
-    };
+            closeViewReminder.addEventListener("click", () => {
+                viewReminderModal.style.display = "none";
+            });
 
-    // Fechar confirmação
-    closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
+            function showViewReminderModal(reminder) {
+                document.getElementById('view-reminder-title').textContent = reminder.type;
+                document.getElementById('view-reminder-type-location').textContent = reminder.location;
 
-    // Fechar modal clicando fora
-    window.onclick = function (event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-        if (event.target === confirmModal) confirmModal.style.display = "none";
-      }
-    };
+                // Formatando data para exibição (DD/MM/AAAA)
+                const formattedDate = reminder.date ? reminder.date.split('-').reverse().join('/') : 'N/A';
+                document.getElementById('view-reminder-date').textContent = formattedDate;
 
-    // Capturar envio do formulário
-    document.getElementById("triagemForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      triagemModal.style.display = "none";
-      confirmModal.style.display = "flex";
-      const formData = new FormData(this);
-      const dados = {};
-      formData.forEach((value, key) => (dados[key] = value));
-      console.log("Respostas:", dados);
+                document.getElementById('view-reminder-time').textContent = reminder.time || 'N/A';
+                document.getElementById('view-reminder-doctor').textContent = reminder.doctor || 'Não informado';
+                document.getElementById('view-reminder-notes').textContent = reminder.notes || 'Nenhuma observação.';
 
-    });
-  </script>
+                viewReminderModal.style.display = "flex";
+            }
+
+
+            // --- MODAL: CREATE REMINDER ---
+            const lembreteModal = document.getElementById("lembreteModal");
+            const addReminderBtn = document.getElementById("addReminderBtn");
+            const closeLembrete = document.getElementById("closeLembrete");
+            const formLembrete = document.getElementById("formLembrete");
+            const confirmModal2 = document.getElementById("confirmModal2");
+            const closeConfirm2 = document.getElementById("closeConfirm2");
+
+
+            addReminderBtn.addEventListener("click", () => {
+                lembreteModal.style.display = "flex";
+            });
+            closeLembrete.addEventListener("click", () => {
+                lembreteModal.style.display = "none";
+            });
+            closeConfirm2.addEventListener("click", () => {
+                confirmModal2.style.display = "none";
+            });
+            window.addEventListener("click", (e) => {
+                if (e.target === lembreteModal) lembreteModal.style.display = "none";
+                if (e.target === viewReminderModal) viewReminderModal.style.display = "none";
+                if (e.target === confirmModal2) confirmModal2.style.display = "none";
+            });
+
+            formLembrete.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const reminders = loadReminders();
+                const newId = reminders.length ? reminders[reminders.length - 1].id + 1 : 1;
+                const formData = new FormData(formLembrete);
+
+                // Salvando todos os campos separadamente
+                const lembrete = {
+                    id: newId,
+                    type: formData.get('reminder-type'),
+                    location: formData.get('reminder-location'),
+                    doctor: formData.get('reminder-doctor'),
+                    date: formData.get('reminder-date'),
+                    time: formData.get('reminder-time'),
+                    notes: formData.get('reminder-notes'),
+                    completed: false
+                };
+
+                reminders.push(lembrete);
+                saveReminders(reminders);
+                renderReminders(reminders);
+
+                formLembrete.reset();
+                lembreteModal.style.display = "none"; // Esconde o modal de criação
+
+                // Abrir modal de confirmação (agora que ele está fora do modal principal, ele aparecerá)
+                confirmModal2.style.display = "flex";
+                setTimeout(() => { // Fecha após 2 segundos
+                    confirmModal2.style.display = "none";
+                }, 2000);
+            });
+
+            // --- INIT ---
+            function init() {
+                updateDate();
+                updateGreeting();
+                renderReminders(loadReminders());
+            }
+            window.addEventListener('load', init);
+
+        })();
+    </script>
+
+
+    <script>
+        // Mantém a lógica da triagem (Modal original)
+        const modal = document.getElementById("triagemModal");
+        const confirmModal = document.getElementById("confirmModal");
+        const openBtn = document.getElementById("openModalBtn");
+        const closeBtn = document.getElementById("closeModal");
+        const closeConfirmBtn = document.getElementById("closeConfirm");
+
+        function abrirTriagem() { // Função que é chamada no botão HTML
+             modal.style.display = "flex";
+        };
+
+        // Abrir modal
+        if(openBtn) {
+            openBtn.onclick = abrirTriagem;
+        }
+
+        // Fechar modal no botão X
+        if(closeBtn) {
+            closeBtn.onclick = function () {
+                modal.style.display = "none";
+            };
+        }
+
+        // Fechar confirmação
+        if(closeConfirmBtn) {
+             closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
+        }
+
+        // Fechar modal clicando fora
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+            if (event.target === confirmModal) {
+                confirmModal.style.display = "none";
+            }
+        };
+
+        // Capturar envio do formulário
+        document.getElementById("triagemForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            triagemModal.style.display = "none";
+            confirmModal.style.display = "flex";
+            const formData = new FormData(this);
+            const dados = {};
+            formData.forEach((value, key) => (dados[key] = value));
+            console.log("Respostas:", dados);
+
+        });
+    </script>
 </body>
+
 </html>

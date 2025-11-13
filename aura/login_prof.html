@@ -7,29 +7,46 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
   <link rel="stylesheet" href="css/login.css" />
+  <style>
+    /* Estilo para garantir que o modal cubra tudo e fique no centro */
+    .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 50; /* Z-index alto para ficar acima de outros elementos */
+    }
+    .modal-content {
+      /* Estilo da sua seção principal de login é max-w-6xl. 
+         Ajustei o modal para ser menor e centralizado. */
+      max-width: 90%;
+    }
+    /* Estilos personalizados para o botão de fechar (opcional, mas recomendado) */
+    .close-btn {
+      transition: color 0.2s;
+    }
+    .close-btn:hover {
+      color: #ef4444; /* Exemplo: Um vermelho suave ao passar o mouse */
+    }
+  </style>
 </head>
 <body class="min-h-screen flex items-center justify-center">
   <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2">
-    <!-- Image Panel -->
     <section id="img-section" class="hidden md:flex items-center justify-center p-12">
       <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
         <img 
           src="img/cad e log/Image_login.png" 
-          alt="Ilustração de pessoa meditando em tons verdes" 
+          alt="Serene illustration in soft green hues showing a person sitting cross-legged meditating surrounded by large stylized flowers and soft glowing leaves, creating a calm and peaceful atmosphere" 
           class="w-full h-auto rounded-xl object-cover" 
           onerror="this.style.display='none'"
         />
       </div>
     </section>
 
-    <!-- Login Form Panel -->
     <section class="flex flex-col p-10 md:p-20 justify-center gap-6">
       <header class="flex items-center gap-3 mb-4">
-        <img 
+       <img 
           src="img/Logo.png" width="30px" height="30px"
-          alt="Logo do AURA"
+          alt="Logo do AURA - Uma flor de lotus verde"
           onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cbb07639-b571-4e20-96a1-0612aa286c2d.png';"
-        />
+         />
         <span class="font-semibold text-xl select-none">AURA</span>
       </header>
       <h1 class="text-3xl font-extrabold leading-tight select-none">
@@ -45,19 +62,23 @@
           id="email" 
           name="email" 
           type="email" 
+          placeholder="" 
           required 
           autocomplete="email"
           class="input-custom" 
+          aria-describedby="emailHelp"
         />
         
-        <label for="password" class="font-semibold text-sm select-none">Senha</label>
+        <label for="senha" class="font-semibold text-sm select-none">Senha</label>
         <input 
-          id="password" 
-          name="password" 
+          id="senha" 
+          name="senha" 
           type="password" 
+          placeholder="" 
           required 
-          autocomplete="current-password" 
+          autocomplete="current-senha" 
           class="input-custom" 
+          aria-describedby="senhaHelp"
         />
 
         <div class="flex items-center justify-between text-sm">
@@ -65,71 +86,214 @@
             <input type="checkbox" id="remember" name="remember"/>
             Lembrar
           </label>
-          <a href="#" class="forgot-link" tabindex="0">Esqueceu sua Senha?</a>
+          <a href="#" id="forgotPasswordLink" class="forgot-link text-green-600 hover:text-green-700 font-medium" tabindex="0">Esqueceu sua Senha?</a>
         </div>
 
+        <div id="errorMessage" class="text-red-500 text-sm hidden"></div>
+
         <button type="submit" class="btn-login w-full rounded-lg mt-4" aria-label="Log in to Aura account">
-          Login
+          Entrar
         </button>
       </form>
     </section>
   </main>
 
-<script>
-  // Ajuste do título no mobile
-  function adjustMobileHeader() {
-    const heading = document.querySelector('h1');
-    if(window.innerWidth < 768){
-      heading.innerHTML = 'Bem-vindo<br>de volta';
-    } else {
-      heading.innerHTML = 'Bem-vindo <span class="hidden md:inline">de volta</span>';
-    }
-  }
-  window.addEventListener('resize', adjustMobileHeader);
-  window.addEventListener('DOMContentLoaded', adjustMobileHeader);
+  <div id="forgotPasswordModal" class="modal-overlay fixed inset-0 hidden items-center justify-center p-4">
+    <div class="modal-content bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm transform scale-100 transition-transform duration-300 ease-out">
+      <div class="flex justify-between items-start mb-4">
+        <h3 class="text-xl font-bold text-gray-800">Recuperar Senha</h3>
+        <button type="button" id="closeModalBtn" class="close-btn text-gray-400 hover:text-gray-600 text-2xl leading-none" aria-label="Fechar">
+          &times;
+        </button>
+      </div>
 
-  // LOGIN com fetch
-  const loginForm = document.getElementById('loginForm');
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+      <p id="recoveryMessage" class="text-sm text-gray-500 mb-4">
+        Por favor, insira o email associado à sua conta. Enviaremos um link de recuperação.
+      </p>
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
+      <form id="recoveryForm" class="flex flex-col gap-4">
+        <label for="recoveryEmail" class="font-semibold text-sm select-none">Email</label>
+        <input 
+          id="recoveryEmail" 
+          name="recoveryEmail" 
+          type="email" 
+          placeholder="seu@email.com" 
+          required 
+          class="input-custom border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500" 
+        />
+        
+        <div id="recoveryError" class="text-red-500 text-sm hidden"></div>
+        <div id="recoverySuccess" class="text-green-600 text-sm hidden"></div>
 
-    if (!email || !password) {
-      alert("⚠️ Preencha todos os campos!");
-      return;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      alert("⚠️ Email inválido!");
-      return;
-    }
-
-    const payload = { email, senha: password };
-
-    try {
-      const response = await fetch("https://auratccbackend.onrender.com/api/profissionais/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert("✅ Login realizado com sucesso!");
-        // Você pode salvar token ou id do usuário no localStorage, se o backend retornar
-        if(data.token) localStorage.setItem('token', data.token);
-        window.location.href = "dashboard/dashboard-home.html";
-      } else {
-        alert("❌ Erro no login: " + (data.erro || JSON.stringify(data)));
+        <button type="submit" id="sendRecoveryBtn" class="btn-login w-full rounded-lg mt-2 py-3 bg-green-500 hover:bg-green-600 text-white transition-colors duration-200" aria-label="Enviar email de recuperação">
+          Enviar Link
+        </button>
+        <button type="button" id="cancelRecoveryBtn" class="w-full text-sm text-gray-500 hover:text-gray-700 mt-1" aria-label="Cancelar e voltar ao login">
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+  <script>
+    // ************************************
+    // 1. Script de Login (Originalmente fornecido)
+    // ************************************
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const errorDiv = document.getElementById('errorMessage');
+      
+      // Validação básica
+      if (!email || !senha) {
+        errorDiv.textContent = 'Por favor, preencha todos os campos.';
+        errorDiv.classList.remove('hidden');
+        return;
       }
-    } catch (error) {
-      console.error(error);
-      alert("❌ Falha na conexão com o servidor.");
+      
+      // Limpa a mensagem de erro anterior
+      errorDiv.classList.add('hidden');
+      errorDiv.textContent = '';
+      
+      try {
+        
+        const response = await fetch('https://auratccbackend.onrender.com/api/pacientes/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, senha })
+        });
+        
+        const data = await response.json();
+
+        if (response.ok) {
+          // Salva token e nome separado no localStorage
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('platformUserName', data.paciente.nomeCompleto); 
+          localStorage.setItem('userId', data.paciente._id);
+
+          // Redireciona para a home
+          window.location.href = 'home.html';
+        } else {
+          // A linha original era: const errorData = await response.json();
+          // Mas data já é o JSON (data = await response.json()), então usamos 'data'.
+          errorDiv.textContent = data.message || 'Erro ao fazer login. Verifique suas credenciais.';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        errorDiv.textContent = 'Erro de conexão. Tente novamente.';
+        errorDiv.classList.remove('hidden');
+      }
+    });
+
+    // ************************************
+    // ✅ NOVO: Script para Recuperação de Senha
+    // ************************************
+    
+    // Elementos do Modal
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const modal = document.getElementById('forgotPasswordModal');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelRecoveryBtn');
+    const recoveryForm = document.getElementById('recoveryForm');
+    const recoveryEmailInput = document.getElementById('recoveryEmail');
+    const recoveryError = document.getElementById('recoveryError');
+    const recoverySuccess = document.getElementById('recoverySuccess');
+    const sendRecoveryBtn = document.getElementById('sendRecoveryBtn');
+    const recoveryMessage = document.getElementById('recoveryMessage');
+
+    // Função para abrir o modal
+    function openModal(e) {
+      e.preventDefault(); // Evita que o link # mude a URL
+      modal.classList.remove('hidden');
+      modal.classList.add('flex'); // Usa flex para centralizar o modal
+      // Limpa estados ao abrir
+      recoveryEmailInput.value = '';
+      recoveryError.classList.add('hidden');
+      recoverySuccess.classList.add('hidden');
+      recoveryMessage.textContent = 'Por favor, insira o email associado à sua conta. Enviaremos um link de recuperação.';
+      sendRecoveryBtn.textContent = 'Enviar Link';
+      sendRecoveryBtn.disabled = false;
     }
-  });
-</script>
+
+    // Função para fechar o modal
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Event Listeners para Abrir/Fechar
+    forgotPasswordLink.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    
+    // Fechar ao clicar fora (no overlay)
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Submissão do Formulário de Recuperação
+    recoveryForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = recoveryEmailInput.value;
+      recoveryError.classList.add('hidden');
+      recoverySuccess.classList.add('hidden');
+
+      if (!email) {
+        recoveryError.textContent = 'Por favor, insira um email.';
+        recoveryError.classList.remove('hidden');
+        return;
+      }
+      
+      // Desabilita o botão e muda o texto para feedback visual
+      sendRecoveryBtn.textContent = 'Enviando...';
+      sendRecoveryBtn.disabled = true;
+
+      try {
+        // ✅ URL do endpoint de recuperação de senha (ajuste se necessário)
+        const recoveryEndpoint = 'https://auratccbackend.onrender.com/api/pacientes/forgot-password'; 
+
+        const response = await fetch(recoveryEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+        
+        const data = await response.json();
+
+        if (response.ok) {
+          recoverySuccess.textContent = 'Link de recuperação enviado! Verifique sua caixa de entrada e spam.';
+          recoverySuccess.classList.remove('hidden');
+          
+          // Altera a mensagem principal
+          recoveryMessage.textContent = 'Se o email estiver correto, um link de recuperação foi enviado. Você pode fechar esta janela.';
+          
+          // Mantém o botão desabilitado para evitar reenvios imediatos
+          sendRecoveryBtn.textContent = 'Email Enviado';
+        } else {
+          // Se o backend retornar um erro (ex: email não encontrado)
+          recoveryError.textContent = data.message || 'Erro ao processar a recuperação. Verifique o email.';
+          recoveryError.classList.remove('hidden');
+          sendRecoveryBtn.textContent = 'Tentar Novamente';
+          sendRecoveryBtn.disabled = false; // Reabilita o botão para nova tentativa
+        }
+      } catch (error) {
+        console.error('Erro de rede/servidor:', error);
+        recoveryError.textContent = 'Erro de conexão. Tente novamente mais tarde.';
+        recoveryError.classList.remove('hidden');
+        sendRecoveryBtn.textContent = 'Tentar Novamente';
+        sendRecoveryBtn.disabled = false; // Reabilita o botão
+      }
+    });
+  </script>
 </body>
+
 </html>

@@ -1,30 +1,1111 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Métricas</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <title>Diário - Aura</title>
+    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
+        /* Custom green tones matching the screenshot (Copied from home.html) */
+        :root {
+            --green-bg: #758352;
+            /* Sidebar background */
+            --green-border: #7d9466;
+            /* Sidebar border */
+            --bg-main: #f6f2ed;
+            /* Main background */
+            --text-dark: #4a2f19;
+            /* Dark brown text */
+            --text-light: #5d4a3d;
+            /* Medium brown text */
+            --box-bg: #ffffff;
+            /* White squares background */
+            --box-light-bg: #f0f0ef;
+            --btn-bg: #d9c8b9;
+            /* Add button background */
+            --btn-hover-bg: #c7b19a;
+            --input-bg: #fff;
+            --icon-color: #4a2f19;
+        }
+
+        body,
+        html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            height: 100%;
+            background-color: var(--bg-main);
             font-family: 'Urbanist', sans-serif;
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
         }
 
-        a {
-            text-decoration: none;
-        }
-
-        body {
-            background-color: #F7F4F2;
+        /* Container full screen with border radius and border */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
             display: flex;
+            background: var(--bg-main);
+            border-radius: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            background-color: #73804F;
+            width: 100px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin: 10px 0;
+            background-color: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .sidebar img {
+            width: 68px;
+            height: 28px;
+        }
+
+        .sidebar .icons {
+            margin-top: 130%;
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        /* Main content panel */
+        main.content {
+            flex-grow: 1;
+            padding: 32px 48px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            position: relative;
+            overflow-y: auto;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+
+        /* Configuração Styles (Copied from home.html) */
+        .settings-btn {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            /* Add z-index to ensure it's above content */
+        }
+
+        .settings-btn:hover {
+            opacity: 1;
+        }
+
+        .settings-icon {
+            width: 28px;
+            height: 28px;
+            stroke: var(--text-dark);
+            stroke-width: 1.6;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Modal Styles (Copied from home.html) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Caixa do modal */
+        .modal-content {
+            background: #f9f9f9;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1100px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Cabeçalho */
+        .modal-header {
+            background: #6b7f59;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            padding: 48px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Botão fechar */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Perguntas */
+        .question {
+            margin: 20px 30px;
+        }
+
+        .question p {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin: 4px 0;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            margin-top: 15px;
+            margin-left: 45%;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background: #4f6d4f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Modal de confirmação */
+        .confirm-content {
+            background: #f9f6f3;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            height: 70%;
+            max-height: 900px;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .confirm-content .close {
+            color: #333;
+            top: 15px;
+            right: 20px;
+        }
+
+        .checkmark {
+            font-size: 60px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #6b7f59;
+            margin-bottom: 15px;
+        }
+
+        .confirm-content h2 {
+            color: #4b3b2b;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* End of Configuração Styles */
+
+        /* Scrollbar pequeno para a lista */
+        #entries-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #entries-list::-webkit-scrollbar-thumb {
+            background-color: #a3b18a4d;
+            border-radius: 3px;
+        }
+
+        /* Transição para efeito hover botão */
+        button:hover {
+            filter: brightness(0.9);
+        }
+
+        /* Card hover */
+        .entry-card:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+
+        /* Dropdown do emoji */
+        .emoji-picker {
+            width: 300px;
+            max-width: 90vw;
+        }
+
+        /* Novo Estilo para o seletor de dias do mês */
+        #daySelectorContainer {
+            overflow-x: auto;
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            padding-bottom: 8px;
+            /* Espaço para sombra/scrollbar invisível */
+        }
+
+        #daySelectorContainer::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+
+        /*Configuração*/
+        .settings-btn {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-btn:hover {
+            opacity: 1;
         }
     </style>
 </head>
+
 <body>
-    <h1>Página em Desenvolvimento</h1>
+    <div class="app-container" role="main">
+        <nav class="sidebar">
+            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+            <div class="icons">
+                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+                        style="width: 35px; height: 25px; margin-top:50%"></a>
+                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+                        style="width: 38px; margin-top: 160%;"></a>
+            </div>
+            <div class="spacer"></div>
+            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+        </nav>
+
+        <main class="content" role="region" aria-label="Página do Diário Interativo">
+
+            <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+                <a href="Configuracoes.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                </a>
+            </button>
+
+            <div class="max-w-7xl w-full">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <p class="text-sm text-gray-600 lowercase" id="headerDate">Carregando data...</p>
+                        <h1 class="text-5xl font-extrabold leading-tight tracking-tight">Diário</h1>
+                    </div>
+                </div>
+
+                <div id="daySelectorContainer"
+                    class="flex gap-4 mb-8 text-center text-lg text-gray-900 font-medium select-none">
+                </div>
+
+                <div class="flex items-center justify-between mb-4">
+                    <div class="relative inline-block text-left">
+                        <button id="filterButton"
+                            class="inline-flex justify-center items-center gap-1 text-gray-900 font-semibold text-lg focus:outline-none"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span id="filterLabel">Dia Selecionado</span>
+                            <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div id="filterDropdown"
+                            class="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10"
+                            role="menu" aria-orientation="vertical" aria-labelledby="filterButton" tabindex="-1">
+                            <div class="py-1" role="none">
+                                <button
+                                    class="filter-option w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem" tabindex="-1" data-filter="day" data-label="Dia Selecionado">📅 Dia
+                                    Selecionado</button>
+                                <button
+                                    class="filter-option w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem" tabindex="-1" data-filter="week" data-label="Esta Semana">📅 Esta
+                                    Semana</button>
+                                <button
+                                    class="filter-option w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem" tabindex="-1" data-filter="month" data-label="Este Mês">📅 Este
+                                    Mês</button>
+                                <button
+                                    class="filter-option w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem" tabindex="-1" data-filter="all" data-label="Todas as Entradas">📚
+                                    Todas as Entradas</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btnNewEntry"
+                        class="bg-[#7b8a6f] text-white inline-flex gap-2 items-center py-3 px-6 rounded-lg shadow-md hover:bg-[#6b7a5c] transition focus:outline-none focus:ring-2 focus:ring-[#7b8a6f]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"
+                            stroke-linecap="round" viewBox="0 0 24 24">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        Nova Entrada
+                    </button>
+                </div>
+
+                <section id="entriesContainer" class="flex flex-wrap gap-6 mb-10">
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <section id="viewSection" class="fixed inset-0 bg-[#f5f2e7] bg-opacity-95 backdrop-blur-md hidden z-20">
+        <div class="max-w-4xl mx-auto h-full p-6 flex flex-col">
+            <header class="flex justify-between items-center mb-6">
+                <button id="btnViewBack" aria-label="Voltar" title="Voltar para a Lista"
+                    class="text-gray-900 hover:text-gray-700 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"
+                        stroke-linecap="round" viewBox="0 0 24 24">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
+                <div class="flex gap-4">
+                    <button id="btnViewEdit" title="Editar Entrada"
+                        class="text-gray-600 hover:text-green-700 transition focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                        </svg>
+                    </button>
+                    <button id="btnViewDelete" title="Deletar Entrada"
+                        class="text-red-600 hover:text-red-800 transition focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <article class="flex-1 overflow-y-auto p-8 bg-white rounded-xl shadow-lg">
+                <p id="viewDateMood" class="text-lg text-gray-500 mb-2 font-medium">Data | Humor</p>
+                <h2 id="viewTitle" class="text-4xl font-extrabold mb-6 break-words">Título da Entrada</h2>
+                <div class="prose max-w-none text-gray-800 leading-relaxed">
+                    <p id="viewContent" class="whitespace-pre-wrap"></p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+
+    <section id="editorSection" class="fixed inset-0 bg-[#f5f2e7] bg-opacity-95 backdrop-blur-md hidden z-20">
+        <div class="max-w-7xl mx-auto h-full flex flex-col md:flex-row gap-6 p-6 overflow-hidden">
+            <aside class="w-full md:w-80 bg-white rounded-xl shadow-lg p-6 overflow-y-auto" id="entries-list"
+                style="max-height: 90vh;">
+                <header class="mb-6 flex items-center gap-3">
+                    <button id="btnBack" aria-label="Voltar" title="Voltar"
+                        class="text-gray-900 hover:text-gray-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"
+                            stroke-linecap="round" viewBox="0 0 24 24">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                    </button>
+                    <div>
+                        <h2 class="text-3xl font-extrabold tracking-tight">Editor</h2>
+                        <p class="text-gray-500 text-sm">Anotações passadas</p>
+                    </div>
+                </header>
+                <nav>
+                    <ul id="entryList" class="space-y-4">
+                    </ul>
+                </nav>
+            </aside>
+
+            <article class="flex-1 overflow-y-auto max-h-[90vh] px-6 py-4 bg-white rounded-xl shadow-lg flex flex-col">
+                <form id="entryForm" class="flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <label for="entryTitle" class="text-lg font-semibold">Título da entrada</label>
+                        <button type="button" id="btnDelete" title="Deletar Entrada"
+                            class="text-red-600 hover:text-red-800 transition focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mb-6 relative">
+                        <input type="date" id="entryDate" name="entryDate"
+                            class="w-full border border-gray-300 rounded-md py-2 px-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7b8a6f]"
+                            required />
+                        <button type="button" id="emojiPickerToggle" aria-label="Escolher humor" title="Escolher humor"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-lg px-3 py-2 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#7b8a6f]">😊</button>
+                        <div id="emojiPicker"
+                            class="hidden absolute top-full right-0 mt-2 rounded-md shadow-lg bg-white emoji-picker ring-1 ring-black ring-opacity-5 p-4 grid grid-cols-6 gap-2 z-30"
+                            role="dialog" aria-modal="true" aria-label="Seleção de humor">
+                            <p class="col-span-6 font-semibold mb-2 text-gray-700">Como você está se sentindo?</p>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😊</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😃</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">🥰</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😎</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😌</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">🤗</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😳</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">🤔</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">🤕</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😵</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😯</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">🎁</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😴</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😱</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">😳</button>
+                            <button class="emoji-select p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+                                type="button">🤩</button>
+                        </div>
+                    </div>
+                    <textarea id="entryContent" name="entryContent"
+                        class="flex-1 w-full border border-gray-300 rounded-md py-3 px-4 resize-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7b8a6f]"
+                        placeholder="Escreva sobre o seu dia..." required></textarea>
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button type="button" id="btnCancel"
+                            class="py-2 px-4 bg-gray-300 text-gray-800 font-semibold rounded-md hover:bg-gray-400 transition">Cancelar</button>
+                        <button type="submit" id="btnSave"
+                            class="py-2 px-4 bg-[#7b8a6f] text-white font-semibold rounded-md hover:bg-[#6b7a5c] transition">Salvar</button>
+                    </div>
+                </form>
+            </article>
+        </div>
+    </section>
+
+    <div class="modal" id="triagemModal">
+        <div class="modal-content">
+            <div class="modal-header"> Triagem <span class="close" id="closeModal">&times;</span> </div>
+            <form id="triagemForm">
+                <div class="question">
+                    <p>Qual seu principal motivo por estar buscando suporte?</p>
+                    <label><input type="radio" name="motivo" value="Lidar melhor com emoções"> Lidar melhor com
+                        emoções</label>
+                    <label><input type="radio" name="motivo" value="Ansiedade"> Ansiedade</label>
+                    <label><input type="radio" name="motivo" value="Problemas familiares"> Problemas familiares</label>
+                    <label><input type="radio" name="motivo" value="Outro"> Outro</label>
+                </div>
+                <div class="question">
+                    <p>Há quanto tempo você percebe e está sentindo esses sintomas?</p>
+                    <label><input type="radio" name="tempoSintomas" value="Menos de 1 semana"> Menos de 1 semana</label>
+                    <label><input type="radio" name="tempoSintomas" value="1 a 4 semanas"> 1 a 4 semanas</label>
+                    <label><input type="radio" name="tempoSintomas" value="1 a 3 meses"> 1 a 3 meses</label>
+                    <label><input type="radio" name="tempoSintomas" value="Mais de 3 meses"> Mais de 3 meses</label>
+                </div>
+                <div class="question">
+                    <p>Com que frequência você sente os sintomas mencionados?</p>
+                    <label><input type="radio" name="frequencia" value="Raramente"> Raramente</label>
+                    <label><input type="radio" name="frequencia" value="Algumas vezes por semana"> Algumas vezes por
+                        semana</label>
+                    <label><input type="radio" name="frequencia" value="Todos os dias"> Todos os dias</label>
+                    <label><input type="radio" name="frequencia" value="Não sei dizer"> Não sei dizer</label>
+                </div>
+                <div class="question">
+                    <p>Você tem preferência de gênero para o(a) profissional?</p>
+                    <label><input type="radio" name="genero" value="Feminino"> Sim, feminino</label>
+                    <label><input type="radio" name="genero" value="Masculino"> Sim, masculino</label>
+                    <label><input type="radio" name="genero" value="Sem preferência"> Sem preferência</label>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="confirmModal">
+        <div class="confirm-content">
+            <span class="close" id="closeConfirm">&times;</span>
+            <div class="checkmark">✔</div>
+            <h2>Triagem Enviada!</h2>
+        </div>
+    </div>
+
+    <script>
+        // Conteúdo JavaScript do diario.html:
+
+        // Função corrigida para obter a data local exata (previne erro de fuso horário)
+        function getLocalDateString() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        const todayString = getLocalDateString();
+        let currentDate = todayString;
+
+
+        // Dados de exemplo (ATUALIZADOS PARA A DATA ATUAL: 12/11/2025 - a data real do usuário será dinâmica)
+        let entries = [
+            { id: 1, title: "Dia Produtivo", content: "Consegui finalizar todas as minhas tarefas do trabalho mais cedo do que o esperado e me senti muito motivado.", date: "2025-11-12", mood: "😊" },
+            { id: 2, title: "Reunião de Família", content: "O almoço em família foi um pouco tenso, mas conseguimos resolver as diferenças no final. Preciso aprender a me comunicar melhor.", date: "2025-11-11", mood: "🤔" },
+            { id: 3, title: "Notícias Ruins", content: "Recebi a notícia de que não passei na entrevista de emprego. Estou um pouco desapontado, mas vou tentar de novo amanhã. O importante é que eu encontre um novo emprego.", date: "2025-11-09", mood: "😳" }
+        ];
+
+
+        let currentFilter = "day";
+        let editingEntryId = null;
+        let isEditingNewEntry = false;
+        let currentFilterLabelText = "Dia Selecionado";
+
+        // --- DOM Elements ---
+        const daySelectorContainer = document.getElementById('daySelectorContainer');
+        const headerDateEl = document.getElementById('headerDate');
+        const entriesContainer = document.getElementById('entriesContainer');
+        const filterButton = document.getElementById('filterButton');
+        const filterDropdown = document.getElementById('filterDropdown');
+        const filterOptions = document.querySelectorAll('.filter-option');
+        const filterLabel = document.getElementById('filterLabel');
+        const btnNewEntry = document.getElementById('btnNewEntry');
+
+        // View elements (NOVOS)
+        const viewSection = document.getElementById('viewSection');
+        const btnViewBack = document.getElementById('btnViewBack');
+        const btnViewEdit = document.getElementById('btnViewEdit');
+        const btnViewDelete = document.getElementById('btnViewDelete');
+        const viewDateMood = document.getElementById('viewDateMood');
+        const viewTitle = document.getElementById('viewTitle');
+        const viewContent = document.getElementById('viewContent');
+
+        // Editor elements
+        const editorSection = document.getElementById('editorSection');
+        const btnBack = document.getElementById('btnBack');
+        const entryForm = document.getElementById('entryForm');
+        const entryList = document.getElementById('entryList');
+        const entryDate = document.getElementById('entryDate');
+        const entryContent = document.getElementById('entryContent');
+        const btnCancel = document.getElementById('btnCancel');
+        const btnSave = document.getElementById('btnSave');
+        const btnDelete = document.getElementById('btnDelete');
+        const emojiPickerToggle = document.getElementById('emojiPickerToggle');
+        const emojiPicker = document.getElementById('emojiPicker');
+
+        // Input de título (Adicionado dinamicamente no original)
+        const inputTitle = document.createElement('input');
+        inputTitle.type = 'text';
+        inputTitle.className = "w-full border border-gray-300 rounded-md py-2 px-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7b8a6f]";
+        inputTitle.id = 'entryTitle';
+        inputTitle.name = 'entryTitle';
+        inputTitle.required = true;
+        const titleLabel = entryForm.querySelector('label[for=entryTitle]');
+        titleLabel.insertAdjacentElement('afterend', inputTitle);
+
+        // --- Funções de Utilidade ---
+        function formatDateBrazilFull(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            if (isNaN(date)) return dateStr;
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
+        function formatDateToISO(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        // Adiciona ou salva uma entrada
+        function saveEntry(newEntry) {
+            if (newEntry.id) {
+                // Edição
+                const index = entries.findIndex(e => e.id === newEntry.id);
+                if (index !== -1) {
+                    entries[index] = newEntry;
+                }
+            } else {
+                // Nova entrada
+                newEntry.id = Date.now();
+                entries.push(newEntry);
+            }
+            // Simulação de persistência (ordenar por data decrescente)
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        // Abre o viewer de detalhes
+        function openViewer(entry) {
+            viewDateMood.textContent = `${formatDateBrazilFull(entry.date)} | Humor: ${entry.mood}`;
+            viewTitle.textContent = entry.title;
+            viewContent.textContent = entry.content;
+            viewSection.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            btnViewEdit.setAttribute('data-id', entry.id);
+            btnViewDelete.setAttribute('data-id', entry.id);
+        }
+
+        // Fecha o viewer
+        function closeViewer() {
+            viewSection.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Abre editor (mantida do código anterior, mas agora chamada do Viewer/Nova Entrada)
+        function openEditor(id = null, isNew = false) {
+            editingEntryId = id;
+            isEditingNewEntry = isNew;
+            document.body.style.overflow = 'hidden';
+            // Garante que o visualizador está fechado
+            viewSection.classList.add('hidden');
+            editorSection.classList.remove('hidden');
+            renderEntryListSidebar();
+
+            if (isNew) {
+                inputTitle.value = '';
+                entryDate.value = currentDate;
+                entryContent.value = '';
+                btnDelete.style.display = 'none';
+                emojiPickerToggle.textContent = '😊';
+                emojiPickerToggle.setAttribute('data-emoji', '😊');
+            } else {
+                const entry = entries.find(e => e.id === id);
+                if (!entry) return;
+                inputTitle.value = entry.title;
+                entryDate.value = entry.date;
+                entryContent.value = entry.content;
+                emojiPickerToggle.textContent = entry.mood || '😊';
+                emojiPickerToggle.setAttribute('data-emoji', entry.mood || '😊');
+                btnDelete.style.display = 'inline-flex';
+            }
+            inputTitle.focus();
+        }
+
+        // Fecha editor (mantida do código anterior)
+        function closeEditor() {
+            editorSection.classList.add('hidden');
+            document.body.style.overflow = '';
+            editingEntryId = null;
+            isEditingNewEntry = false;
+        }
+
+        // Função unificada para deletar
+        function handleDelete(id) {
+            if (!id) return;
+            if (confirm("Você tem certeza que deseja deletar esta entrada?")) {
+                entries = entries.filter(e => e.id !== id);
+                // Fecha a tela aberta (viewer ou editor)
+                closeViewer();
+                closeEditor();
+                renderEntriesList();
+                renderEntryListSidebar(); // Atualiza a sidebar do editor
+            }
+        }
+
+        // --- Funções de Renderização e Interação ---
+        function updateHeaderDate() {
+            headerDateEl.textContent = formatDateBrazilFull(todayString);
+        }
+
+        function renderDaySelectors() {
+            daySelectorContainer.innerHTML = '';
+            const todayDate = new Date(todayString + 'T00:00:00');
+            const year = todayDate.getFullYear();
+            const month = todayDate.getMonth();
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+            let dateCursor = new Date(firstDayOfMonth);
+
+            while (dateCursor <= lastDayOfMonth) {
+                const dateStr = formatDateToISO(dateCursor);
+                const dayNum = dateCursor.getDate();
+                const dayOfWeek = dateCursor.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
+                const isSelected = dateStr === currentDate;
+
+                const hasEntry = entries.some(e => e.date === dateStr);
+                const dotHtml = hasEntry ? `<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-[#7b8a6f] rounded-full"></span>` : '';
+
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = `flex-shrink-0 w-12 h-16 flex flex-col justify-center items-center rounded-lg p-1 transition duration-150 ease-in-out cursor-pointer relative ${isSelected ? 'bg-[#7b8a6f] text-white shadow-lg' : 'hover:bg-gray-100 text-gray-700'}`;
+                dayDiv.setAttribute('data-date', dateStr);
+                dayDiv.innerHTML = `
+                <span class="text-xs font-light uppercase">${dayOfWeek}</span>
+                <span class="text-2xl font-bold">${dayNum}</span>
+                ${dotHtml}
+            `;
+                dayDiv.addEventListener('click', () => {
+                    if (dateStr !== currentDate) {
+                        currentDate = dateStr;
+                        currentFilter = 'day';
+                        currentFilterLabelText = "Dia Selecionado";
+                        updateFilterLabel();
+                        renderDaySelectors();
+                        renderEntriesList();
+                    }
+                });
+
+                daySelectorContainer.appendChild(dayDiv);
+                dateCursor.setDate(dateCursor.getDate() + 1);
+            }
+        }
+
+        function initFilterState() {
+            currentFilter = 'day';
+            currentFilterLabelText = "Dia Selecionado";
+            updateFilterLabel();
+            renderDaySelectors();
+            renderEntriesList();
+        }
+
+        function updateFilterLabel() {
+            filterLabel.textContent = currentFilterLabelText;
+        }
+
+        function filterEntries() {
+            if (currentFilter === 'day') {
+                return entries.filter(e => e.date === currentDate);
+            }
+            if (currentFilter === 'week') {
+                const curDate = new Date(currentDate + 'T00:00:00');
+                const dayOfWeek = curDate.getDay() === 0 ? 7 : curDate.getDay();
+                const startWeek = new Date(curDate);
+                startWeek.setDate(curDate.getDate() - dayOfWeek + 1);
+                const endWeek = new Date(startWeek);
+                endWeek.setDate(startWeek.getDate() + 6);
+                const startWeekStr = formatDateToISO(startWeek);
+                const endWeekStr = formatDateToISO(endWeek);
+
+                return entries.filter(e => {
+                    const dStr = e.date;
+                    return dStr >= startWeekStr && dStr <= endWeekStr;
+                });
+            }
+            if (currentFilter === 'month') {
+                const curDate = new Date(currentDate + 'T00:00:00');
+                const cYear = curDate.getFullYear();
+                const cMonth = curDate.getMonth();
+
+                return entries.filter(e => {
+                    const d = new Date(e.date + 'T00:00:00');
+                    return d.getFullYear() === cYear && d.getMonth() === cMonth;
+                });
+            }
+            if (currentFilter === 'all') {
+                return entries.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+            return [];
+        }
+
+        function renderEntriesList() {
+            const filteredEntries = filterEntries();
+            entriesContainer.innerHTML = '';
+
+            if (filteredEntries.length === 0) {
+                entriesContainer.innerHTML = '<p class="text-gray-600 italic">Nenhuma entrada encontrada para este filtro.</p>';
+                return;
+            }
+
+            filteredEntries.forEach(entry => {
+                const card = document.createElement('article');
+                card.className = 'entry-card bg-white p-6 rounded-xl text-gray-900 shadow-md flex flex-col justify-between w-full md:w-[calc(50%-1.5rem)] cursor-pointer hover:bg-[#f9f9f9]';
+                card.setAttribute('data-id', entry.id);
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', `Entrada: ${entry.title}. Humor: ${entry.mood}.`);
+
+                const dateDisplay = new Date(entry.date + 'T00:00:00').toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+                card.innerHTML = `
+                <div>
+                    <p class="text-sm text-gray-500 mb-2 font-medium">${dateDisplay} ${entry.mood}</p>
+                    <h3 class="text-xl font-bold mb-3 break-words">${entry.title}</h3>
+                    <p class="text-gray-700 line-clamp-3">${entry.content}</p>
+                </div>
+            `;
+
+                card.addEventListener('click', () => openViewer(entry));
+                card.addEventListener('keypress', (e) => { if (e.key === "Enter") openViewer(entry); });
+                entriesContainer.appendChild(card);
+            });
+        }
+
+        function renderEntryListSidebar() {
+            entryList.innerHTML = '';
+            // Lista todas as entradas para a sidebar do editor
+            entries.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(entry => {
+                const li = document.createElement('li');
+                li.className = `entry-card p-3 rounded-lg flex justify-between items-start text-sm cursor-pointer transition ${entry.id === editingEntryId ? 'bg-[#e5e5e5]' : 'hover:bg-gray-50'}`;
+                li.setAttribute('tabindex', '0');
+
+                const dateDisplay = new Date(entry.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                li.innerHTML = `
+                <div>
+                    <p class="font-semibold truncate">${entry.title}</p>
+                    <p class="text-xs text-gray-500">${dateDisplay}</p>
+                </div>
+                <span class="text-lg">${entry.mood}</span>
+            `;
+
+                li.addEventListener('click', () => {
+                    openEditor(entry.id, false);
+                });
+                li.addEventListener('keypress', e_ => {
+                    if (e_.key === "Enter") li.click();
+                });
+                entryList.appendChild(li);
+            });
+        }
+
+        // --- Event Listeners Globais ---
+        // Toggle dropdown
+        filterButton.addEventListener('click', e => {
+            e.preventDefault();
+            filterDropdown.classList.toggle('hidden');
+            filterButton.setAttribute('aria-expanded', !filterDropdown.classList.contains('hidden'));
+        });
+
+        // Fechar dropdown se clicar fora
+        document.addEventListener('click', e => {
+            if (!filterDropdown.contains(e.target) && e.target !== filterButton) {
+                filterDropdown.classList.add('hidden');
+                filterButton.setAttribute('aria-expanded', false);
+            }
+        });
+
+        // Ação nos filtros da dropdown
+        filterOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                currentFilter = option.dataset.filter;
+                currentFilterLabelText = option.dataset.label;
+                updateFilterLabel();
+                filterDropdown.classList.add('hidden');
+                filterButton.setAttribute('aria-expanded', false);
+                renderEntriesList();
+            });
+        });
+
+        // Botão nova entrada - Abre o editor diretamente
+        btnNewEntry.addEventListener('click', () => {
+            openEditor(null, true);
+        });
+
+        // Botão back (fecha editor)
+        btnBack.addEventListener('click', closeEditor);
+        btnCancel.addEventListener('click', closeEditor);
+
+
+        // Botão back (fecha viewer)
+        btnViewBack.addEventListener('click', closeViewer);
+
+        // Botão editar (do viewer)
+        btnViewEdit.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            closeViewer();
+            openEditor(parseInt(id), false);
+        });
+
+        // Botão deletar (do viewer)
+        btnViewDelete.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            handleDelete(parseInt(id));
+        });
+
+        // Botão deletar (do editor)
+        btnDelete.addEventListener('click', () => {
+            handleDelete(editingEntryId);
+        });
+
+        // Salvar entrada
+        entryForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const newTitle = inputTitle.value.trim();
+            const newDate = entryDate.value;
+            const newContent = entryContent.value.trim();
+            const newMood = emojiPickerToggle.getAttribute('data-emoji') || '😊';
+
+            if (!newTitle || !newContent || !newDate) {
+                alert('Por favor, preencha todos os campos obrigatórios (Título, Data e Conteúdo).');
+                return;
+            }
+
+            if (isEditingNewEntry) {
+                saveEntry({
+                    title: newTitle,
+                    date: newDate,
+                    content: newContent,
+                    mood: newMood
+                });
+            } else {
+                const entry = entries.find(e => e.id === editingEntryId);
+                if (entry) {
+                    entry.title = newTitle;
+                    entry.date = newDate;
+                    entry.content = newContent;
+                    entry.mood = newMood;
+                }
+            }
+
+            // Atualiza o estado
+            currentDate = newDate;
+            currentFilter = 'day';
+            currentFilterLabelText = "Dia Selecionado";
+            updateFilterLabel();
+            updateHeaderDate();
+            renderDaySelectors();
+            closeEditor();
+            renderEntriesList();
+        });
+
+        // Emoji picker toggle
+        emojiPickerToggle.addEventListener('click', e => {
+            e.preventDefault();
+            emojiPicker.classList.toggle('hidden');
+        });
+
+        // Clique fora fecha emoji picker
+        document.addEventListener('click', e => {
+            if (!emojiPicker.contains(e.target) && e.target !== emojiPickerToggle) {
+                emojiPicker.classList.add('hidden');
+            }
+        });
+
+        // Seleção de emoji do humor
+        emojiPicker.querySelectorAll('.emoji-select').forEach(button => {
+            button.addEventListener('click', () => {
+                const emoji = button.textContent;
+                emojiPickerToggle.textContent = emoji;
+                emojiPickerToggle.setAttribute('data-emoji', emoji);
+                emojiPicker.classList.add('hidden');
+            });
+        });
+
+
+        // --- CONFIGURAÇÕES/TRIAGEM SCRIPT (Copiado de home.html) ---
+
+        const triagemModal = document.getElementById("triagemModal");
+        const confirmModal = document.getElementById("confirmModal");
+        const openBtn = document.getElementById("openModalBtn"); // Botão de configurações
+        const closeModal = document.getElementById("closeModal");
+        const closeConfirmBtn = document.getElementById("closeConfirm");
+
+        function abrirTriagem() { // Função que é chamada no botão HTML
+            triagemModal.style.display = "flex";
+        };
+
+        // Abrir modal
+        if (openBtn) {
+            openBtn.onclick = abrirTriagem;
+        }
+
+        // Fechar modal no botão X
+        if (closeModal) {
+            closeModal.onclick = function () {
+                triagemModal.style.display = "none";
+            };
+        }
+
+        // Fechar confirmação
+        if (closeConfirmBtn) {
+            closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
+        }
+
+        // Fechar modal clicando fora
+        window.addEventListener('click', function (event) {
+            if (event.target === triagemModal) {
+                triagemModal.style.display = "none";
+            }
+            if (event.target === confirmModal) {
+                confirmModal.style.display = "none";
+            }
+        });
+
+        // Capturar envio do formulário
+        document.getElementById("triagemForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            triagemModal.style.display = "none";
+            confirmModal.style.display = "flex";
+            const formData = new FormData(this);
+            const dados = {};
+            formData.forEach((value, key) => (dados[key] = value));
+            console.log("Dados da triagem enviados:", dados);
+            // Aqui você adicionaria a lógica para enviar os dados da triagem para o backend
+        });
+
+
+        // --- Inicialização -- -
+        updateHeaderDate();
+        updateFilterLabel();
+        renderDaySelectors();
+        renderEntriesList();
+    </script>
+
 </body>
 
 </html>

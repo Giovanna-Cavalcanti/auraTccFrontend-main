@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividades - Aura</title>
+    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Variáveis de Cores (Cores base necessárias para o visual) */
+        :root {
+            --color-sidebar: #7B8A6F; /* Verde Musgo Escuro */
+            --color-background: #F8F5EE; /* Creme/Bege */
+            --color-container-bg: #FFFFFF;
+            --color-primary-text: #5C4C3E; /* Marrom Escuro */
+            --color-accent: #A3B18A; /* Verde Claro Suave (Progresso > 50%) */
+            --color-complete: #10B981; /* Verde esmeralda (100% concluído) */
+            --text-dark: #4a2f19; /* Cor do texto no botão de configurações */
+        }
+        
+        body,
+        html {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+
+        /* 1. Estrutura Principal da Aplicação */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex; 
+            background: var(--color-background);
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* 2. Menu Lateral (Sidebar) */
+        .sidebar {
+            background-color: var(--color-sidebar); 
+            width: 100px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 6px 0 15px rgba(0, 0, 0, 0.1); 
+            flex-shrink: 0; 
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin: 10px 0;
+            background-color: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .sidebar img {
+            width: 68px;
+            height: 28px;
+        }
+
+        .sidebar .icons {
+            margin-top: 130%;
+        }
+        
+        .spacer {
+            flex: 1;
+        }
+
+        /* 3. Área de Conteúdo Principal */
+        main.content {
+            flex-grow: 1;
+            padding: 24px 24px; 
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: var(--color-background);
+            color: var(--color-primary-text);
+            position: relative; 
+            overflow-y: hidden; 
+            min-height: 100vh;
+        }
+
+        #main-content-container {
+            background-color: var(--color-container-bg);
+            border-radius: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            height: 100%; 
+        }
+
+        /* 4. Botão de Configurações */
+        .settings-btn {
+            position: absolute;
+            top: 24px;   
+            right: 24px; 
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10; 
+        }
+
+        .settings-btn:hover {
+            opacity: 1;
+        }
+        
+        /* Classe para o requisito: Atividade em progresso na lateral (acinzentada) */
+        .other-activity-in-progress {
+            opacity: 0.6; /* Deixa acinzentado/transparente */
+            pointer-events: none; /* Impede clique para evitar loop de recarregamento */
+            background-color: #EFEBE4 !important; /* Um cinza/bege mais claro */
+            border-color: #D4D4D4 !important;
+            box-shadow: none !important;
+        }
+        
+        /* Classes utilitárias originais que podem ser necessárias */
+        .timer-display {
+            font-family: 'SF Mono', 'Roboto Mono', monospace;
+        }
+    </style>
+</head>
+
+<body class="h-screen overflow-hidden">
+
+    <script>
+        // Mantém as cores Tailwind para uso nas classes internas
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#7B8A6F',
+                        background: '#F8F5EE',
+                        primaryText: '#5C4C3E',
+                        accent: '#A3B18A',
+                        complete: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <div class="app-container" role="main">
+
+        <nav class="sidebar">
+            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+            <div class="icons">
+                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+                        style="width: 35px; height: 25px; margin-top:50%"></a>
+                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+                        style="width: 38px; margin-top: 160%;"></a>
+            </div>
+            <div class="spacer"></div>
+            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+        </nav>
+
+        <main class="content" role="region" aria-label="Página de Atividades">
+            
+            <a href="Configuracoes.html">
+            <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+            </a>
+            
+            <div id="main-content-container" class="h-full w-full p-0 overflow-hidden flex flex-col">
+                
+                <div id="header-bar" class="flex justify-between items-center px-8 pt-8 pb-4">
+                    <p id="current-date" class="text-sm text-gray-500 mr-4">Carregando Data...</p>
+                    </div>
+
+                <div id="screen-container" class="flex-1 overflow-hidden">
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="completion-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center transform transition-transform duration-300 scale-95">
+            <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <i data-lucide="award" class="w-8 h-8 text-complete"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-primaryText mb-2">Parabéns!</h3>
+            <p class="text-gray-600 mb-6">Você concluiu com sucesso a atividade: <span id="modal-activity-title" class="font-semibold text-complete"></span></p>
+            <button id="modal-close-btn" class="bg-complete text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700 transition duration-150 shadow-md">
+                Continuar
+            </button>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // --- Configuração e Inicialização do Firebase ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, query, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- Variáveis Globais (Disponibilizadas pelo Ambiente Canvas) ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        let app, db, auth, userId = null;
+        let isAuthReady = false;
+        let activities = []; // Lista dinâmica de atividades
+        let currentActivityId = null; // ID da atividade atualmente selecionada (para Tela 2)
+        let timerInterval = null; // Intervalo para o cronômetro
+        let timerSeconds = 0; // Segundos atuais do cronômetro para a atividade ativa
+        
+        setLogLevel('Debug');
+
+        // --- Funções de Utilidade ---
+
+        // Retorna a data atual formatada
+        const getFormattedDate = () => {
+            const today = new Date();
+            return today.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '').replace(',', '.');
+        };
+
+        // Formata segundos para HH:MM:SS
+        const formatTime = (totalSeconds) => {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const secs = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        };
+
+        /**
+         * Calcula a porcentagem de progresso de 0 a 100.
+         * Usa o tempo gasto (totalTimeSpent) e o tempo alvo (targetDuration).
+         * @param {number} totalTimeSpent - Tempo total gasto na atividade (segundos).
+         * @param {number} targetDuration - Duração alvo da atividade (segundos).
+         * @returns {number} Porcentagem de progresso (0 a 100).
+         */
+        const calculateTimeProgress = (totalTimeSpent, targetDuration) => {
+            if (targetDuration <= 0) return 0;
+            return Math.min(100, Math.round((totalTimeSpent / targetDuration) * 100));
+        };
+        
+        /**
+         * Calcula o progresso final baseado em 3 passos e duração alvo.
+         * Se o tempo alvo foi batido, o progresso é 100%.
+         * Caso contrário, é a média do progresso dos passos (viewed, read, started) + progresso do tempo (com peso menor).
+         */
+        const calculateProgress = (steps, totalTimeSpent, targetDuration) => {
+            const timeProgress = calculateTimeProgress(totalTimeSpent, targetDuration);
+            
+            // Requisito: Se o tempo alvo foi batido, o progresso é 100%
+            if (timeProgress >= 100) return 100;
+
+            // Calcula o progresso dos 3 passos (Visualizou, Leu, Iniciou)
+            const stepCount = Object.values(steps).filter(Boolean).length;
+            
+            // Fator de peso: 
+            // 60% para o tempo (até 60%)
+            // 40% para os 3 passos (até 40%)
+            const stepPercentage = (stepCount / 3) * 40;
+            const timePercentageWeighted = (timeProgress / 100) * 60;
+
+            return Math.min(99, Math.round(stepPercentage + timePercentageWeighted));
+        };
+
+
+        // --- Firebase Funções de Inicialização e Dados ---
+
+        function initializeFirebase() {
+            document.getElementById('current-date').textContent = getFormattedDate();
+            
+            if (!firebaseConfig) {
+                console.error("Firebase config não encontrado. Os dados não serão persistentes.");
+                activities = createMockActivities();
+                isAuthReady = true;
+                renderScreen();
+                return;
+            }
+
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                    } else {
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (error) {
+                            console.error("Erro ao fazer login no Firebase:", error);
+                            // Fallback para um ID anônimo se o login falhar
+                            userId = crypto.randomUUID(); 
+                        }
+                    }
+                    if (!isAuthReady) {
+                        isAuthReady = true;
+                        setupRealtimeListener();
+                    }
+                });
+
+            } catch (e) {
+                console.error("Falha ao inicializar o Firebase:", e);
+                // Fallback para dados mock
+                activities = createMockActivities();
+                isAuthReady = true;
+                renderScreen();
+            }
+        }
+
+        // Função para criar dados mock, caso o Firebase falhe (só para desenvolvimento)
+        function createMockActivities() {
+            // Todas as novas atividades devem começar com totalTimeSpent=0 e steps em false
+            return [
+                // targetDuration em segundos (ex: 600s = 10 minutos)
+                { id: '1', title: "Atividade 1: Meditação Guiada", description: "Meditação de 10 minutos focada na respiração e no relaxamento muscular progressivo. Ideal para fazer antes de dormir.", dueDate: "20/06", category: "Em prazo", totalTimeSpent: 0, targetDuration: 600, steps: { viewed: false, read: false, started: false } },
+                { id: '2', title: "Atividade 2: Exercícios de Ancoragem", description: "Prática de 5-4-3-2-1 para ancorar no momento presente. Fazer 3 vezes ao dia.", dueDate: "01/06", category: "Vencida", totalTimeSpent: 0, targetDuration: 300, steps: { viewed: false, read: false, started: false } },
+                { id: '3', title: "Atividade 3: Registro de Pensamentos", description: "Preencher o formulário de 5 colunas (Situação, Pensamento, Emoção, Evidências, Resposta Adaptativa).", dueDate: "20/06", category: "Em prazo", totalTimeSpent: 0, targetDuration: 900, steps: { viewed: false, read: false, started: false } },
+                { id: '4', title: "Atividade 4: Caminhada Consciente", description: "Caminhar por 30 minutos prestando atenção nas sensações do corpo e do ambiente.", dueDate: "30/05", category: "Entregue", totalTimeSpent: 0, targetDuration: 1800, steps: { viewed: false, read: false, started: false } },
+            ].map(act => ({ ...act, progress: calculateProgress(act.steps, act.totalTimeSpent, act.targetDuration) }));
+        }
+
+        // Obtém a referência da coleção de atividades
+        function getActivitiesCollectionRef() {
+            // Usa o ID do usuário para dados privados
+            return collection(db, `artifacts/${appId}/users/${userId}/medical_activities`);
+        }
+
+        /**
+         * Configura o listener em tempo real para as atividades.
+         */
+        function setupRealtimeListener() {
+            if (!db || !userId) return;
+
+            console.log("Configurando listener em tempo real para atividades...");
+            const q = query(getActivitiesCollectionRef());
+
+            onSnapshot(q, async (snapshot) => {
+                let newActivities = [];
+                let hasCompletedNew = false;
+                let completedActivity = null;
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const newProgress = calculateProgress(data.steps, data.totalTimeSpent, data.targetDuration);
+                    
+                    // Verifica se a atividade *acabou* de ser concluída
+                    const oldActivity = activities.find(a => a.id === doc.id);
+                    const isCompletedNow = newProgress >= 100 && (oldActivity ? oldActivity.progress < 100 : false);
+                    
+                    const activity = { id: doc.id, ...data, progress: newProgress };
+                    newActivities.push(activity);
+
+                    if (isCompletedNow) {
+                        hasCompletedNew = true;
+                        completedActivity = activity;
+                    }
+                });
+                
+                activities = newActivities;
+                
+                // Se a coleção estiver vazia, cria atividades iniciais (apenas na primeira vez)
+                if (activities.length === 0 && snapshot.size === 0) {
+                    await createInitialActivities();
+                }
+
+                // Se uma atividade estiver sendo visualizada (Tela 2), atualiza-a
+                if (currentActivityId) {
+                    const updatedActivity = activities.find(a => a.id === currentActivityId);
+                    if (updatedActivity) {
+                        // Se o timer não estiver rodando, sincroniza o tempo salvo no DB
+                        if (!timerInterval) { 
+                             timerSeconds = updatedActivity.totalTimeSpent || 0;
+                        }
+                        // CORREÇÃO: Força a re-renderização completa da tela de detalhes
+                        renderActivityDetails(updatedActivity); 
+                    } else {
+                        // Se a atividade foi excluída, volta para a lista
+                        currentActivityId = null;
+                        stopTimer(true); // Garante que o timer pare sem salvar no DB
+                        renderScreen();
+                    }
+                } else {
+                    renderScreen();
+                }
+                
+                // Se completou uma atividade E não estiver no modal
+                if (hasCompletedNew && completedActivity && !document.getElementById('completion-modal').classList.contains('flex')) {
+                    showCompletionModal(completedActivity.title);
+                }
+
+
+            }, (error) => {
+                console.error("Erro ao receber dados em tempo real:", error);
+            });
+        }
+        
+        /**
+         * Cria atividades iniciais no Firestore se a coleção estiver vazia.
+         */
+        async function createInitialActivities() {
+            const initialMock = createMockActivities();
+            console.log("Criando atividades iniciais...");
+            
+            for (const activity of initialMock) {
+                // Usa o ID da atividade mock como ID do documento para idempotência
+                const docRef = doc(getActivitiesCollectionRef(), activity.id); 
+                const { id, progress, ...dataToSave } = activity; // Remove id e progress antes de salvar
+                try {
+                    await setDoc(docRef, dataToSave);
+                } catch (e) {
+                    console.error("Erro ao criar atividade inicial:", e);
+                }
+            }
+        }
+
+        /**
+         * Salva/Atualiza uma atividade no Firestore.
+         */
+        async function updateActivity(activityId, updatedData) {
+            if (!db || !userId) {
+                 console.error("Firebase não está pronto ou usuário não logado.");
+                 return;
+            }
+            
+            const docRef = doc(getActivitiesCollectionRef(), activityId);
+            try {
+                // Apenas atualiza os campos fornecidos, mesclando com o documento existente
+                await setDoc(docRef, updatedData, { merge: true });
+            } catch (error) {
+                console.error("Erro ao atualizar a atividade:", error);
+            }
+        }
+
+        // --- Componentes Reutilizáveis de Renderização ---
+
+        /**
+         * Componente Progresso Circular SVG.
+         */
+        function renderProgressCircle(percentage) {
+            const radius = 20;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percentage / 100) * circumference;
+
+            const getProgressColor = (percent) => {
+                if (percent === 100) return 'text-complete'; // Verde de conclusão
+                if (percent >= 50) return 'text-accent'; // Verde claro (Progresso Ok)
+                return 'text-gray-400'; // Cinza (Baixo Progresso/Inicial)
+            };
+            
+            // Define a cor do texto no centro
+            const textColorClass = getProgressColor(percentage);
+            const strokeColorClass = percentage === 100 ? 'text-complete' : 'text-accent'; 
+
+            return `
+                <div class="relative progress-circle-container w-16 h-16 flex-shrink-0">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle
+                            class="text-gray-200"
+                            stroke-width="4"
+                            stroke="currentColor"
+                            fill="transparent"
+                            r="${radius}"
+                            cx="50%"
+                            cy="50%"
+                        />
+                        <circle
+                            class="${strokeColorClass} transition-all duration-500"
+                            stroke-width="4"
+                            stroke-dasharray="${circumference}"
+                            stroke-dashoffset="${offset}"
+                            stroke-linecap="round"
+                            stroke="currentColor"
+                            fill="transparent"
+                            r="${radius}"
+                            cx="50%"
+                            cy="50%"
+                        />
+                    </svg>
+                    <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-bold ${textColorClass}">
+                        ${percentage}%
+                    </span>
+                </div>
+            `;
+        }
+        
+        /**
+         * Componente Item da Lista de Atividades (Tela 1)
+         */
+        function renderActivityListItem(activity) {
+            return `
+                <div 
+                    class="activity-list-item bg-white p-4 mb-3 rounded-xl shadow-md flex justify-between items-center cursor-pointer hover:bg-gray-50 transition duration-150 border border-gray-100"
+                    data-activity-id="${activity.id}"
+                >
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-semibold text-gray-800 truncate">${activity.title}</h3>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Duração Alvo: <span class="font-medium">${formatTime(activity.targetDuration)}</span>
+                        </p>
+                        <p class="text-xs font-medium text-gray-600 mt-1">
+                            Prazo: <span class="font-semibold">${activity.dueDate}</span>
+                        </p>
+                    </div>
+                    <div class="ml-4 flex items-center space-x-4">
+                        ${renderProgressCircle(activity.progress)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        /**
+         * Componente Passo da Atividade (Tela 2)
+         */
+        function renderStepCheck(activity, stepKey, iconName, label) {
+            const isCompleted = activity.steps[stepKey];
+            // Requisito: 'viewed' e 'read' são clicáveis, 'started' é automático pelo cronômetro
+            const isManualToggleable = (stepKey === 'viewed' || stepKey === 'read'); 
+            
+            // Requisito: Bolinha Verde se Completo
+            const stepStatusClasses = isCompleted ? 'text-complete' : 'text-gray-400';
+            const bgClasses = isCompleted ? 'bg-green-50 border-complete/50' : 'bg-white border-gray-200';
+            const cursorClasses = isManualToggleable ? 'cursor-pointer hover:shadow-md' : 'cursor-default';
+            const titleText = isManualToggleable 
+                ? `Marcar como ${isCompleted ? 'Não Feito' : 'Feito'}` 
+                : (isCompleted ? 'Atividade iniciada pelo cronômetro.' : 'Iniciado é marcado pelo cronômetro.');
+            
+            // Data attributes para a delegação de eventos
+            const dataAttributes = `
+                data-step-key="${stepKey}"
+                data-activity-id="${activity.id}"
+                data-manual-toggleable="${isManualToggleable}"
+            `;
+
+            return `
+                <div 
+                    class="step-check flex items-center p-4 rounded-xl border transition duration-150 ${bgClasses} ${cursorClasses}"
+                    ${dataAttributes}
+                    title="${titleText}"
+                >
+                    <i data-lucide="${iconName}" class="w-6 h-6 mr-3 ${stepStatusClasses}"></i>
+                    <span class="flex-1 font-medium ${isCompleted ? 'text-gray-800' : 'text-gray-500'}">
+                        ${label}
+                    </span>
+                    <i data-lucide="${isCompleted ? 'check-circle' : 'circle'}" 
+                       class="w-5 h-5 ${stepStatusClasses} transition-colors"
+                       fill="${isCompleted ? 'currentColor' : 'none'}"
+                    ></i>
+                </div>
+            `;
+        }
+        
+        // --- Lógica de Tela e Eventos ---
+
+        let currentFilter = 'Em prazo';
+
+        /**
+         * Renderiza a Tela 1: Lista de Atividades e Filtros.
+         */
+        function renderActivityListScreen() {
+            const totalWeeklyTime = activities.reduce((sum, activity) => sum + activity.totalTimeSpent, 0);
+            
+            const filteredActivities = activities.filter(activity => {
+                if (currentFilter === 'Entregue') {
+                    // Considera 'Entregue' se o progresso for 100%
+                    return activity.progress === 100;
+                }
+                if (currentFilter === 'Vencida') {
+                    // Filtra as que estão marcadas como Vencida E não estão 100% concluídas
+                    return activity.category === 'Vencida' && activity.progress < 100;
+                }
+                // 'Em prazo' é o default (Em prazo E não 100% concluídas)
+                return activity.category === currentFilter && activity.progress < 100;
+            });
+            
+            const screenContent = `
+                <div class="p-8 pb-32 h-full overflow-y-auto">
+                    <h1 class="text-4xl font-extrabold text-primaryText mb-6">Atividades</h1>
+                    
+                    <div class="flex items-center space-x-6 mb-8 text-lg font-medium text-gray-700">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="clock" class="w-5 h-5 text-sidebar"></i>
+                            <span class="text-xl font-bold text-primaryText">
+                                Tempo total gasto: ${formatTime(totalWeeklyTime)}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="filter-buttons" class="flex space-x-4 mb-10">
+                        ${['Em prazo', 'Vencida', 'Entregue'].map(f => `
+                            <button
+                                data-filter="${f}"
+                                class="filter-btn px-4 py-2 rounded-full text-sm font-semibold transition duration-150 shadow-md ${
+                                    currentFilter === f
+                                        ? 'bg-sidebar text-white'
+                                        : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                                }"
+                            >
+                                ${f}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="activity-list" class="space-y-4">
+                        ${filteredActivities.length > 0 ? 
+                            filteredActivities.map(renderActivityListItem).join('')
+                            : `<p class="text-center text-gray-500 mt-12 p-8 bg-white rounded-xl shadow-md">
+                                Nenhuma atividade encontrada na categoria "${currentFilter}".
+                            </p>`
+                        }
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('screen-container').innerHTML = screenContent;
+            lucide.createIcons(); // Re-renderiza ícones
+            
+            // Adiciona listeners aos filtros
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    currentFilter = e.currentTarget.getAttribute('data-filter') || e.currentTarget.textContent.trim();
+                    renderScreen();
+                });
+            });
+
+            // Adiciona listeners para selecionar atividade
+            document.querySelectorAll('.activity-list-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-activity-id');
+                    const activity = activities.find(a => a.id === id);
+                    if (activity) {
+                        currentActivityId = id;
+                        // Força a renderização imediata para a tela de detalhes
+                        renderScreen();
+                    }
+                });
+            });
+        }
+        
+        /**
+         * Adiciona listeners específicos para a tela de Detalhes da Atividade.
+         */
+        function attachActivityDetailListeners() {
+            // Listener Voltar
+            document.getElementById('btn-back-list').addEventListener('click', () => {
+                currentActivityId = null;
+                stopTimer(); // Pausa e salva o tempo ao voltar
+                renderScreen();
+            });
+
+            // Listeners Outras Atividades 
+            document.querySelectorAll('.other-activity-item').forEach(item => {
+                // Impede que o clique funcione se a atividade estiver em progresso (acinzentada)
+                if (item.classList.contains('other-activity-in-progress')) return;
+                
+                item.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-activity-id');
+                    const nextActivity = activities.find(a => a.id === id);
+                    if (nextActivity) {
+                        // 1. Pausa e salva a atividade ATUAL
+                        stopTimer(); 
+                        // 2. Define a PRÓXIMA atividade
+                        currentActivityId = id;
+                        // 3. Força a transição de tela
+                        renderScreen(); 
+                    }
+                });
+            });
+            
+            // Listener Cronômetro
+            document.getElementById('btn-toggle-timer').addEventListener('click', toggleTimer);
+
+            // NOVO: Anexa o listener de delegação para os passos (Visualizou/Leu)
+            attachStepToggleListeners();
+        }
+
+        /**
+         * Adiciona listener de delegação para os passos manuais (Visualizou/Leu).
+         */
+        function attachStepToggleListeners() {
+            const stepChecksContainer = document.getElementById('step-checks');
+            if (!stepChecksContainer) return;
+
+            stepChecksContainer.addEventListener('click', (e) => {
+                // Encontra o elemento pai que tem os data-attributes do passo
+                const stepElement = e.target.closest('.step-check');
+                
+                if (stepElement) {
+                    const isManual = stepElement.getAttribute('data-manual-toggleable') === 'true';
+                    const stepKey = stepElement.getAttribute('data-step-key');
+                    const activityId = stepElement.getAttribute('data-activity-id');
+                    
+                    if (isManual && activityId) {
+                        const currentActivity = activities.find(a => a.id === activityId);
+                        if (!currentActivity) return;
+                        
+                        // Alterna o estado do passo
+                        const newSteps = { 
+                            ...currentActivity.steps, 
+                            [stepKey]: !currentActivity.steps[stepKey] 
+                        };
+                        console.log(`Toggling step ${stepKey} to ${newSteps[stepKey]} for activity ${activityId}`);
+                        updateActivity(activityId, { steps: newSteps });
+                    }
+                }
+            });
+        }
+        
+        /**
+         * Renderiza a Tela 2: Detalhes da Atividade.
+         */
+        function renderActivityDetails(activity) {
+            // Requisito: Marca o passo 'viewed' (visualizou) APENAS se não estiver marcado E o timer não estiver rodando.
+            if (!activity.steps.viewed && !timerInterval) {
+                // Aplica o passo 'viewed'
+                const newSteps = { ...activity.steps, viewed: true };
+                updateActivity(activity.id, { steps: newSteps }); 
+                // A função retornará aqui, e o snapshot listener fará a re-renderização com o estado atualizado.
+            }
+            
+            // Define o tempo do cronômetro local com o valor salvo
+            timerSeconds = activity.totalTimeSpent || 0;
+            // Garante que o timer anterior seja limpo ao carregar uma nova atividade/re-renderizar
+            stopTimer(true);
+
+            // Filtragem das outras atividades que não estão concluídas
+            const otherActivities = activities.filter(a => a.id !== activity.id && a.progress < 100);
+
+            const screenContent = `
+                <div class="flex h-full w-full">
+                    
+                    <div id="other-activities-panel" class="w-80 bg-background p-6 overflow-y-auto border-r border-gray-100 flex flex-col rounded-l-2xl">
+                        <button id="btn-back-list" class="flex items-center text-sidebar hover:text-primaryText mb-6 font-semibold">
+                            <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+                            Voltar
+                        </button>
+                        <h2 class="text-2xl font-bold text-primaryText mb-6">Outras Atividades</h2>
+                        
+                        <div class="space-y-3 flex-1">
+                            ${otherActivities.map(a => {
+                                // Requisito: Atividade que está "Em prazo" e não concluída (Em andamento)
+                                const isInProgress = a.category === 'Em prazo' && a.progress > 0 && a.progress < 100;
+                                const inProgressClass = isInProgress ? 'other-activity-in-progress' : '';
+
+                                return `
+                                    <div 
+                                        class="other-activity-item p-3 rounded-xl bg-white hover:bg-gray-100 cursor-pointer flex justify-between items-center border border-gray-200 transition duration-150 ${inProgressClass}"
+                                        data-activity-id="${a.id}"
+                                    >
+                                        <div class="flex-1 min-w-0 pr-2">
+                                            <p class="text-sm font-semibold text-gray-800 truncate">${a.title}</p>
+                                            <p class="text-xs text-gray-500">Prazo: ${a.dueDate}</p>
+                                        </div>
+                                        <div class="ml-3">
+                                            ${renderProgressCircle(a.progress)}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <div class="flex-1 p-8 overflow-y-auto">
+                        <h2 class="text-3xl font-extrabold text-primaryText mb-4">${activity.title}</h2>
+                        
+                        <div class="mb-8">
+                            <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-lg border border-gray-200">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+                                    <div class="flex items-center space-x-3 mb-2 sm:mb-0">
+                                        <i data-lucide="clock" class="w-6 h-6 text-indigo-600"></i>
+                                        <span id="timer-display" class="timer-display text-2xl font-extrabold text-gray-800">
+                                            ${formatTime(activity.totalTimeSpent)}
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-500">
+                                        Meta: ${formatTime(activity.targetDuration)}
+                                    </p>
+                                </div>
+                                <div class='flex space-x-2'>
+                                    <button id="btn-toggle-timer" class="p-3 rounded-full text-white transition duration-200 ${timerInterval ? 'bg-red-500 hover:bg-red-600' : 'bg-sidebar hover:bg-[#6B7A5C]'}" title="${timerInterval ? 'Pausar' : 'Iniciar Atividade'}">
+                                        <i data-lucide="${timerInterval ? 'pause' : 'play'}" class="w-6 h-6"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-10 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+                            <h3 class="text-xl font-bold text-primaryText mb-4">Progresso e Passos</h3>
+                            <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-100">
+                                <p class="text-lg font-semibold text-gray-700">Progresso Atual:</p>
+                                ${renderProgressCircle(activity.progress)}
+                            </div>
+                            
+                            <div id="step-checks" class="space-y-3">
+                                ${renderStepCheck(activity, 'viewed', 'eye', 'Visualizou a Atividade (Aberto a Tela)')}
+                                ${renderStepCheck(activity, 'read', 'book-open', 'Leu o Conteúdo Principal')}
+                                ${renderStepCheck(activity, 'started', 'play', 'Iniciou a Fazer (Cronômetro Rodando)')}
+                            </div>
+                        </div>
+
+                        <div class="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+                            <h3 class="text-xl font-bold text-primaryText mb-4">Conteúdo do Tratamento</h3>
+                            <p class="text-gray-700 leading-relaxed whitespace-pre-line">
+                                ${activity.description}
+                                <br /><br />
+                                Phasellus eget magna vitae nulla malesuada sagittis. Cras posuere purus vel elit pulvinar, vel pharetra orci sollicitudin.
+                                Aenean eu eros eget orci aliquam dictum. Nunc non dolor id neque viverra venenatis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('screen-container').innerHTML = screenContent;
+            lucide.createIcons(); // Re-renderiza ícones
+
+            // Anexa todos os listeners necessários para a tela de detalhes
+            attachActivityDetailListeners();
+            
+            // O timer local precisa ser iniciado/pausado de acordo com o estado de renderização.
+            updateTimerDisplayAndButtonState();
+        }
+        
+        /**
+         * Alterna entre a Tela 1 (Lista) e a Tela 2 (Detalhes).
+         */
+        function renderScreen() {
+            if (!isAuthReady) {
+                 document.getElementById('screen-container').innerHTML = '<div class="flex items-center justify-center h-full"><p class="p-8 text-center text-gray-500">Carregando dados e autenticando...</p></div>';
+                 return;
+            }
+
+            if (currentActivityId) {
+                const activity = activities.find(a => a.id === currentActivityId);
+                if (activity) {
+                    renderActivityDetails(activity);
+                } else {
+                    currentActivityId = null;
+                    stopTimer(true);
+                    renderActivityListScreen();
+                }
+            } else {
+                renderActivityListScreen();
+            }
+        }
+        
+        // --- Lógica do Cronômetro ---
+        
+        /**
+         * Atualiza o display do cronômetro, o progresso e o estado do botão Play/Pause.
+         */
+        function updateTimerDisplayAndButtonState() {
+            const timerDisplay = document.getElementById('timer-display');
+            const btnToggle = document.getElementById('btn-toggle-timer');
+
+            if (timerDisplay) {
+                timerDisplay.textContent = formatTime(timerSeconds);
+            }
+
+            if (btnToggle) {
+                btnToggle.classList.remove('bg-red-500', 'hover:bg-red-600', 'bg-sidebar', 'hover:bg-[#6B7A5C]');
+                
+                if (timerInterval) {
+                    // Estado Rodando (Pausar)
+                    btnToggle.innerHTML = '<i data-lucide="pause" class="w-6 h-6"></i>';
+                    btnToggle.classList.add('bg-red-500', 'hover:bg-red-600');
+                } else {
+                    // Estado Pausado (Iniciar)
+                    btnToggle.innerHTML = '<i data-lucide="play" class="w-6 h-6"></i>';
+                    btnToggle.classList.add('bg-sidebar', 'hover:bg-[#6B7A5C]');
+                }
+                lucide.createIcons(); // Garante que o ícone Lucide seja renderizado
+            }
+
+            // Garante que a bolinha de progresso no painel de detalhes seja atualizada
+            if (currentActivityId) {
+                const activity = activities.find(a => a.id === currentActivityId);
+                if (activity) {
+                     // Recalcula o progresso do tempo
+                    const newProgress = calculateProgress(activity.steps, timerSeconds, activity.targetDuration);
+                    
+                    const progressContainer = document.querySelector('#main-content-container .progress-circle-container');
+                    if (progressContainer) {
+                        // Força a re-renderização apenas do círculo de progresso para a fluidez
+                        progressContainer.outerHTML = renderProgressCircle(newProgress);
+                        lucide.createIcons();
+                    }
+                }
+            }
+        }
+        
+        /**
+         * Inicia o cronômetro.
+         */
+        function startTimer() {
+            if (timerInterval) return; // Já está rodando
+
+            const activity = activities.find(a => a.id === currentActivityId);
+            if (!activity) return;
+
+            // Requisito: Marca o passo 'started' (Iniciou)
+            if (!activity.steps.started) {
+                const newSteps = { ...activity.steps, started: true };
+                updateActivity(activity.id, { steps: newSteps });
+                // O snapshot listener se encarregará da re-renderização com o passo marcado.
+            }
+
+            // 2. Inicia o loop
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                updateTimerDisplayAndButtonState(); // Atualiza o display e o progresso
+
+                const current = activities.find(a => a.id === currentActivityId);
+                 if (current && timerSeconds >= current.targetDuration) {
+                     stopTimer(); // Pausa e salva o tempo
+                     // O snapshot listener irá detectar a mudança de progresso para 100% e mostrar o modal
+                     return;
+                 }
+
+
+                // 3. Salva no DB a cada minuto
+                if (timerSeconds % 60 === 0) {
+                    // Salva a cada 60 segundos para evitar perda de dados
+                    updateActivity(activity.id, { totalTimeSpent: timerSeconds });
+                }
+            }, 1000);
+            
+            updateTimerDisplayAndButtonState(); // Atualiza o botão para "Pausar"
+        }
+
+        /**
+         * Pausa o cronômetro e salva o tempo atual no Firestore.
+         * @param {boolean} [noDbSave=false] Se verdadeiro, pausa o timer mas NÃO salva no DB (usado ao mudar de tela).
+         */
+        function stopTimer(noDbSave = false) {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+
+                const activity = activities.find(a => a.id === currentActivityId);
+                
+                if (activity) {
+                    // Garante que o tempo final seja salvo.
+                    const dataToUpdate = { totalTimeSpent: timerSeconds };
+                    
+                    // Requisito: Se o cronômetro bater o tempo estipulado, a atividade vai para "realizada" (Entregue)
+                    if (timerSeconds >= activity.targetDuration) {
+                        dataToUpdate.category = 'Entregue';
+                    }
+                    
+                    if (!noDbSave) {
+                        updateActivity(activity.id, dataToUpdate); 
+                    }
+                }
+                
+                // Força a atualização visual para o estado pausado
+                updateTimerDisplayAndButtonState(); 
+            }
+        }
+
+        /**
+         * Alterna o estado do cronômetro.
+         */
+        function toggleTimer() {
+            if (timerInterval) {
+                stopTimer(); // Pausar
+            } else {
+                startTimer(); // Iniciar
+            }
+        }
+        
+        // --- Lógica do Modal ---
+        
+        function showCompletionModal(activityTitle) {
+            const modal = document.getElementById('completion-modal');
+            document.getElementById('modal-activity-title').textContent = activityTitle;
+            
+            // Exibe o modal
+            modal.classList.remove('hidden', 'opacity-0');
+            modal.classList.add('flex', 'opacity-100');
+            
+            // Animação de entrada
+            setTimeout(() => {
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 50);
+            
+            document.getElementById('modal-close-btn').onclick = hideCompletionModal;
+        }
+
+        function hideCompletionModal() {
+            const modal = document.getElementById('completion-modal');
+            // Animação de saída
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.remove('flex', 'opacity-100');
+                modal.classList.add('hidden', 'opacity-0');
+            }, 300);
+        }
+
+
+        // --- Inicialização da Aplicação ---
+        window.onload = () => {
+            initializeFirebase();
+        };
+
+    </script>
+
+</body>
+</html>
