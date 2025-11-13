@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Comunidade</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
+            </img>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="patients.html" class="nav-item">
+                <img src="assets/icon-pacientes.svg" 28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <img src="assets/icon-ativid.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="community.html" class="nav-item active">
+                <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
+            </a>
+        </nav>
+        <button class="sidebar-back">
+            <img src="assets/icon-sair.svg" width="28" height="28" viewBox="0 0 28 28">
+            </img>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container" id="community-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+                <h1 class="page-title">Comunidade</h1>
+                <button id="delete-posts-btn" class="modal-btn modal-btn-confirm" style="display: none;">Excluir Selecionados</button>
+            </div>
+            <!-- Button will be hidden by JS when no posts exist -->
+            <button id="select-posts-btn" class="modal-btn modal-btn-secondary" style="margin-bottom: 24px;">Selecionar Posts</button>
+            <div id="posts-list"></div>
+        </div>
+    </main>
+
+    <!-- Delete Posts Confirmation Modal -->
+    <div id="delete-posts-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirmar exclusão</h3>
+            <p class="modal-text">Tem certeza que deseja excluir os posts selecionados?</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-delete-posts">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" id="confirm-delete-posts">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

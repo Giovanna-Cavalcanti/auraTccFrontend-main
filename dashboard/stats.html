@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Atividades</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+       <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
+            </img>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="patients.html" class="nav-item">
+                <img src="assets/icon-pacientes.svg" 28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="stats.html" class="nav-item active">
+                <img src="assets/icon-ativid.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="community.html" class="nav-item">
+                <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
+            </a>
+        </nav>
+        <button class="sidebar-back">
+            <img src="assets/icon-sair.svg" width="28" height="28" viewBox="0 0 28 28">
+            </img>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Atividades</h1>
+            
+            <div class="activities-layout" style="display: grid; grid-template-columns: 1fr 400px; gap: 32px;">
+                <div class="create-activity-card">
+                    <h2 class="section-title-small">Criar Nova Atividade</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Paciente</label>
+                        <select id="activity-patient" class="form-select">
+                            <option value="">Selecione um paciente</option>
+                            <option value="mariana">Mariana Menezes</option>
+                            <option value="wesley">Wesley Oliveira</option>
+                            <option value="caetano">Caetano Viana</option>
+                            <option value="luiz">Luiz da Silva</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Título</label>
+                        <input type="text" id="activity-title" class="form-input" placeholder="Digite o título da atividade">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descrição</label>
+                        <textarea id="activity-description" class="form-textarea" placeholder="Digite a descrição da atividade" rows="6"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Prazo</label>
+                        <input type="date" id="activity-deadline" class="form-input">
+                    </div>
+
+                    <button class="submit-activity-btn" id="submit-activity-btn">Enviar Atividade</button>
+                </div>
+
+                <!-- Added sidebar for existing activities with click handlers -->
+                <div id="activities-sidebar-container" class="activities-sidebar">
+                    <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">Atividades Atribuídas</h3>
+                    <div id="activities-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Activity Confirmation Modal -->
+    <div id="activity-confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirmar envio</h3>
+            <p class="modal-text">Tem certeza que deseja enviar esta atividade?</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-activity">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="confirm-activity">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Success Modal -->
+    <div id="activity-success-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Atividade enviada!</h3>
+            <p class="modal-text">A atividade foi enviada com sucesso para o paciente.</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" id="activity-success-ok">Ok</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Details Modal -->
+    <div id="activity-details-modal" class="modal">
+        <div class="modal-content-large">
+            <div class="modal-header">
+                <h3 class="modal-title-large" id="activity-detail-title">Detalhes da Atividade</h3>
+                <button class="close-modal-btn" id="close-activity-details">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="activity-detail-content"></div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" id="close-details-ok">Ok</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

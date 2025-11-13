@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Minhas Consultas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
+            </img>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item active">
+                <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="patients.html" class="nav-item">
+                <img src="assets/icon-pacientes.svg" 28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <img src="assets/icon-ativid.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="community.html" class="nav-item">
+                <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
+            </a>
+        </nav>
+        <button class="sidebar-back">
+            <img src="assets/icon-sair.svg" width="28" height="28" viewBox="0 0 28 28">
+            </img>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Minhas consultas</h1>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="hoje">Hoje</button>
+                <button class="filter-tab" data-filter="semana">Semana</button>
+                <button class="filter-tab" data-filter="mes">Mês</button>
+                <div class="filter-dropdown">
+                    <button class="filter-tab dropdown-tab" id="type-filter-btn">
+                        Por tipo
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="type-dropdown">
+                        <button class="dropdown-item" data-type="all">Todas</button>
+                        <button class="dropdown-item" data-type="online">Online</button>
+                        <button class="dropdown-item" data-type="presencial">Presencial</button>
+                        <button class="dropdown-item" data-type="concluida">Concluída</button>
+                        <button class="dropdown-item" data-type="cancelada">Cancelada</button>
+                        <button class="dropdown-item" data-type="agendada">Agendada</button>
+                    </div>
+                </div>
+                <button class="filter-tab add-appointment-btn" id="add-appointment-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Appointments Table -->
+            <div class="appointments-table-wrapper">
+                <!-- Show empty state when no appointments -->
+                <div id="no-appointments-message" class="no-data-message" style="display: none;">
+                    <p>Você não tem consultas para este período</p>
+                </div>
+                <table class="appointments-table" id="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Data e hora</th>
+                            <th>Paciente</th>
+                            <th>Atendimento</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointments-tbody">
+                        <tr data-id="1">
+                            <td class="appointment-datetime">
+                                <div>15/08</div>
+                                <div class="time-small">09:00</div>
+                            </td>
+                            <td class="patient-name-cell">Mariana Menezes</td>
+                            <td><span class="status-badge status-completed">Concluída</span></td>
+                            <td class="appointment-actions">
+                                <button class="action-btn-small delete-appointment" title="Excluir">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path
+                                            d="M3 5H15M6 5V3C6 2.44772 6.44772 2 7 2H11C11.5523 2 12 2.44772 12 3V5M8 8V13M10 8V13M4 5L5 15C5 15.5523 5.44772 16 6 16H12C12.5523 16 13 15.5523 13 15L14 5"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="action-btn-small" title="Editar">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M13 2L16 5L6 15H3V12L13 2Z" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr data-id="2">
+                            <td class="appointment-datetime">
+                                <div>15/08</div>
+                                <div class="time-small">09:00</div>
+                            </td>
+                            <td class="patient-name-cell">Caetano Viana</td>
+                            <td><span class="status-badge status-cancelled">Cancelada</span></td>
+                            <td class="appointment-actions">
+                                <button class="action-btn-small delete-appointment" title="Excluir">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path
+                                            d="M3 5H15M6 5V3C6 2.44772 6.44772 2 7 2H11C11.5523 2 12 2.44772 12 3V5M8 8V13M10 8V13M4 5L5 15C5 15.5523 5.44772 16 6 16H12C12.5523 16 13 15.5523 13 15L14 5"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="action-btn-small" title="Editar">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M13 2L16 5L6 15H3V12L13 2Z" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr data-id="3">
+                            <td class="appointment-datetime">
+                                <div>15/08</div>
+                                <div class="time-small">09:00</div>
+                            </td>
+                            <td class="patient-name-cell">Wesley Oliveira</td>
+                            <td><span class="status-badge status-scheduled">Agendada</span></td>
+                            <td class="appointment-actions">
+                                <button class="action-btn-small delete-appointment" title="Excluir">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path
+                                            d="M3 5H15M6 5V3C6 2.44772 6.44772 2 7 2H11C11.5523 2 12 2.44772 12 3V5M8 8V13M10 8V13M4 5L5 15C5 15.5523 5.44772 16 6 16H12C12.5523 16 13 15.5523 13 15L14 5"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="action-btn-small" title="Editar">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M13 2L16 5L6 15H3V12L13 2Z" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr data-id="4">
+                            <td class="appointment-datetime">
+                                <div>15/08</div>
+                                <div class="time-small">09:00</div>
+                            </td>
+                            <td class="patient-name-cell">Mariana Menezes</td>
+                            <td><span class="status-badge status-scheduled">Agendada</span></td>
+                            <td class="appointment-actions">
+                                <button class="action-btn-small delete-appointment" title="Excluir">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path
+                                            d="M3 5H15M6 5V3C6 2.44772 6.44772 2 7 2H11C11.5523 2 12 2.44772 12 3V5M8 8V13M10 8V13M4 5L5 15C5 15.5523 5.44772 16 6 16H12C12.5523 16 13 15.5523 13 15L14 5"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <button class="action-btn-small" title="Editar">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M13 2L16 5L6 15H3V12L13 2Z" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirmar exclusão</h3>
+            <p class="modal-text">Tem certeza que deseja excluir esta consulta?</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-delete">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" id="confirm-delete">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Appointment Modal -->
+    <div id="edit-appointment-modal" class="modal">
+        <div class="modal-content-large">
+            <div class="modal-header">
+                <h3 class="modal-title-large">Editar Consulta</h3>
+                <button class="close-modal-btn" id="close-edit-appointment">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select id="edit-status" class="form-select">
+                    <option value="agendada">Agendada</option>
+                    <option value="concluida">Concluída</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Data</label>
+                <input type="date" id="edit-date" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hora</label>
+                <input type="time" id="edit-time" class="form-input">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-edit-appointment">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="save-edit-appointment">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Appointment Modal -->
+    <div id="add-appointment-modal" class="modal">
+        <div class="modal-content-large">
+            <div class="modal-header">
+                <h3 class="modal-title-large">Nova Consulta</h3>
+                <button class="close-modal-btn" id="close-add-appointment">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Paciente</label>
+                <select id="new-patient-select" class="form-select">
+                    <option value="">Selecione o paciente</option>
+                    <option value="Wesley Oliveira">Wesley Oliveira</option>
+                    <option value="Mariana Menezes">Mariana Menezes</option>
+                    <option value="Caetano Viana">Caetano Viana</option>
+                    <option value="Luiz da Silva">Luiz da Silva</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tipo</label>
+                <select id="new-type" class="form-select">
+                    <option value="online">Online</option>
+                    <option value="presencial">Presencial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Data</label>
+                <input type="date" id="new-date" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hora</label>
+                <input type="time" id="new-time" class="form-input">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-add-appointment">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="save-add-appointment">Criar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 12L12 3L21 12V21C21 21.55 20.55 22 20 22H14V16H10V22H4C3.45 22 3 21.55 3 21V12Z"
+                    fill="currentColor" />
+            </svg>
+        </a>
+        <a href="patients.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="9" r="4" fill="currentColor" />
+                <path d="M4 22C4 18 7.5 15 12 15C16.5 15 20 18 20 22" fill="currentColor" />
+            </svg>
+        </a>
+        <a href="stats.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="14" width="5" height="8" fill="currentColor" rx="1" />
+                <rect x="10" y="9" width="5" height="13" fill="currentColor" rx="1" />
+                <rect x="17" y="3" width="5" height="19" fill="currentColor" rx="1" />
+            </svg>
+        </a>
+        <a href="community.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="7" r="3" fill="currentColor" />
+                <circle cx="17" cy="7" r="3" fill="currentColor" />
+                <path d="M2 19C2 16.5 4.5 14 9 14C10 14 11 14.2 12 14.5" fill="currentColor" />
+                <path d="M14 14.5C15 14.2 16 14 17 14C21.5 14 24 16.5 24 19" fill="currentColor" />
+            </svg>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

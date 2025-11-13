@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Configurações</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
+            </img>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item active">
+                <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="patients.html" class="nav-item">
+                <img src="assets/icon-pacientes.svg" 28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <img src="assets/icon-ativid.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="community.html" class="nav-item">
+                <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
+            </a>
+        </nav>
+        <button class="sidebar-back">
+            <img src="assets/icon-sair.svg" width="28" height="28" viewBox="0 0 28 28">
+            </img>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="settings-header">
+                <h1 class="page-title">Configurações</h1>
+                <a href="index.html" class="settings-btn">
+                    <img src="assets/arrow-right.svg" width="44" height="44" viewBox="0 0 44 44">
+                    </img>
+                </a>
+            </div>
+
+            <div class="settings-grid">
+                <div class="settings-section">
+                    <h2 class="settings-section-title">Informações da Conta</h2>
+                    <div class="settings-item">
+                        <div class="user-icon">
+                            <img src="assets/icon-user.svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="8" r="4" fill="#4F3422" />
+                                <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#4F3422" stroke-width="2" />
+                            </img>
+                        </div>
+                        <div class="settings-content">
+                            <p class="settings-label">Nome</p>
+                            <p class="settings-value">E-mail: user@email.com</p>
+                            <button class="settings-link">Editar minhas informações</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="settings-section-title">Interações</h2>
+                    <div class="settings-interactions">
+                        <div class="interaction-item">
+                            <span class="interaction-label">Publicações curtidas</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="interaction-icon">
+                                <path
+                                    d="M12 21C12 21 3 16 3 9C3 7.34783 3.63214 5.8043 4.75736 4.67157C5.88258 3.53884 7.41283 2.9 9.05 2.9C10.35 2.9 11.52 3.5 12.27 4.35C12.72 3.5 13.65 2.9 14.95 2.9C16.5872 2.9 18.1174 3.53884 19.2426 4.67157C20.3679 5.8043 21 7.34783 21 9C21 16 12 21 12 21Z"
+                                    stroke="#747474" stroke-width="1.5" />
+                            </svg>
+                        </div>
+                        <div class="interaction-item">
+                            <span class="interaction-label">Publicações salvas</span>
+                            <svg width="20" height="24" viewBox="0 0 20 24" fill="none" class="interaction-icon">
+                                <path
+                                    d="M1 7C1 5.89543 1.89543 5 3 5H17C18.1046 5 19 5.89543 19 7V22C19 22.2652 18.8946 22.5196 18.7071 22.7071C18.5196 22.8946 18.2652 23 18 23C17.7348 23 17.4804 22.8946 17.2929 22.7071L10 16L2.70711 22.7071C2.51957 22.8946 2.26522 23 2 23C1.73478 23 1.48043 22.8946 1.29289 22.7071C1.10536 22.5196 1 22.2652 1 22V7Z"
+                                    stroke="#747474" stroke-width="1.5" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section full-width">
+                    <h2 class="settings-section-title">Notificações e Personalização</h2>
+                    <div class="toggle-item">
+                        <span class="toggle-label">Receber lembretes de consultas</span>
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-item">
+                        <span class="toggle-label">Notificações semanais de resumo emocional</span>
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-item">
+                        <span class="toggle-label">Modo escuro</span>
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="settings-section-title">Acessibilidade</h2>
+                    <button class="settings-option">Modo de alto contaste</button>
+                    <button class="settings-option">Aumentar o tamanho da fonte</button>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="settings-section-title">Privacidade e Segurança</h2>
+                    <button class="settings-option">Redefinir senha</button>
+                    <button class="settings-option">Deletar conta</button>
+                    <button class="settings-option">Termos de uso</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
