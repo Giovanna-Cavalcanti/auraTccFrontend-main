@@ -1153,59 +1153,60 @@
 
         })();
     </script>
+    <script src="triagem.js"></script>
 
-
-    <script>
+    <!-- <script>
         // Mantém a lógica da triagem (Modal original)
-        const modal = document.getElementById("triagemModal");
-        const confirmModal = document.getElementById("confirmModal");
-        const openBtn = document.getElementById("openModalBtn");
-        const closeBtn = document.getElementById("closeModal");
-        const closeConfirmBtn = document.getElementById("closeConfirm");
+    // -- tirando daqui pra eu fazer o script separado ---
+    //     const modal = document.getElementById("triagemModal");
+    //     const confirmModal = document.getElementById("confirmModal");
+    //     const openBtn = document.getElementById("openModalBtn");
+    //     const closeBtn = document.getElementById("closeModal");
+    //     const closeConfirmBtn = document.getElementById("closeConfirm");
 
-        function abrirTriagem() { // Função que é chamada no botão HTML
-             modal.style.display = "flex";
-        };
+    //     function abrirTriagem() { // Função que é chamada no botão HTML
+    //          modal.style.display = "flex";
+    //     };
 
-        // Abrir modal
-        if(openBtn) {
-            openBtn.onclick = abrirTriagem;
-        }
+    //     // Abrir modal
+    //     if(openBtn) {
+    //         openBtn.onclick = abrirTriagem;
+    //     }
 
-        // Fechar modal no botão X
-        if(closeBtn) {
-            closeBtn.onclick = function () {
-                modal.style.display = "none";
-            };
-        }
+    //     // Fechar modal no botão X
+    //     if(closeBtn) {
+    //         closeBtn.onclick = function () {
+    //             modal.style.display = "none";
+    //         };
+    //     }
 
-        // Fechar confirmação
-        if(closeConfirmBtn) {
-             closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
-        }
+    //     // Fechar confirmação
+    //     if(closeConfirmBtn) {
+    //          closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
+    //     }
 
-        // Fechar modal clicando fora
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-            if (event.target === confirmModal) {
-                confirmModal.style.display = "none";
-            }
-        };
+    //     // Fechar modal clicando fora
+    //     window.onclick = function (event) {
+    //         if (event.target === modal) {
+    //             modal.style.display = "none";
+    //         }
+    //         if (event.target === confirmModal) {
+    //             confirmModal.style.display = "none";
+    //         }
+    //     };
 
-        // Capturar envio do formulário
-        document.getElementById("triagemForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            triagemModal.style.display = "none";
-            confirmModal.style.display = "flex";
-            const formData = new FormData(this);
-            const dados = {};
-            formData.forEach((value, key) => (dados[key] = value));
-            console.log("Respostas:", dados);
+    //     // Capturar envio do formulário
+    //     document.getElementById("triagemForm").addEventListener("submit", function (e) {
+    //         e.preventDefault();
+    //         triagemModal.style.display = "none";
+    //         confirmModal.style.display = "flex";
+    //         const formData = new FormData(this);
+    //         const dados = {};
+    //         formData.forEach((value, key) => (dados[key] = value));
+    //         console.log("Respostas:", dados);
 
-        });
-    </script>
+    //     });
+    </script> -->
 </body>
 
 </html>
