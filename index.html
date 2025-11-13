@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
+            </img>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item active">
+                <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="patients.html" class="nav-item">
+                <img src="assets/icon-pacientes.svg" 28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <img src="assets/icon-ativid.svg" width="28" height="28" viewBox="0 0 28 28">
+                </img>
+            </a>
+            <a href="community.html" class="nav-item">
+                <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
+            </a>
+        </nav>
+        <button class="sidebar-back">
+            <img src="assets/icon-sair.svg" width="28" height="28" viewBox="0 0 28 28">
+            </img>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="header-section">
+                <div>
+                    <h2 class="date-text">Ddd, 00 Mmm, 0000</h2>
+                    <div class="greeting-section">
+                        <div class="avatar-wrapper">
+                            <div class="avatar-outer">
+                                <div class="avatar-inner">
+                                    <img src="assets/icon-user.svg" width="40" height="40" viewBox="0 0 40 40"
+                                        fill="none">
+                                    </img>
+                                </div>
+                            </div>
+                        </div>
+                        <h1 class="greeting-text">Olá, Dr(a) <img class="wave" src="assets/olá dr.png"></h1>
+                    </div>
+                </div>
+                <a href="settings.html" class="settings-btn">
+                    <img src="assets/icon-configs.svg" width="44" height="44" viewBox="0 0 44 44">
+                    </img>
+                </a>
+            </div>
+
+            <div class="content-grid">
+                <div class="main-column">
+                    <!-- Consultas de Hoje -->
+                    <section class="card">
+                        <div class="card-header">
+                            <h2 class="section-title">Consultas de Hoje</h2>
+                            <a href="appointments.html" class="arrow-btn">
+                                <img src="assets/arrow-right.svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                </img>
+                            </a>
+                        </div>
+                        <!-- mostra consultas de hoje -->
+                        <div class="appointments-grid" id="today-appointments">
+                            <p class="no-appointments">Você não tem consultas para hoje</p>
+                        </div>
+                    </section>
+
+                    <!-- últimas publicações -->
+                    <section class="card">
+                        <div class="card-header">
+                            <h2 class="section-title">Minhas últimas publicações</h2>
+                            <!-- criar post -->
+                            <a href="create-post.html" class="plus-btn">
+                                <img src="assets/add-icon.svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <path d="M16 8V24M8 16H24" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                                </img>
+                            </a>
+                        </div>
+                        <!-- mostrar posts ou estado vazio -->
+                        <div class="posts-grid" id="posts-container">
+                            <p class="no-posts">Você ainda não tem postagens publicadas</p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Sidebar Cards -->
+                <div class="sidebar-column">
+
+                    <!-- Add click handler and conditional dot -->
+                    <div class="info-card" id="contact-requests-card">
+                        <div class="info-card-content">
+                            <div class="info-icon-wrapper">
+                                <div class="info-icon">
+                                    <img src="assets/icon-contat.svg" width="28" height="28" viewBox="0 0 28 28"
+                                        fill="none">
+                                    <path d="M24 18L14 24L4 18M24 14L14 20L4 14M24 10L14 4L4 10L14 16L24 10Z"
+                                        stroke="#6D523F" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    </img>
+                                </div>
+                                <div class="notification-dot" id="contact-dot"></div>
+                            </div>
+                            <div>
+                                <h3 class="info-title">Solicitações de contato</h3>
+                                <p class="info-text">Suas novas solicitações</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card" id="tasks-card">
+                        <div class="info-card-content">
+                            <div class="info-icon-wrapper">
+                                <div class="info-icon">
+                                    <img src="assets/icon-ativid-marrom.svg" width="28" height="28" viewBox="0 0 28 28"
+                                        fill="none">
+                                    <path d="M9 14L12 17L19 10" stroke="#6D523F" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    </img>
+                                </div>
+                                <div class="notification-dot" id="tasks-dot"></div>
+                            </div>
+                            <div>
+                                <h3 class="info-title">Tarefas recentes</h3>
+                                <p class="info-text">Ver tarefas enviadas pelos pacientes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-content">
+                            <div class="patient-icon">
+                                <img src="assets/icon-comunid-marrom.svg" width="29" height="29" viewBox="0 0 29 29"
+                                    fill="none">
+                                <circle cx="14.5" cy="10" r="5" fill="#4F3422" />
+                                <path d="M5 25c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#4F3422" stroke-width="2"
+                                    fill="none" />
+                                </img>
+                            </div>
+                            <div>
+                                <h3 class="info-title">Pacientes</h3>
+                                <a href="patients.html" class="info-text" style="cursor: pointer;">Ver todos</a>
+                            </div>
+                        </div>
+                        <div class="search-wrapper">
+                            <input type="text" placeholder="Procurar" class="search-input" id="home-patient-search">
+                            <img src="assets/icon-lupa.svg" class="search-icon" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none">
+                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+                            </img>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- modal solicitações de contato, mostrar -->
+    <div id="contact-request-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Solicitações de Contato</h3>
+            <div class="contact-request-header">
+                <div class="contact-avatar">
+                    <img src="assets/icon-user.svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+                    </img>
+                </div>
+                <div>
+                    <p class="modal-text" id="contact-message">João Silva quer fazer contato com você</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn-icon modal-btn-decline" id="decline-contact">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <button class="modal-btn-icon modal-btn-accept" id="accept-contact">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal notificação de conclusão de tarefa -->
+    <div id="task-notification-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Tarefas Recentes</h3>
+            <p class="modal-text" id="task-patient-name">Mariana Menezes finalizou um exercício</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-task">Fechar</button>
+                <button class="modal-btn modal-btn-primary" id="view-task">Ver Atividades</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
