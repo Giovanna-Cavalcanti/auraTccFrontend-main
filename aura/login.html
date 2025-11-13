@@ -169,13 +169,21 @@
         const data = await response.json();
 
         if (response.ok) {
-          // Salva token e nome separado no localStorage
           localStorage.setItem('token', data.token);
           localStorage.setItem('platformUserName', data.paciente.nomeCompleto); 
           localStorage.setItem('pacienteId', data.paciente._id);
 
-          // Redireciona para a home
+          console.log("✅ Dados salvos no localStorage:", {
+            token: data.token,
+            nome: data.paciente.nomeCompleto,
+            pacienteId: data.paciente._id
+        });
+
+        // 🔹 Espera um pouquinho antes de redirecionar
+        setTimeout(() => {
           window.location.href = 'home.html';
+        }, 300);
+
         } else {
           // A linha original era: const errorData = await response.json();
           // Mas data já é o JSON (data = await response.json()), então usamos 'data'.
