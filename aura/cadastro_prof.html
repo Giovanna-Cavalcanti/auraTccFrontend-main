@@ -207,7 +207,9 @@ const form = document.getElementById("cadastroForm");
 let emailValid = false;
 let crpValid = false;
 
-// Máscara CPF
+// =======================================================
+// MÁSCARA CPF
+// =======================================================
 cpfInput.addEventListener("input", () => {
   let v = cpfInput.value.replace(/\D/g, "");
   if (v.length > 11) v = v.slice(0, 11);
@@ -220,269 +222,211 @@ cpfInput.addEventListener("input", () => {
 // =======================================================
 // VALIDAÇÃO MATEMÁTICA DO CPF
 // =======================================================
-
 function validateCPF(cpf) {
-    const cpfClean = cpf.replace(/[^\d]+/g,''); 
+  const cpfClean = cpf.replace(/[^\d]+/g,''); 
+  if(cpfClean.length !== 11) return false;
+  if (/^(\d)\1{10}$/.test(cpfClean)) return false;
 
-    if(cpfClean.length !== 11) return false;
-    if (/^(\d)\1{10}$/.test(cpfClean)) return false;
+  let sum = 0;
+  let remainder;
 
-    let sum = 0;
-    let remainder;
+  for (let i = 1; i <= 9; i++) {
+    sum = sum + parseInt(cpfClean.substring(i - 1, i)) * (11 - i);
+  }
+  remainder = (sum * 10) % 11;
 
-    // Valida 1º dígito verificador
-    for (let i = 1; i <= 9; i++) {
-        sum = sum + parseInt(cpfClean.substring(i - 1, i)) * (11 - i);
-    }
-    remainder = (sum * 10) % 11;
+  if ((remainder === 10) || (remainder === 11)) remainder = 0;
+  if (remainder !== parseInt(cpfClean.substring(9, 10))) return false;
 
-    if ((remainder === 10) || (remainder === 11)) remainder = 0;
-    if (remainder !== parseInt(cpfClean.substring(9, 10))) return false;
+  sum = 0;
+  for (let i = 1; i <= 10; i++) {
+    sum = sum + parseInt(cpfClean.substring(i - 1, i)) * (12 - i);
+  }
+  remainder = (sum * 10) % 11;
 
-    sum = 0;
-
-    // Valida 2º dígito verificador
-    for (let i = 1; i <= 10; i++) {
-        sum = sum + parseInt(cpfClean.substring(i - 1, i)) * (12 - i);
-    }
-    remainder = (sum * 10) % 11;
-
-    if ((remainder === 10) || (remainder === 11)) remainder = 0;
-    if (remainder !== parseInt(cpfClean.substring(10, 11))) return false;
-    
-    return true; 
+  if ((remainder === 10) || (remainder === 11)) remainder = 0;
+  if (remainder !== parseInt(cpfClean.substring(10, 11))) return false;
+  
+  return true; 
 }
 
 // =======================================================
-// FUNÇÕES DE FEEDBACK E VALIDAÇÕES EM TEMPO REAL (CRP e Email)
+// FEEDBACK VISUAL GENÉRICO
 // =======================================================
-
-// Função genérica para feedback
 function setFeedback(elementId, message, type = 'error') {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    el.textContent = message;
-    const inputEl = document.getElementById(elementId.replace('-feedback', ''));
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  el.textContent = message;
+  const inputEl = document.getElementById(elementId.replace('-feedback', ''));
 
-    if (type === 'error') {
-        el.className = 'text-red-500 text-xs mt-1';
-        inputEl.classList.add('input-error');
-    } else if (type === 'success') {
-        el.className = 'text-green-600 text-xs mt-1';
-        inputEl.classList.remove('input-error');
-    } else { // info
-         el.className = 'text-gray-500 text-xs mt-1';
-         inputEl.classList.remove('input-error');
-    }
+  if (type === 'error') {
+    el.className = 'text-red-500 text-xs mt-1';
+    inputEl.classList.add('input-error');
+  } else if (type === 'success') {
+    el.className = 'text-green-600 text-xs mt-1';
+    inputEl.classList.remove('input-error');
+  } else {
+    el.className = 'text-gray-500 text-xs mt-1';
+    inputEl.classList.remove('input-error');
+  }
 }
 
 function clearFeedback(elementId) {
-    document.getElementById(elementId).textContent = '';
-    document.getElementById(elementId.replace('-feedback', '')).classList.remove('input-error');
+  document.getElementById(elementId).textContent = '';
+  document.getElementById(elementId.replace('-feedback', '')).classList.remove('input-error');
 }
 
-// ---------------------------
-// VERIFICAÇÃO DE EMAIL
-// ---------------------------
-emailInput.addEventListener("input", async () => {
-    const email = emailInput.value.trim();
-    if (!/\S+@\S+\.\S+/.test(email)) {
-        setFeedback('email-feedback', 'Email inválido. Ex: nome@dominio.com', 'error');
-        emailValid = false;
-        return;
-    }
-    
-    setFeedback('email-feedback', 'Verificando disponibilidade...', 'info');
-    
-    try {
-        // Assume endpoint para checar email
-        const response = await fetch(`${BASE_URL}/check-email`, {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({ email })
-        });
-
-        if (response.ok) {
-            setFeedback('email-feedback', 'Email disponível.', 'success');
-            emailValid = true;
-        } else if (response.status === 409) {
-            setFeedback('email-feedback', '❌ Este email já está cadastrado.', 'error');
-            emailValid = false;
-        } else {
-            setFeedback('email-feedback', 'Erro ao verificar email.', 'error');
-            emailValid = false;
-        }
-    } catch (error) {
-        setFeedback('email-feedback', 'Falha na conexão com o servidor. Tente novamente.', 'error');
-        emailValid = false;
-    }
+// =======================================================
+// VALIDAÇÃO LOCAL DE EMAIL
+// =======================================================
+emailInput.addEventListener("input", () => {
+  const email = emailInput.value.trim();
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    setFeedback('email-feedback', 'Email inválido. Ex: nome@dominio.com', 'error');
+    emailValid = false;
+  } else {
+    setFeedback('email-feedback', 'Email em formato válido.', 'success');
+    emailValid = true;
+  }
 });
 emailInput.addEventListener("blur", () => {
-    if (!emailInput.value.trim()) {
-        clearFeedback('email-feedback');
-        emailValid = false;
-    } else if (!emailValid) {
-        emailInput.dispatchEvent(new Event('input'));
-    }
+  if (!emailInput.value.trim()) clearFeedback('email-feedback');
+});
+
+// ---------------------------
+// VALIDAÇÃO DE CRP (formato automático 12345/06)
+// ---------------------------
+crpInput.addEventListener("input", () => {
+  let valor = crpInput.value.replace(/\D/g, ""); // mantém apenas números
+
+  // Limita o número total de dígitos (5 + 2)
+  if (valor.length > 7) valor = valor.slice(0, 7);
+
+  // Adiciona a barra automaticamente após 5 dígitos
+  if (valor.length > 5) {
+    valor = valor.slice(0, 5) + "/" + valor.slice(5);
+  }
+
+  crpInput.value = valor;
+
+  // Validação do formato final
+  const regexCRP = /^\d{1,5}\/\d{2}$/; // ex: 12345/06
+  if (regexCRP.test(valor)) {
+    setFeedback("crp-feedback", "CRP válido.", "success");
+    crpValid = true;
+  } else {
+    setFeedback("crp-feedback", "Formato inválido. Ex: 12345/06", "error");
+    crpValid = false;
+  }
+});
+
+crpInput.addEventListener("blur", () => {
+  if (!crpInput.value.trim()) {
+    clearFeedback("crp-feedback");
+    crpValid = false;
+  }
 });
 
 
-// ---------------------------
-// VERIFICAÇÃO DE CRP
-// ---------------------------
-crpInput.addEventListener("input", async () => {
-    const crp = crpInput.value.trim();
-    
-    if (crp.length < 5) {
-        setFeedback('crp-feedback', 'O CRP deve ter pelo menos 5 caracteres.', 'error');
-        crpValid = false;
-        return;
-    }
-    
-    setFeedback('crp-feedback', 'Verificando validade e disponibilidade...', 'info');
-
-    try {
-        // Assume endpoint para checar CRP
-        const response = await fetch(`${BASE_URL}/check-crp`, {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({ crp })
-        });
-        
-        if (response.ok) {
-            setFeedback('crp-feedback', 'CRP válido e disponível.', 'success');
-            crpValid = true;
-        } else if (response.status === 409) {
-            setFeedback('crp-feedback', '❌ Este CRP já está cadastrado.', 'error');
-            crpValid = false;
-        } else {
-            setFeedback('crp-feedback', 'CRP inválido ou erro de servidor.', 'error');
-            crpValid = false;
-        }
-    } catch (error) {
-        setFeedback('crp-feedback', 'Falha na conexão com o servidor. Tente novamente.', 'error');
-        crpValid = false;
-    }
-});
 crpInput.addEventListener("blur", () => {
     if (!crpInput.value.trim()) {
         clearFeedback('crp-feedback');
         crpValid = false;
-    } else if (!crpValid) {
-        crpInput.dispatchEvent(new Event('input'));
     }
 });
 
-// ---------------------------
+// =======================================================
 // VERIFICAÇÃO DE SENHA
-// ---------------------------
+// =======================================================
 function checkPasswordMatch() {
-    const senha = passwordInput.value;
-    const confirmacaoSenha = passwordConfirmInput.value;
-    
-    if (!senha && !confirmacaoSenha) {
-        clearFeedback('password-feedback');
-        return false;
-    }
+  const senha = passwordInput.value;
+  const confirmacaoSenha = passwordConfirmInput.value;
+  
+  if (!senha && !confirmacaoSenha) {
+    clearFeedback('password-feedback');
+    return false;
+  }
 
-    if (senha.length < 6) {
-        setFeedback('password-feedback', 'A senha deve ter pelo menos 6 caracteres.', 'error');
-        return false;
-    }
-    
-    if (senha !== confirmacaoSenha) {
-        setFeedback('password-feedback', 'As senhas não coincidem.', 'error');
-        return false;
-    } else {
-        setFeedback('password-feedback', 'Senhas válidas.', 'success');
-        return true;
-    }
+  if (senha.length < 6) {
+    setFeedback('password-feedback', 'A senha deve ter pelo menos 6 caracteres.', 'error');
+    return false;
+  }
+  
+  if (senha !== confirmacaoSenha) {
+    setFeedback('password-feedback', 'As senhas não coincidem.', 'error');
+    return false;
+  } else {
+    setFeedback('password-feedback', 'Senhas válidas.', 'success');
+    return true;
+  }
 }
 passwordInput.addEventListener('input', checkPasswordMatch);
 passwordConfirmInput.addEventListener('input', checkPasswordMatch);
 
-
 // =======================================================
 // NAVEGAÇÃO ENTRE ETAPAS
 // =======================================================
-
 nextBtn.addEventListener("click", () => {
-    // 1. Coleta e validação básica de campos da Etapa 1
-    const nomeCompleto = document.getElementById("name").value.trim();
-    const cpfFormatado = cpfInput.value.trim();
-    
-    const senhaValida = checkPasswordMatch();
+  const nomeCompleto = document.getElementById("name").value.trim();
+  const cpfFormatado = cpfInput.value.trim();
+  const senhaValida = checkPasswordMatch();
 
-    // Checagem de campos vazios
-    if (!nomeCompleto || !cpfFormatado || !crpInput.value.trim() || !emailInput.value.trim() || !passwordInput.value || !passwordConfirmInput.value) {
-        alert("⚠️ Por favor, preencha todos os campos obrigatórios da Etapa 1.");
-        return;
-    }
-    
-    // Validação Matemática do CPF
-    if (!validateCPF(cpfFormatado)) {
-        alert("⚠️ O CPF informado é inválido. Por favor, verifique o número.");
-        cpfInput.classList.add('input-error');
-        return;
-    } else {
-        cpfInput.classList.remove('input-error');
-    }
+  if (!nomeCompleto || !cpfFormatado || !crpInput.value.trim() || !emailInput.value.trim() || !passwordInput.value || !passwordConfirmInput.value) {
+    alert("⚠️ Preencha todos os campos obrigatórios da Etapa 1.");
+    return;
+  }
 
-    // Validação de disponibilidade de Email/CRP e match de Senhas
-    if (!senhaValida || !crpValid || !emailValid) {
-        alert("⚠️ Corrija os erros de validação (Email, CRP ou Senhas) antes de continuar. Clique nos campos para revalidar.");
-        return;
-    }
-    
-    // 2. Se tudo estiver OK, avança
-    step1.classList.add("hidden");
-    step2.classList.remove("hidden");
-    progressBar.classList.add("w-full");
-    progressBar.classList.remove("w-1/2");
+  if (!validateCPF(cpfFormatado)) {
+    alert("⚠️ CPF inválido. Verifique o número.");
+    cpfInput.classList.add('input-error');
+    return;
+  }
+
+  if (!senhaValida || !crpValid || !emailValid) {
+    alert("⚠️ Corrija os erros de validação (Email, CRP ou Senhas) antes de continuar.");
+    return;
+  }
+
+  step1.classList.add("hidden");
+  step2.classList.remove("hidden");
+  progressBar.classList.add("w-full");
+  progressBar.classList.remove("w-1/2");
 });
 
 document.getElementById("backBtn").addEventListener("click", () => {
-    step2.classList.add("hidden");
-    step1.classList.remove("hidden");
-    progressBar.classList.add("w-1/2");
-    progressBar.classList.remove("w-full");
+  step2.classList.add("hidden");
+  step1.classList.remove("hidden");
+  progressBar.classList.add("w-1/2");
+  progressBar.classList.remove("w-full");
 });
 
 // =======================================================
-// SUBMIT FINAL
+// SUBMIT FINAL (ENVIO PARA BACKEND)
 // =======================================================
-
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Coleta dados da Etapa 1 (já validados)
   const nomeCompleto = document.getElementById("name").value.trim();
   const cpfNumerico = cpfInput.value.replace(/\D/g, "");
   const crp = crpInput.value.trim();
   const email = emailInput.value.trim();
   const senha = passwordInput.value;
 
-  // Coleta dados da Etapa 2
   const tipoAtuacao = document.querySelector('input[name="atuacao"]:checked')?.value;
   const valorConsulta = document.querySelector('select[name="valor"]').value;
-  
-  // Coleta Múltiplos Convênios
   const convenios = Array.from(document.querySelectorAll('input[name="convenio"]:checked')).map(el => el.value);
-  
   const modalidadesAtendimento = Array.from(document.querySelectorAll('input[name="modalidade"]:checked')).map(el => el.value);
 
-  // Validações Finais
   if (!tipoAtuacao || !valorConsulta) {
-    alert("⚠️ Por favor, preencha todos os campos obrigatórios da Etapa 2!");
+    alert("⚠️ Preencha todos os campos obrigatórios da Etapa 2!");
     return;
   }
-  
+
   if (modalidadesAtendimento.length === 0) {
-      alert("⚠️ Selecione pelo menos uma modalidade de atendimento (Online, Presencial, ou Híbrido).");
-      return;
+    alert("⚠️ Selecione pelo menos uma modalidade de atendimento.");
+    return;
   }
 
-  // Monta payload final
   const payload = {
     nomeCompleto,
     cpf: cpfNumerico,
@@ -518,9 +462,9 @@ form.addEventListener("submit", async (e) => {
     console.error("Erro de Rede:", error);
     alert("❌ Falha na conexão com o servidor. Tente novamente.");
   } finally {
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.textContent = 'Cadastrar';
-      submitBtn.disabled = false;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.textContent = 'Cadastrar';
+    submitBtn.disabled = false;
   }
 });
 </script>
