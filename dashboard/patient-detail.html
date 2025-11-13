@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,19 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-<!-- Sidebar -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
             </img>
         </div>
         <nav class="sidebar-nav">
-            <a href="index.html" class="nav-item">
+            <a href="dashboard-home.html" class="nav-item">
                 <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
                 </img>
             </a>
@@ -44,7 +47,8 @@
             <div class="patient-detail-header">
                 <div class="patient-detail-avatar">
                     <img src="assets/icon-user.svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
-                        <path d="M14 70c0-14.359 11.641-26 26-26s26 11.641 26 26" stroke="#4F3422" stroke-width="3" fill="none"/>
+                    <path d="M14 70c0-14.359 11.641-26 26-26s26 11.641 26 26" stroke="#4F3422" stroke-width="3"
+                        fill="none" />
                     </img>
                 </div>
                 <div class="patient-detail-info">
@@ -54,7 +58,8 @@
                 </div>
                 <button class="close-btn" onclick="window.location.href='patients.html'">
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <path d="M24 8L8 24M8 8L24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24 8L8 24M8 8L24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
             </div>
@@ -65,7 +70,8 @@
                     <div class="pontuario-card" id="pontuario-card">
                         <div class="pontuario-header">
                             <div class="pontuario-title-wrapper">
-                                <img src="assets/icon-ativid-marrom.svg" width="32" height="32" viewBox="0 0 32 32" fill="none"/>
+                                <img src="assets/icon-ativid-marrom.svg" width="32" height="32" viewBox="0 0 32 32"
+                                    fill="none" />
                                 <h2 class="pontuario-title">Pontuário</h2>
                             </div>
                         </div>
@@ -83,12 +89,14 @@
 
                         <div class="pontuario-section">
                             <h3 class="pontuario-section-title">Evolução</h3>
-                            <p class="pontuario-text editable-text">Paciente anda demonstrando boas evoluções com as atividades postadas para ele.</p>
+                            <p class="pontuario-text editable-text">Paciente anda demonstrando boas evoluções com as
+                                atividades postadas para ele.</p>
                         </div>
 
                         <div class="detail-actions">
                             <button class="detail-btn detail-btn-secondary" id="edit-pontuario-btn">Editar</button>
-                            <button class="detail-btn detail-btn-primary" id="save-pontuario-btn" style="display: none;">Salvar</button>
+                            <button class="detail-btn detail-btn-primary" id="save-pontuario-btn"
+                                style="display: none;">Salvar</button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +109,8 @@
                             <p class="detail-action-text">Ver histórico de consultas completo desse paciente</p>
                         </div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
 
@@ -111,7 +120,8 @@
                             <p class="detail-action-text">Ver suas análises sobre esse paciente</p>
                         </div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
 
@@ -121,7 +131,8 @@
                             <p class="detail-action-text">Ver tarefas atribuídas a esse paciente</p>
                         </div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
                 </div>
@@ -136,7 +147,8 @@
                 <h3 class="modal-title-large">Histórico de Consultas - Mariana</h3>
                 <button class="close-modal-btn" id="close-history-modal" onclick="closeModal('history-modal')">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
             </div>
@@ -153,24 +165,28 @@
                 <h3 class="modal-title-large">Análise</h3>
                 <button class="close-modal-btn" id="close-analysis-modal" onclick="closeModal('analysis-modal')">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
             </div>
             <button class="add-annotation-btn" id="add-analysis-btn">
                 + Adicionar uma nova anotação
             </button>
-            <button class="modal-btn modal-btn-confirm" id="delete-analysis-btn" style="margin-top: 12px; display: none;" onclick="openModal('delete-analysis-modal')">
+            <button class="modal-btn modal-btn-confirm" id="delete-analysis-btn"
+                style="margin-top: 12px; display: none;" onclick="openModal('delete-analysis-modal')">
                 Excluir Selecionadas
             </button>
             <div class="analysis-entries" id="analysis-entries">
                 <div class="analysis-entry">
                     <p class="analysis-date">10/03/2025</p>
-                    <p class="analysis-text">Primeira sessão de terapia. Paciente apresentou queixa de ansiedade e dificuldades de organização no trabalho.</p>
+                    <p class="analysis-text">Primeira sessão de terapia. Paciente apresentou queixa de ansiedade e
+                        dificuldades de organização no trabalho.</p>
                 </div>
                 <div class="analysis-entry">
                     <p class="analysis-date">17/03/2025</p>
-                    <p class="analysis-text">O paciente relata leve melhora no gerenciamento de tempo, porém continua apresentando episódios de ansiedade intensa.</p>
+                    <p class="analysis-text">O paciente relata leve melhora no gerenciamento de tempo, porém continua
+                        apresentando episódios de ansiedade intensa.</p>
                 </div>
             </div>
         </div>
@@ -180,10 +196,13 @@
     <div id="add-analysis-modal" class="modal">
         <div class="modal-content">
             <h3 class="modal-title">Nova Anotação</h3>
-            <textarea id="new-analysis-text" class="form-textarea" placeholder="Digite sua anotação..." rows="6"></textarea>
+            <textarea id="new-analysis-text" class="form-textarea" placeholder="Digite sua anotação..."
+                rows="6"></textarea>
             <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" id="cancel-analysis" onclick="closeModal('add-analysis-modal')">Cancelar</button>
-                <button class="modal-btn modal-btn-primary" id="save-analysis" onclick="openModal('save-analysis-confirm-modal')">Salvar</button>
+                <button class="modal-btn modal-btn-cancel" id="cancel-analysis"
+                    onclick="closeModal('add-analysis-modal')">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="save-analysis"
+                    onclick="openModal('save-analysis-confirm-modal')">Salvar</button>
             </div>
         </div>
     </div>
@@ -194,8 +213,10 @@
             <h3 class="modal-title">Confirmar</h3>
             <p class="modal-text">Tem certeza que deseja salvar esta anotação?</p>
             <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" id="cancel-save-analysis" onclick="closeModal('save-analysis-confirm-modal')">Cancelar</button>
-                <button class="modal-btn modal-btn-primary" id="confirm-save-analysis" onclick="saveAnalysis()">Salvar</button>
+                <button class="modal-btn modal-btn-cancel" id="cancel-save-analysis"
+                    onclick="closeModal('save-analysis-confirm-modal')">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="confirm-save-analysis"
+                    onclick="saveAnalysis()">Salvar</button>
             </div>
         </div>
     </div>
@@ -207,7 +228,8 @@
                 <h3 class="modal-title-large">Tarefas - Mariana</h3>
                 <button class="close-modal-btn" id="close-tasks-modal" onclick="closeModal('patient-tasks-modal')">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
             </div>
@@ -223,8 +245,10 @@
             <h3 class="modal-title">Confirmar alterações</h3>
             <p class="modal-text">Tem certeza que deseja salvar as alterações no pontuário?</p>
             <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" id="cancel-save-pontuario" onclick="closeModal('save-pontuario-modal')">Cancelar</button>
-                <button class="modal-btn modal-btn-primary" id="confirm-save-pontuario" onclick="savePontuario()">Salvar</button>
+                <button class="modal-btn modal-btn-cancel" id="cancel-save-pontuario"
+                    onclick="closeModal('save-pontuario-modal')">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="confirm-save-pontuario"
+                    onclick="savePontuario()">Salvar</button>
             </div>
         </div>
     </div>
@@ -235,12 +259,15 @@
             <h3 class="modal-title">Confirmar exclusão</h3>
             <p class="modal-text">Tem certeza que deseja excluir as anotações selecionadas?</p>
             <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" id="cancel-delete-analysis" onclick="closeModal('delete-analysis-modal')">Cancelar</button>
-                <button class="modal-btn modal-btn-confirm" id="confirm-delete-analysis" onclick="deleteAnalysis()">Excluir</button>
+                <button class="modal-btn modal-btn-cancel" id="cancel-delete-analysis"
+                    onclick="closeModal('delete-analysis-modal')">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" id="confirm-delete-analysis"
+                    onclick="deleteAnalysis()">Excluir</button>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,19 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-<!-- Sidebar -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
             </img>
         </div>
         <nav class="sidebar-nav">
-            <a href="index.html" class="nav-item">
+            <a href="dashboard-home.html" class="nav-item">
                 <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
                 </img>
             </a>
@@ -44,10 +47,12 @@
         <div class="container" id="community-container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
                 <h1 class="page-title">Comunidade</h1>
-                <button id="delete-posts-btn" class="modal-btn modal-btn-confirm" style="display: none;">Excluir Selecionados</button>
+                <button id="delete-posts-btn" class="modal-btn modal-btn-confirm" style="display: none;">Excluir
+                    Selecionados</button>
             </div>
             <!-- Button will be hidden by JS when no posts exist -->
-            <button id="select-posts-btn" class="modal-btn modal-btn-secondary" style="margin-bottom: 24px;">Selecionar Posts</button>
+            <button id="select-posts-btn" class="modal-btn modal-btn-secondary" style="margin-bottom: 24px;">Selecionar
+                Posts</button>
             <div id="posts-list"></div>
         </div>
     </main>
@@ -66,4 +71,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

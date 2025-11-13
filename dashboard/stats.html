@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,19 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-       <!-- Sidebar -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
             </img>
         </div>
         <nav class="sidebar-nav">
-            <a href="index.html" class="nav-item">
+            <a href="dashboard-home.html" class="nav-item">
                 <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
                 </img>
             </a>
@@ -43,11 +46,11 @@
     <main class="main-content">
         <div class="container">
             <h1 class="page-title">Atividades</h1>
-            
+
             <div class="activities-layout" style="display: grid; grid-template-columns: 1fr 400px; gap: 32px;">
                 <div class="create-activity-card">
                     <h2 class="section-title-small">Criar Nova Atividade</h2>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Paciente</label>
                         <select id="activity-patient" class="form-select">
@@ -61,12 +64,14 @@
 
                     <div class="form-group">
                         <label class="form-label">Título</label>
-                        <input type="text" id="activity-title" class="form-input" placeholder="Digite o título da atividade">
+                        <input type="text" id="activity-title" class="form-input"
+                            placeholder="Digite o título da atividade">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Descrição</label>
-                        <textarea id="activity-description" class="form-textarea" placeholder="Digite a descrição da atividade" rows="6"></textarea>
+                        <textarea id="activity-description" class="form-textarea"
+                            placeholder="Digite a descrição da atividade" rows="6"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -116,7 +121,8 @@
                 <h3 class="modal-title-large" id="activity-detail-title">Detalhes da Atividade</h3>
                 <button class="close-modal-btn" id="close-activity-details">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
             </div>
@@ -129,4 +135,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

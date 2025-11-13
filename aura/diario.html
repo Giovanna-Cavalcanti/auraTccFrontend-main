@@ -1104,6 +1104,252 @@
         updateFilterLabel();
         renderDaySelectors();
         renderEntriesList();
+
+        // ============================================
+        // INTEGRAÇÃO COM BACKEND - DIÁRIO EMOCIONAL
+        // ============================================
+
+        // 🔑 CONFIGURAÇÃO INICIAL
+        const BACKEND_URL = 'https://auratccbackend.onrender.com';
+
+        // IMPORTANTE: Substituir pelo ID real do paciente
+        // Em produção, pegar do localStorage ou JWT token
+        function getPacienteId() {
+            // TROCAR ESTE ID PELO SEU ID REAL DE TESTE
+            return localStorage.getItem('pacienteId') || "68a619fee09cd6f8b93f16c8";
+        }
+
+        // ============================================
+        // 1️⃣ CRIAR NOVA ANOTAÇÃO (POST)
+        // ============================================
+        async function criarAnotacaoBackend(conteudo) {
+            try {
+                const pacienteId = getPacienteId();
+
+                const dados = {
+                    pacienteId: pacienteId,
+                    conteudo: conteudo
+                };
+
+                console.log("📝 Criando anotação:", dados);
+
+                const response = await fetch(`${BACKEND_URL}/api/diario`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // Se tiver JWT, adicionar aqui:
+                        // 'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                const resultado = await response.json();
+                console.log("✅ Resposta do servidor:", resultado);
+
+                if (response.ok) {
+                    alert('✅ Anotação criada com sucesso!');
+                    return resultado;
+                } else {
+                    alert('❌ Erro ao criar anotação: ' + (resultado.error || 'Tente novamente'));
+                    return null;
+                }
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                alert('❌ Erro ao conectar com o servidor');
+                return null;
+            }
+        }
+
+        // ============================================
+        // 2️⃣ LISTAR TODAS AS ANOTAÇÕES (GET)
+        // ============================================
+        async function listarAnotacoesBackend() {
+            try {
+                const pacienteId = getPacienteId();
+
+                console.log("📋 Buscando anotações do paciente:", pacienteId);
+
+                const response = await fetch(`${BACKEND_URL}/api/diario/paciente/${pacienteId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // Se tiver JWT:
+                        // 'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const anotacoes = await response.json();
+                console.log("✅ Anotações recebidas:", anotacoes);
+
+                if (response.ok) {
+                    return anotacoes;
+                } else {
+                    console.error('❌ Erro ao buscar anotações:', anotacoes);
+                    return [];
+                }
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                return [];
+            }
+        }
+
+        // ============================================
+        // 3️⃣ EDITAR ANOTAÇÃO (PUT)
+        // ============================================
+        async function editarAnotacaoBackend(idAnotacao, novoConteudo) {
+            try {
+                const dados = {
+                    conteudo: novoConteudo
+                };
+
+                console.log("✏️ Editando anotação:", idAnotacao, dados);
+
+                const response = await fetch(`${BACKEND_URL}/api/diario/${idAnotacao}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // Se tiver JWT:
+                        // 'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                const resultado = await response.json();
+                console.log("✅ Resposta do servidor:", resultado);
+
+                if (response.ok) {
+                    alert('✅ Anotação atualizada com sucesso!');
+                    return resultado;
+                } else {
+                    alert('❌ Erro ao atualizar anotação: ' + (resultado.error || 'Tente novamente'));
+                    return null;
+                }
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                alert('❌ Erro ao conectar com o servidor');
+                return null;
+            }
+        }
+
+        // ============================================
+        // 4️⃣ DELETAR ANOTAÇÃO (DELETE)
+        // ============================================
+        async function deletarAnotacaoBackend(idAnotacao) {
+            try {
+                console.log("🗑️ Deletando anotação:", idAnotacao);
+
+                const response = await fetch(`${BACKEND_URL}/api/diario/${idAnotacao}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // Se tiver JWT:
+                        // 'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const resultado = await response.json();
+                console.log("✅ Resposta do servidor:", resultado);
+
+                if (response.ok) {
+                    alert('✅ Anotação deletada com sucesso!');
+                    return true;
+                } else {
+                    alert('❌ Erro ao deletar anotação: ' + (resultado.error || 'Tente novamente'));
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                alert('❌ Erro ao conectar com o servidor');
+                return false;
+            }
+        }
+
+        // ============================================
+        // 5️⃣ CARREGAR ANOTAÇÕES DO BACKEND AO ABRIR A PÁGINA
+        // ============================================
+        async function carregarAnotacoesIniciais() {
+            console.log("🔄 Carregando anotações do backend...");
+
+            const anotacoesBackend = await listarAnotacoesBackend();
+
+            if (anotacoesBackend && anotacoesBackend.length > 0) {
+                // Converter para o formato usado no frontend
+                entries = anotacoesBackend.map(anotacao => ({
+                    id: anotacao._id, // MongoDB usa _id
+                    title: extrairTitulo(anotacao.conteudo), // Extrair primeiras palavras como título
+                    content: anotacao.conteudo,
+                    date: anotacao.dataCriacao.split('T')[0], // Converter ISO para YYYY-MM-DD
+                    mood: "😊" // Mood padrão (se quiser, pode adicionar mood no backend)
+                }));
+
+                // Atualizar a interface
+                renderEntriesList();
+                renderEntryListSidebar();
+
+                console.log("✅ Anotações carregadas do backend:", entries.length);
+            }
+        }
+
+        // Função auxiliar para extrair título do conteúdo
+        function extrairTitulo(conteudo) {
+            // Pega as primeiras 5 palavras como título
+            const palavras = conteudo.trim().split(' ').slice(0, 5).join(' ');
+            return palavras + (conteudo.split(' ').length > 5 ? '...' : '');
+        }
+
+        // ============================================
+        // 6️⃣ INTEGRAR COM AS FUNÇÕES EXISTENTES
+        // ============================================
+
+        // MODIFICAR a função saveEntry para também salvar no backend
+        const saveEntryOriginal = saveEntry; // Guardar a função original
+        saveEntry = async function (newEntry) {
+            // Se for NOVA entrada (sem ID)
+            if (!newEntry.id) {
+                const resultado = await criarAnotacaoBackend(newEntry.content);
+                if (resultado) {
+                    newEntry.id = resultado._id || Date.now(); // Usar o ID do backend
+                }
+            } else {
+                // Se for EDIÇÃO
+                await editarAnotacaoBackend(newEntry.id, newEntry.content);
+            }
+
+            // Chamar a função original do frontend
+            saveEntryOriginal(newEntry);
+        };
+
+        // MODIFICAR a função handleDelete para também deletar do backend
+        const handleDeleteOriginal = handleDelete; // Guardar a função original
+        handleDelete = async function (id) {
+            if (!id) return;
+
+            if (confirm("Você tem certeza que deseja deletar esta entrada?")) {
+                // Deletar do backend primeiro
+                const sucesso = await deletarAnotacaoBackend(id);
+
+                if (sucesso) {
+                    // Se deu certo, deletar do frontend
+                    entries = entries.filter(e => e.id !== id);
+                    closeViewer();
+                    closeEditor();
+                    renderEntriesList();
+                    renderEntryListSidebar();
+                }
+            }
+        };
+
+        // ============================================
+        // 7️⃣ INICIALIZAÇÃO AUTOMÁTICA
+        // ============================================
+        // Carregar anotações do backend quando a página abrir
+        window.addEventListener('DOMContentLoaded', async function () {
+            console.log("🎯 Página do diário carregada!");
+            await carregarAnotacoesIniciais();
+        });
+
+        console.log("✅ Script de integração do diário carregado com sucesso!");
+
     </script>
 
 </body>
