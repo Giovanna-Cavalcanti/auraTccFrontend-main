@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,6 +11,11 @@
     />
     <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
     <style>
+        /* ⚠️ CORREÇÃO: CSS personalizado para a cor bege exata */
+        body {
+            background-color: #F7F4F0; /* Cor bege/creme da imagem */
+        }
+        
         /* Animações personalizadas */
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -58,15 +62,15 @@
         .slide-in {
             animation: slideIn 0.3s forwards;
         }
+
+        /* Botão de voz (fixo) */
+        .voice-btn-active { background-color: #dc2626 !important; } /* vermelho quando ouvindo */
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
-    <!-- Layout principal -->
+<body class="font-sans"> 
     <div class="flex flex-col h-screen">
-        <!-- Cabeçalho -->
         <header class="bg-white shadow-sm z-10">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <!-- Botão menu hamburguer para histórico do chat -->
                 <button
                   id="menuButton"
                   class="text-gray-700 hover:text-green-600 focus:outline-none"
@@ -77,14 +81,13 @@
                 <div class="flex items-center space-x-2">
                     <img
                       src="img/logo-janela.png"
-                      alt="Logo da Aurora - Um gradiente suave do azul ao roxo com um ícone estilizado de nascer do sol"
+                      alt="Logo da Aurora"
                       class="h-8 w-8 rounded-full"
                       onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/34cc0767-6809-4282-86a6-755ed20e77c3.png'"
                     />
                     <h1 class="text-xl font-semibold text-gray-800">Aurora</h1>
                 </div>
                 
-                <!-- Botão perfil do usuário -->
                 <button
                   id="profileButton"
                   class="text-gray-700 hover:text-green-600 focus:outline-none"
@@ -94,7 +97,6 @@
             </div>
         </header>
         
-        <!-- Menu lateral (escondido por padrão) -->
         <div
           id="sideMenu"
           class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full z-20 p-4 overflow-y-auto"
@@ -106,11 +108,9 @@
                 </button>
             </div>
             <div id="historyList" class="space-y-2">
-                <!-- Conteúdo dinâmico será adicionado aqui -->
-            </div>
+                </div>
         </div>
         
-        <!-- Modal de perfil (escondido por padrão) -->
         <div
           id="profileModal"
           class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30 hidden"
@@ -126,8 +126,6 @@
                 
                 </div>
                 <div class="space-y-3">
-
-
                     <a href="Configuracoes.html">
                     <button
                       class="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-left"
@@ -148,14 +146,11 @@
             </div>
         </div>
         
-        <!-- Área principal do chat -->
         <main class="flex-1 container mx-auto px-4 py-4 flex flex-col">
-            <!-- Mensagens do chat -->
             <div
               id="chatMessages"
               class="chat-messages flex-1 overflow-y-auto mb-4 space-y-4"
             >
-                <!-- Mensagem de boas-vindas -->
                 <div class="flex justify-start">
                     <div
                       class="max-w-3/4 bg-green-100 rounded-2xl p-4 text-green-900"
@@ -175,7 +170,6 @@
                         </p>
                         <p class="mt-2">Como você está se sentindo hoje?</p>
 
-                        <!-- Botões de respostas rápidas -->
                         <div class="flex flex-wrap gap-2 mt-3">
                             <button
                               class="quick-response-btn px-3 py-1 bg-white rounded-full text-sm border border-green-200 hover:bg-green-50"
@@ -202,7 +196,6 @@
                 </div>
             </div>
             
-            <!-- Banner de Recursos de Emergência -->
             <div
               id="emergencyBanner"
               class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-4"
@@ -228,7 +221,6 @@
                 </div>
             </div>
             
-            <!-- Área de input da mensagem -->
             <div
               class="bg-white rounded-lg shadow-sm border border-gray-200 p-3"
             >
@@ -260,12 +252,26 @@
         </main>
     </div>
 
+    <div class="fixed bottom-24 right-6">
+        <button id="voiceToggle"
+            title="Ativar / Desativar voz"
+            class="bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-lg">
+            <i class="fas fa-microphone"></i>
+        </button>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-                // === CONFIGURA AQUI ===
-    const API_BASE = 'https://aurora-api-quwn.onrender.com';
-    const MESSAGE_ENDPOINT = API_BASE + '/api/message'; // rota correta para enviar mensagem
-
+            // Garante que a lista de vozes seja populada ao carregar a página
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    console.log("Vozes do TTS carregadas.");
+                };
+            }
+            
+            // === CONFIGURA AQUI ===
+            const API_BASE = 'https://aurora-api-quwn.onrender.com';
+            const MESSAGE_ENDPOINT = API_BASE + '/api/message'; // rota correta para enviar mensagem
 
             // Elementos do DOM
             const menuButton = document.getElementById('menuButton');
@@ -282,24 +288,30 @@
             const quickResponseButtons = document.querySelectorAll('.quick-response-btn');
             const historyList = document.getElementById('historyList');
             const logoutBtn = document.getElementById('logoutBtn');
+            const voiceButton = document.getElementById('voiceToggle');
+
+            // Estado do reconhecimento
+            let recognition = null;
+            let recognizing = false;
+            let auroraAwake = false; // quando true, a fala do usuário é enviada como mensagem
+            let lastTranscript = "";
 
             // Menu
             menuButton.addEventListener('click', () => {
                 sideMenu.classList.add('slide-in');
                 sideMenu.classList.remove('hidden');
             });
-            closeMenu.addEventListener('click', () => sideMenu.classList.add('hidden'));
+            closeMenu && closeMenu.addEventListener('click', () => sideMenu.classList.add('hidden'));
             profileButton.addEventListener('click', () => profileModal.classList.remove('hidden'));
-            closeProfile.addEventListener('click', () => profileModal.classList.add('hidden'));
+            closeProfile && closeProfile.addEventListener('click', () => profileModal.classList.add('hidden'));
             window.addEventListener('click', (event) => {
                 if (event.target === profileModal) profileModal.classList.add('hidden');
                 if (event.target === sideMenu) sideMenu.classList.add('hidden');
             });
             logoutBtn && logoutBtn.addEventListener('click', () => {
-                // exemplo: só fecha modal e limpa histórico local
                 profileModal.classList.add('hidden');
                 historyList.innerHTML = '';
-                addLocalHistory('Usuário saiu da sessão');
+                addLocalHistory({ user: 'Usuário saiu da sessão', bot: '' });
             });
 
             // Auto-resize textarea
@@ -313,7 +325,7 @@
                 const content = messageInput.value.trim();
                 if (!content) return;
 
-                    const userId = "12345";
+                const userId = "12345";
 
                 // adiciona mensagem do usuário
                 addMessageToChat('user', content);
@@ -329,13 +341,13 @@
                     const res = await fetch(MESSAGE_ENDPOINT, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            userId: "12345", 
-                            content })
+                        body: JSON.stringify({
+                            userId,
+                            content
+                        })
                     });
 
                     if (!res.ok) {
-                        // se a API responder com erro, tenta fallback local
                         console.warn('API respondeu com status', res.status);
                         const textFallback = (await res.text()) || 'Erro no servidor';
                         hideTypingIndicator();
@@ -347,16 +359,17 @@
                     const data = await res.json();
 
                     // Mapeia possíveis formatos de resposta do backend
-                    const botText = data.reply || data.message || data.text || (data.result && data.result.reply) || JSON.stringify(data);
+                    const botText = data.resposta || data.reply || data.message || data.text || (data.result && data.result.reply) || JSON.stringify(data);
                     const isEmergency = data.isEmergency || data.emergency || false;
 
+                    const respostaLimpa = limparFormato(botText);
+
                     hideTypingIndicator();
-                    addMessageToChat('assistant', botText, isEmergency);
+                    addMessageToChat('assistant', respostaLimpa, isEmergency);
 
                     // salva no histórico local (simples)
-                    addLocalHistory({ user: message, bot: botText });
+                    addLocalHistory({ user: content, bot: respostaLimpa });
                 } catch (err) {
-                    // fallback: gera resposta localmente se a API não estiver disponível
                     console.error('Erro ao conectar com a API:', err);
                     hideTypingIndicator();
                     const local = generateResponse(content);
@@ -410,7 +423,8 @@
                     `;
                 }
 
-                messageContent += `<p>${escapeHtml(message)}</p>`;
+                messageContent += `<p>${message}</p>`;
+
 
                 if (isEmergency) {
                     messageContent += `
@@ -495,6 +509,20 @@
                   .replace(/'/g, '&#039;');
             }
 
+            // Limpa formatações indesejadas de Markdown/aspas
+            function limparFormato(texto) {
+                if (!texto) return "";
+                return String(texto)
+                    .replace(/\*\*(.*?)\*\*/g, "$1")   // **bold**
+                    .replace(/\*(.*?)\*/g, "$1")       // *italic*
+                    .replace(/_(.*?)_/g, "$1")         // _italic_
+                    .replace(/`+/g, "")                // `code`
+                    .replace(/"{2,}/g, "")             // aspas duplas repetidas
+                    .replace(/^"|"$/g, "")             // aspas soltas no começo/fim
+                    .replace(/\s+/g, " ")
+                    .trim();
+            }
+
             // === Fallback local: usa a lógica que você já tinha ===
             function generateResponse(userMessage) {
                 const lowerMsg = userMessage.toLowerCase();
@@ -538,6 +566,207 @@
                     isEmergency: false
                 };
             }
+
+            // ========== RECONHECIMENTO DE VOZ (Web Speech API) ==========
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+
+            if (SpeechRec) {
+                recognition = new SpeechRec();
+                recognition.lang = "pt-BR";
+                recognition.continuous = true;
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    recognizing = true;
+                    voiceButton.classList.add('voice-btn-active');
+                    console.log('Reconhecimento de voz iniciado');
+                };
+
+                recognition.onend = () => {
+                    recognizing = false;
+                    voiceButton.classList.remove('voice-btn-active');
+                    console.log('Reconhecimento de voz parado');
+
+                    // se Aurora estiver acordada, reinicia para continuar ouvindo
+                    if (auroraAwake) {
+                        try {
+                            recognition.start();
+                        } catch (e) {
+                            console.warn('Erro ao reiniciar reconhecimento:', e);
+                        }
+                    }
+                };
+
+                recognition.onerror = (ev) => {
+                    console.warn('Erro no reconhecimento de voz:', ev.error);
+                };
+
+                recognition.onresult = async (event) => {
+                    console.log("🚀 EVENTO DE FALA DISPAROU");
+                    const lastIndex = event.results.length - 1;
+                    const transcriptRaw = event.results[lastIndex][0].transcript || '';
+                    const transcript = transcriptRaw.toLowerCase().trim();
+                    console.log("🎤 Texto capturado (bruto):", transcriptRaw);
+                    console.log("🎤 Texto capturado (normalizado):", transcript);
+
+                    lastTranscript = transcript;
+
+                    // ATIVAÇÃO por fala — flexível (várias formas)
+                    if (!auroraAwake && (
+                        transcript.includes("olá aurora") ||
+                        transcript.includes("ola aurora") ||
+                        transcript.includes("oi aurora") ||
+                        transcript === "aurora" ||
+                        transcript.includes("aurora,") ||
+                        transcript.includes("aurora ")
+                    )) {
+                        auroraAwake = true;
+                        speak("Olá! Estou aqui. Pode falar comigo.");
+                        console.log('Aurora ativada por voz');
+                        return; // não enviar essa frase como mensagem
+                    }
+
+                    // DESATIVAÇÃO por fala
+                    if (auroraAwake && (
+                        transcript.includes("aurora parar") ||
+                        transcript.includes("parar aurora") ||
+                        transcript.includes("silêncio aurora") ||
+                        transcript.includes("silencio aurora") ||
+                        transcript.includes("pare aurora")
+                    )) {
+                        auroraAwake = false;
+                        speak("Tudo bem, vou ficar em silêncio.");
+                        console.log('Aurora desativada por voz');
+                        return;
+                    }
+
+                    // Se Aurora estiver awake, enviar para API
+                    if (auroraAwake && transcript.length > 0) {
+                        // evitar reenvio do mesmo transcript repetidamente
+                        console.log("📨 Enviando para API (via voz):", transcript);
+                        addMessageToChat('user', transcript);
+
+                        showTypingIndicator();
+                        setSendingState(true);
+                        try {
+                            const botRaw = await sendVoiceMessage(transcript);
+                            const botClean = limparFormato(botRaw);
+
+                            hideTypingIndicator();
+                            addMessageToChat('assistant', botClean);
+                            addLocalHistory({ user: transcript, bot: botClean });
+
+                            console.log("📩 Resposta da API (via voz):", botClean);
+                            speak(botClean);
+                        } catch (err) {
+                            hideTypingIndicator();
+                            console.error('Erro em sendVoiceMessage:', err);
+                            const local = generateResponse(transcript);
+                            addMessageToChat('assistant', local.message, local.isEmergency);
+                            addLocalHistory({ user: transcript, bot: local.message + ' (gerado localmente)' });
+                            speak(local.message);
+                        } finally {
+                            setSendingState(false);
+                        }
+                    }
+                };
+            } else {
+                console.warn("Reconhecimento de voz não suportado neste navegador.");
+            }
+
+            // Função para enviar mensagem em modo voz (usa mesma rota do envio normal)
+            async function sendVoiceMessage(content) {
+                // útil para debug: testa conexão
+                const userId = "12345";
+                const res = await fetch(MESSAGE_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, content })
+                });
+
+                if (!res.ok) {
+                    const txt = await res.text();
+                    throw new Error(`Status ${res.status}: ${txt}`);
+                }
+
+                const data = await res.json();
+                const botText = data.resposta || data.reply || data.message || data.text || (data.result && data.result.reply) || JSON.stringify(data);
+                return botText;
+            }
+
+            // Botão manual de ativar/desativar escuta
+            voiceButton.addEventListener('click', () => {
+                if (!recognizing) {
+                    // start and set auroraAwake true
+                    auroraAwake = true;
+                    try {
+                        recognition && recognition.start();
+                        speak("Estou ouvindo você.");
+                    } catch (e) {
+                        console.warn('Erro ao iniciar reconhecimento:', e);
+                    }
+                } else {
+                    // stop and set auroraAwake false
+                    auroraAwake = false;
+                    try {
+                        recognition && recognition.stop();
+                        speak("Certo. Vou parar de ouvir agora.");
+                    } catch (e) {
+                        console.warn('Erro ao parar reconhecimento:', e);
+                    }
+                }
+            });
+
+            // TTS: fala a resposta
+            function speak(text) {
+                if (!text) return;
+                try {
+                    // limpa texto antes de falar
+                    const t = limparFormato(text);
+                    const msg = new SpeechSynthesisUtterance(t);
+                    msg.lang = "pt-BR";
+                    msg.rate = 1;
+                    msg.pitch = 1;
+
+                    // LÓGICA DE SELEÇÃO DE VOZ (PRIORIZANDO GOOGLE)
+                    const voices = speechSynthesis.getVoices(); 
+                    
+                    // 1. Tenta encontrar a voz do Google em Português
+                    let femaleVoice = voices.find(
+                        voice => voice.lang.startsWith("pt") && voice.name.toLowerCase().includes("google")
+                    );
+                    
+                    // 2. Fallback: Se não encontrar a voz do Google, procura por outros nomes femininos
+                    if (!femaleVoice) {
+                        const femaleKeywords = ["luciana", "isabella", "heloisa", "vitoria", "raquel", "celina", "ana", "female", "woman"];
+                        const lcFemaleKeywords = femaleKeywords.map(k => k.toLowerCase());
+                        
+                        femaleVoice = voices.find(
+                            voice => voice.lang.startsWith("pt") && lcFemaleKeywords.some(keyword => voice.name.toLowerCase().includes(keyword))
+                        );
+                    }
+                    
+                    // 3. Fallback final: Se ainda assim não encontrar, usa a primeira voz pt-BR disponível.
+                    if (!femaleVoice) {
+                        femaleVoice = voices.find(voice => voice.lang.startsWith("pt"));
+                    }
+                    
+                    if (femaleVoice) {
+                        msg.voice = femaleVoice;
+                        console.log("Voz selecionada (nome):", femaleVoice.name);
+                    } else {
+                        console.warn("Nenhuma voz em Português encontrada. Usando voz padrão do navegador.");
+                    }
+                    // FIM DA LÓGICA DE SELEÇÃO DE VOZ
+
+                    // quando falar, evitar sobreposição: cancela fala anterior
+                    if (speechSynthesis.speaking) speechSynthesis.cancel();
+                    speechSynthesis.speak(msg);
+                } catch (e) {
+                    console.warn('Erro no TTS:', e);
+                }
+            }
+
         });
     </script>
 </body>
