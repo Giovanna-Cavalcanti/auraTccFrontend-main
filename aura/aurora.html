@@ -582,27 +582,29 @@
                     console.log('Reconhecimento de voz iniciado');
                 };
 
-                // ⚠️ CORREÇÃO DE ESTABILIDADE DO MICROFONE APLICADA AQUI
+                // ⚠️ CORREÇÃO DE ESTABILIDADE DO MICROFONE (Atraso aumentado para 500ms)
                 recognition.onend = () => {
                     recognizing = false;
                     voiceButton.classList.remove('voice-btn-active');
                     console.log('Reconhecimento de voz parado');
 
-                    // Se Aurora foi desativada manualmente (auroraAwake = false), o ciclo é encerrado.
+                    // Se Aurora foi desativada manualmente, não reinicia.
                     if (!auroraAwake) {
                         return;
                     }
                     
-                    // Se foi parado automaticamente (oscilando no Vercel), reinicia com um pequeno atraso para estabilizar.
-                    console.log('Reconhecimento de voz parado, reiniciando automaticamente...');
+                    // Aumentar o atraso para estabilizar a reconexão em ambientes instáveis.
+                    console.log('Reconhecimento de voz parado, reiniciando automaticamente com 500ms...');
                     
                     setTimeout(() => { 
-                        try {
-                            recognition.start();
-                        } catch (e) {
-                            console.warn('Erro ao reiniciar reconhecimento:', e);
+                        if (auroraAwake && !recognizing) { // Checa novamente antes de iniciar
+                            try {
+                                recognition.start();
+                            } catch (e) {
+                                console.warn('Erro ao reiniciar reconhecimento:', e);
+                            }
                         }
-                    }, 200); // Atraso de 200ms para evitar oscilação rápida
+                    }, 500); // ⚠️ Atraso maior (500ms) para ambientes instáveis
                 };
 
                 recognition.onerror = (ev) => {
