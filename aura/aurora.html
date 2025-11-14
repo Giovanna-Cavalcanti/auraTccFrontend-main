@@ -582,19 +582,27 @@
                     console.log('Reconhecimento de voz iniciado');
                 };
 
+                // ⚠️ CORREÇÃO DE ESTABILIDADE DO MICROFONE APLICADA AQUI
                 recognition.onend = () => {
                     recognizing = false;
                     voiceButton.classList.remove('voice-btn-active');
                     console.log('Reconhecimento de voz parado');
 
-                    // se Aurora estiver acordada, reinicia para continuar ouvindo
-                    if (auroraAwake) {
+                    // Se Aurora foi desativada manualmente (auroraAwake = false), o ciclo é encerrado.
+                    if (!auroraAwake) {
+                        return;
+                    }
+                    
+                    // Se foi parado automaticamente (oscilando no Vercel), reinicia com um pequeno atraso para estabilizar.
+                    console.log('Reconhecimento de voz parado, reiniciando automaticamente...');
+                    
+                    setTimeout(() => { 
                         try {
                             recognition.start();
                         } catch (e) {
                             console.warn('Erro ao reiniciar reconhecimento:', e);
                         }
-                    }
+                    }, 200); // Atraso de 200ms para evitar oscilação rápida
                 };
 
                 recognition.onerror = (ev) => {
@@ -709,6 +717,7 @@
                     // stop and set auroraAwake false
                     auroraAwake = false;
                     try {
+                        // O stop chama recognition.onend, que agora verifica !auroraAwake e não reinicia.
                         recognition && recognition.stop();
                         speak("Certo. Vou parar de ouvir agora.");
                     } catch (e) {
@@ -758,7 +767,7 @@
                         console.warn("Nenhuma voz em Português encontrada. Usando voz padrão do navegador.");
                     }
                     // FIM DA LÓGICA DE SELEÇÃO DE VOZ
-
+                    
                     // quando falar, evitar sobreposição: cancela fala anterior
                     if (speechSynthesis.speaking) speechSynthesis.cancel();
                     speechSynthesis.speak(msg);
