@@ -794,6 +794,8 @@ function initCreatePostPage() {
 
       posts.push(newPost)
       DataManager.savePosts(posts)
+      
+      console.log('✅ Post criado:', newPost);
 
       console.log('✅ Post criado:', newPost);
 
