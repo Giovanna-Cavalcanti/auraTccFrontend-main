@@ -10,66 +10,463 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <style>
+        /* Estilos adicionais para o modal igual ao print */
+        .post-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f7f4f2;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .post-modal-overlay.active {
+            display: block;
+        }
+
+        .post-modal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 32px;
+            min-height: 100vh;
+        }
+
+        .post-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .post-modal-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #a6bd6f;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .post-modal-stats {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4f3422;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .post-modal-content {
+            background-color: #ffffff;
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 32px;
+        }
+
+        .post-modal-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4f3422;
+            margin-bottom: 24px;
+            white-space: pre-wrap;
+        }
+
+        .settings-icon-modal {
+            width: 44px;
+            height: 44px;
+            background-color: #f6f3f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .settings-icon-modal:hover {
+            background-color: #e8dfd3;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">
-            <img src="assets/logo-sidebar.svg" width="40" height="40" viewBox="0 0 40 40">
-            </img>
+            <img src="assets/logo-sidebar.svg" width="40" height="40">
         </div>
         <nav class="sidebar-nav">
             <a href="dashboard-home.html" class="nav-item">
-                <img src="assets/icon-home.svg" width="28" height="28" viewBox="0 0 28 28">
-                </img>
+                <img src="assets/icon-home.svg" width="28" height="28">
             </a>
             <a href="patients.html" class="nav-item">
-                <img src="assets/icon-pacientes.svg" 28" height="28" viewBox="0 0 28 28">
-                </img>
+                <img src="assets/icon-pacientes.svg" width="28" height="28">
             </a>
             <a href="stats.html" class="nav-item">
-                <img src="assets/icon-ativid.svg" width="28" height="28" viewBox="0 0 28 28">
-                </img>
+                <img src="assets/icon-ativid.svg" width="28" height="28">
             </a>
             <a href="community.html" class="nav-item active">
-                <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
+                <img src="assets/icon-comunidade.svg" width="28" height="28">
             </a>
         </nav>
-        <button class="sidebar-back">
-            <img src="assets/icon-sair.svg" width="28" height="28" viewBox="0 0 28 28">
-            </img>
+        <button class="sidebar-back" onclick="window.location.href='login.html'">
+            <img src="assets/icon-sair.svg" width="28" height="28">
         </button>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="container" id="community-container">
+        <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
                 <h1 class="page-title">Comunidade</h1>
-                <button id="delete-posts-btn" class="modal-btn modal-btn-confirm" style="display: none;">Excluir
-                    Selecionados</button>
+                <button class="detail-btn detail-btn-primary" 
+                    onclick="window.location.href='create-post.html'">
+                    Nova Postagem
+                </button>
             </div>
-            <!-- Button will be hidden by JS when no posts exist -->
-            <button id="select-posts-btn" class="modal-btn modal-btn-secondary" style="margin-bottom: 24px;">Selecionar
-                Posts</button>
-            <div id="posts-list"></div>
+
+            <!-- Filtros -->
+            <div class="filter-tabs" style="margin-bottom: 32px;">
+                <button class="filter-tab active" data-filter="all">Todas</button>
+                <button class="filter-tab" data-filter="mine">Minhas Postagens</button>
+            </div>
+
+            <!-- Lista de Posts -->
+            <div id="posts-container" class="posts-grid">
+                <!-- Posts serão carregados aqui -->
+            </div>
+
+            <div id="loading-message" class="no-posts">Carregando postagens...</div>
+            <div id="no-posts-message" class="no-posts" style="display: none;">
+                Nenhuma postagem encontrada.
+            </div>
         </div>
     </main>
 
-    <!-- Delete Posts Confirmation Modal -->
-    <div id="delete-posts-modal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Confirmar exclusão</h3>
-            <p class="modal-text">Tem certeza que deseja excluir os posts selecionados?</p>
-            <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" id="cancel-delete-posts">Cancelar</button>
-                <button class="modal-btn modal-btn-confirm" id="confirm-delete-posts">Excluir</button>
+    <!-- Modal de Visualização -->
+    <div id="post-view-modal" class="post-modal-overlay">
+        <div class="post-modal-container">
+            <div class="post-modal-header">
+                <h1 class="post-modal-title" id="modal-title">Ansiedade Tem Solução</h1>
+                <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="post-modal-stats">
+                        <div class="post-stat">
+                            <img src="assets/icon-like.svg" width="24" height="24">
+                            <span id="modal-likes">223</span>
+                        </div>
+                        <div class="post-stat">
+                            <img src="assets/icon-salvar.svg" width="24" height="24">
+                            <span id="modal-saves">223</span>
+                        </div>
+                    </div>
+                    <button class="settings-icon-modal" id="close-modal-btn">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="post-modal-content">
+                <div id="modal-content-text"></div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Modal de Delete -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirmar exclusão</h3>
+            <p class="modal-text">Tem certeza que deseja excluir esta postagem?</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancel-delete">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" id="confirm-delete">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // ============================================
+    // COMUNIDADE - LISTAGEM E VISUALIZAÇÃO
+    // ============================================
+
+    const postsContainer = document.getElementById('posts-container');
+    const loadingMessage = document.getElementById('loading-message');
+    const noPostsMessage = document.getElementById('no-posts-message');
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    
+    // Modal de visualização
+    const viewModal = document.getElementById('post-view-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const modalLikes = document.getElementById('modal-likes');
+    const modalSaves = document.getElementById('modal-saves');
+    const modalContentText = document.getElementById('modal-content-text');
+    
+    // Modal de exclusão
+    const deleteModal = document.getElementById('delete-modal');
+    const confirmDeleteBtn = document.getElementById('confirm-delete');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+    
+    let currentPosts = [];
+    let currentFilter = 'all';
+    let postToDelete = null;
+
+    // ============================================
+    // CARREGAR POSTS
+    // ============================================
+    function carregarPosts() {
+        console.log('🔄 Carregando posts...');
+        loadingMessage.style.display = 'block';
+        postsContainer.innerHTML = '';
+        
+        const postsString = localStorage.getItem('posts');
+        console.log('📦 Posts no localStorage:', postsString);
+        
+        currentPosts = postsString ? JSON.parse(postsString) : [];
+        console.log('✅ Posts carregados:', currentPosts.length);
+        
+        // Se não tiver posts, usar exemplo
+        if (currentPosts.length === 0) {
+            console.log('⚠️ Nenhum post encontrado, usando exemplo');
+            currentPosts = [
+                {
+                    id: 1,
+                    title: "Ansiedade Tem Solução",
+                    content: "Crises frequentes, preocupações constantes e insônia podem ser sinais de um transtorno de ansiedade. A boa notícia? Existem tratamentos eficazes que podem devolver sua qualidade de vida.\n\nCrises frequentes, preocupações constantes e insônia podem ser sinais de um transtorno de ansiedade. A boa notícia? Existem tratamentos eficazes que podem devolver sua qualidade de vida.\n\nCrises frequentes, preocupações constantes e insônia podem ser sinais de um transtorno de ansiedade. A boa notícia? Existem tratamentos eficazes que podem devolver sua qualidade de vida.",
+                    tags: ["ansiedade", "terapia"],
+                    date: new Date().toLocaleDateString('pt-BR'),
+                    likes: 223,
+                    saves: 223,
+                    isMine: false // Post de exemplo não é meu
+                }
+            ];
+        }
+
+        renderizarPosts();
+    }
+
+    function renderizarPosts() {
+        console.log('🎨 Renderizando posts com filtro:', currentFilter);
+        loadingMessage.style.display = 'none';
+        postsContainer.innerHTML = '';
+
+        let postsFiltrados = currentPosts;
+        
+        // Aplicar filtro
+        if (currentFilter === 'mine') {
+            postsFiltrados = currentPosts.filter(post => post.isMine === true);
+            console.log('📝 Posts filtrados (meus):', postsFiltrados.length);
+        }
+
+        if (postsFiltrados.length === 0) {
+            noPostsMessage.style.display = 'block';
+            noPostsMessage.textContent = currentFilter === 'mine' 
+                ? 'Você ainda não tem postagens publicadas' 
+                : 'Nenhuma postagem encontrada.';
+            return;
+        }
+
+        noPostsMessage.style.display = 'none';
+
+        postsFiltrados.forEach(post => {
+            console.log('📝 Criando card para:', post.title, '| isMine:', post.isMine);
+            const card = criarCardPost(post);
+            postsContainer.appendChild(card);
+        });
+    }
+
+    function criarCardPost(post) {
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.style.cursor = 'pointer';
+        card.style.position = 'relative';
+        
+        const dataFormatada = post.date || new Date().toLocaleDateString('pt-BR');
+        const conteudo = post.content || post.conteudo || '';
+        const preview = conteudo.length > 150 
+            ? conteudo.substring(0, 150) + '...' 
+            : conteudo;
+
+        // Adicionar botão de excluir apenas se for meu post
+        const deleteButton = post.isMine ? `
+            <button class="delete-post-btn" style="
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background-color: #f6f3f1;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+                z-index: 10;
+            " onmouseover="this.style.backgroundColor='#fae5e5'" 
+               onmouseout="this.style.backgroundColor='#f6f3f1'">
+                <svg width="20" height="20" fill="none" stroke="#d64545" stroke-width="2">
+                    <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M10 11v6M14 11v6M5 6l1 14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-14"/>
+                </svg>
+            </button>
+        ` : '';
+
+        card.innerHTML = `
+            ${deleteButton}
+            <h3 class="post-title" style="padding-right: ${post.isMine ? '48px' : '0'}">${post.title}</h3>
+            <p class="post-date">${dataFormatada}</p>
+            <p style="color: #6d523f; margin-bottom: 16px; line-height: 1.5;">${preview}</p>
+            <div class="post-actions">
+                <div class="post-action">
+                    <img src="assets/icon-like.svg" width="20" height="20">
+                    <span>${post.likes || 0}</span>
+                </div>
+                <div class="post-action">
+                    <img src="assets/icon-salvar.svg" width="20" height="20">
+                    <span>${post.saves || 0}</span>
+                </div>
+            </div>
+        `;
+
+        // Click para ver detalhes (exceto no botão de delete)
+        card.addEventListener('click', (e) => {
+            if (!e.target.closest('.delete-post-btn')) {
+                abrirModalPost(post);
+            }
+        });
+
+        // Click no botão de excluir
+        if (post.isMine) {
+            const deleteBtn = card.querySelector('.delete-post-btn');
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                postToDelete = post.id;
+                deleteModal.classList.add('active');
+            });
+        }
+
+        return card;
+    }
+
+    function abrirModalPost(post) {
+        modalTitle.textContent = post.title;
+        modalLikes.textContent = post.likes || 0;
+        modalSaves.textContent = post.saves || 0;
+        
+        const conteudo = post.content || post.conteudo || '';
+        const paragrafos = conteudo.split('\n\n');
+        modalContentText.innerHTML = '';
+        
+        paragrafos.forEach(paragrafo => {
+            if (paragrafo.trim()) {
+                const p = document.createElement('p');
+                p.className = 'post-modal-text';
+                p.textContent = paragrafo;
+                modalContentText.appendChild(p);
+            }
+        });
+
+        viewModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModal() {
+        viewModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function excluirPost() {
+        if (postToDelete === null) return;
+        
+        console.log('🗑️ Excluindo post ID:', postToDelete);
+        
+        // Remover do array atual
+        currentPosts = currentPosts.filter(post => post.id !== postToDelete);
+        
+        // Salvar no localStorage
+        localStorage.setItem('posts', JSON.stringify(currentPosts));
+        
+        // Atualizar visualização
+        renderizarPosts();
+        
+        // Fechar modal
+        deleteModal.classList.remove('active');
+        postToDelete = null;
+        
+        console.log('✅ Post excluído com sucesso!');
+    }
+
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
+
+    closeModalBtn.addEventListener('click', fecharModal);
+
+    // Filtros
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            filterTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentFilter = tab.dataset.filter;
+            console.log('🔍 Filtro alterado para:', currentFilter);
+            renderizarPosts();
+        });
+    });
+
+    // Modal de exclusão
+    confirmDeleteBtn.addEventListener('click', excluirPost);
+    cancelDeleteBtn.addEventListener('click', () => {
+        deleteModal.classList.remove('active');
+        postToDelete = null;
+    });
+
+    // Fechar modal clicando fora
+    deleteModal.addEventListener('click', (e) => {
+        if (e.target === deleteModal) {
+            deleteModal.classList.remove('active');
+            postToDelete = null;
+        }
+    });
+
+    viewModal.addEventListener('click', (e) => {
+        if (e.target === viewModal) {
+            fecharModal();
+        }
+    });
+
+    // ============================================
+    // INICIALIZAÇÃO
+    // ============================================
+    window.addEventListener('DOMContentLoaded', () => {
+        console.log('🎯 Página de comunidade carregada!');
+        carregarPosts();
+    });
+
+    // Atualizar a cada 2 segundos
+    setInterval(() => {
+        const postsAtual = JSON.stringify(currentPosts);
+        const postsStorage = localStorage.getItem('posts') || '[]';
+        
+        if (postsAtual !== postsStorage) {
+            console.log('🔄 Novos posts detectados, recarregando...');
+            carregarPosts();
+        }
+    }, 2000);
+
+    console.log('✅ Script de comunidade carregado!');
+</script>
 </body>
 
 </html>

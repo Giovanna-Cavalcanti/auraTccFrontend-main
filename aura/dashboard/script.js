@@ -1023,7 +1023,7 @@ function initCommunityPage() {
   }
 }
 
-// ===== CREATE POST PAGE =====
+// ===== CREATE POST PAGE (ATUALIZADO) =====
 function initCreatePostPage() {
   const publishBtn = document.getElementById("publish-btn")
   if (!publishBtn) return
@@ -1041,7 +1041,11 @@ function initCreatePostPage() {
     document.getElementById("tags-modal")?.classList.remove("active")
   })
 
-  // Image attachment
+  document.getElementById("cancel-tags")?.addEventListener("click", () => {
+    document.getElementById("tags-modal")?.classList.remove("active")
+  })
+
+  // Image attachment (se existir o botão)
   document.querySelector('.post-icon-btn[title="Anexar"]')?.addEventListener("click", () => {
     const input = document.createElement("input")
     input.type = "file"
@@ -1049,7 +1053,7 @@ function initCreatePostPage() {
     input.onchange = (e) => {
       const file = e.target.files[0]
       if (file) {
-        selectedImage = true // In a real app, you'd upload this
+        selectedImage = true
       }
     }
     input.click()
@@ -1057,7 +1061,19 @@ function initCreatePostPage() {
 
   // Publish
   publishBtn.addEventListener("click", () => {
+    const title = document.getElementById("post-title")?.value
+    const content = document.getElementById("post-content")?.value
+    
+    if (!title || !content) {
+      alert("Por favor, preencha o título e o conteúdo da postagem");
+      return;
+    }
+    
     document.getElementById("publish-modal")?.classList.add("active")
+  })
+
+  document.getElementById("cancel-publish")?.addEventListener("click", () => {
+    document.getElementById("publish-modal")?.classList.remove("active")
   })
 
   document.getElementById("confirm-publish")?.addEventListener("click", () => {
@@ -1067,15 +1083,24 @@ function initCreatePostPage() {
     if (title && content) {
       const posts = DataManager.getPosts()
       const today = new Date()
-      posts.push({
+      
+      // IMPORTANTE: Adicionar isMine: true para posts criados pelo usuário
+      const newPost = {
         id: Date.now(),
         title,
         content,
         tags: selectedTags,
         image: selectedImage,
         date: `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`,
-      })
+        likes: 0,
+        comments: 0,
+        isMine: true // FLAG PARA IDENTIFICAR POSTS DO USUÁRIO
+      }
+      
+      posts.push(newPost)
       DataManager.savePosts(posts)
+      
+      console.log('✅ Post criado:', newPost);
 
       document.getElementById("publish-modal")?.classList.remove("active")
       document.getElementById("success-modal")?.classList.add("active")
@@ -1083,7 +1108,7 @@ function initCreatePostPage() {
   })
 
   document.getElementById("success-ok")?.addEventListener("click", () => {
-    window.location.href = "index.html"
+    window.location.href = "community.html"
   })
 }
 
