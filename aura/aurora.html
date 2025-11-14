@@ -11,9 +11,8 @@
     />
     <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
     <style>
-        /* ⚠️ CORREÇÃO: CSS personalizado para a cor bege exata */
         body {
-            background-color: #F7F4F0; /* Cor bege/creme da imagem */
+            background-color: #F7F4F0; /* Cor bege/creme */
         }
         
         /* Animações personalizadas */
@@ -67,7 +66,7 @@
         .voice-btn-active { background-color: #dc2626 !important; } /* vermelho quando ouvindo */
     </style>
 </head>
-<body class="font-sans"> 
+<body class="font-sans">
     <div class="flex flex-col h-screen">
         <header class="bg-white shadow-sm z-10">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -582,29 +581,29 @@
                     console.log('Reconhecimento de voz iniciado');
                 };
 
-                // ⚠️ CORREÇÃO DE ESTABILIDADE DO MICROFONE (Atraso aumentado para 500ms)
+                // ⚠️ CORREÇÃO FINAL DE ESTABILIDADE DO MICROFONE (500ms de Atraso e Checagem Dupla)
                 recognition.onend = () => {
                     recognizing = false;
                     voiceButton.classList.remove('voice-btn-active');
                     console.log('Reconhecimento de voz parado');
 
-                    // Se Aurora foi desativada manualmente, não reinicia.
+                    // 1. Checa se o microfone foi desativado manualmente
                     if (!auroraAwake) {
                         return;
                     }
                     
-                    // Aumentar o atraso para estabilizar a reconexão em ambientes instáveis.
-                    console.log('Reconhecimento de voz parado, reiniciando automaticamente com 500ms...');
+                    // 2. Se a oscilação é automática, reinicia com um atraso significativo
+                    console.log('Reiniciando microfone automaticamente com 500ms...');
                     
                     setTimeout(() => { 
-                        if (auroraAwake && !recognizing) { // Checa novamente antes de iniciar
+                        if (auroraAwake && !recognizing) { // Checa o estado novamente antes de iniciar
                             try {
                                 recognition.start();
                             } catch (e) {
                                 console.warn('Erro ao reiniciar reconhecimento:', e);
                             }
                         }
-                    }, 500); // ⚠️ Atraso maior (500ms) para ambientes instáveis
+                    }, 500); // ⚠️ Atraso de 500ms para máxima estabilidade no Vercel
                 };
 
                 recognition.onerror = (ev) => {
@@ -686,7 +685,6 @@
 
             // Função para enviar mensagem em modo voz (usa mesma rota do envio normal)
             async function sendVoiceMessage(content) {
-                // útil para debug: testa conexão
                 const userId = "12345";
                 const res = await fetch(MESSAGE_ENDPOINT, {
                     method: 'POST',
@@ -719,7 +717,6 @@
                     // stop and set auroraAwake false
                     auroraAwake = false;
                     try {
-                        // O stop chama recognition.onend, que agora verifica !auroraAwake e não reinicia.
                         recognition && recognition.stop();
                         speak("Certo. Vou parar de ouvir agora.");
                     } catch (e) {
