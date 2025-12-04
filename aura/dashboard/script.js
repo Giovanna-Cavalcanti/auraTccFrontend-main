@@ -1061,7 +1061,7 @@ function initModals() {
     })
   })
 
-  const userName = localStorage.getItem('platformUserName') || "Profissional";
+  const userName = localStorage.getItem('UserName') || "Profissional";
 
   document.querySelector('.greeting-text').innerHTML = `
   Olá, Dr(a) ${userName}
@@ -1204,7 +1204,7 @@ function preencherTabelaPacientes(pacientes) {
 // SOLICITAÇÕES DE CONTATO — VERSÃO CORRETA PARA HOME
 // ================================
 async function carregarSolicitacoesContato() {
-  const psicologoId = localStorage.getItem("platformUserId");
+  const psicologoId = localStorage.getItem("UserId");
   const token = localStorage.getItem("token");
 
   if (!psicologoId || !token) {
@@ -1249,7 +1249,7 @@ document.getElementById("contact-requests-card")?.addEventListener("click", () =
 
 // aceitar / recusar
 async function responderSolicitacao(acao) {
-  const psicologoId = localStorage.getItem("platformUserId");
+  const psicologoId = localStorage.getItem("UserId");
   const token = localStorage.getItem("token");
 
   const solicitacao = window.solicitacoesPendentes[0];
