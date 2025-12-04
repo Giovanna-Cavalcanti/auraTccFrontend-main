@@ -3,63 +3,19 @@ const DataManager = {
   // Initialize default data
   init() {
     if (!localStorage.getItem("appointments")) {
-      const today = new Date()
-      const todayStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}`
-
-      this.saveAppointments([
-        {
-          id: Date.now() + 1,
-          date: todayStr,
-          time: "09:00",
-          patient: "Mariana Menezes",
-          type: "online",
-          status: "agendada",
-          fullDate: today.toISOString(),
-        },
-        {
-          id: Date.now() + 2,
-          date: todayStr,
-          time: "14:00",
-          patient: "Wesley Oliveira",
-          type: "presencial",
-          status: "agendada",
-          fullDate: today.toISOString(),
-        },
-      ])
+      this.saveAppointments([]);
     }
 
     if (!localStorage.getItem("posts")) {
-      this.savePosts([])
+      this.savePosts([]);
     }
 
     if (!localStorage.getItem("activities")) {
-      this.saveActivities([
-        {
-          id: 1,
-          patient: "mariana",
-          patientName: "Mariana Menezes",
-          title: "Exercício de Respiração",
-          description: "Pratique técnicas de respiração profunda por 10 minutos diariamente",
-          deadline: "2025-04-15",
-          status: "completed",
-          response: "Concluí o exercício todos os dias. Me senti muito mais calma!",
-        },
-      ])
+      this.saveActivities([]);
     }
 
     if (!localStorage.getItem("analyses")) {
-      this.saveAnalyses({
-        mariana: [
-          {
-            date: "10/03/2025",
-            text: "Primeira sessão de terapia. Paciente apresentou queixa de ansiedade e dificuldades de organização no trabalho.",
-          },
-          {
-            date: "17/03/2025",
-            text: "O paciente relata leve melhora no gerenciamento de tempo, porém continua apresentando episódios de ansiedade intensa.",
-          },
-        ],
-      })
+      this.saveAnalyses({});
     }
 
     if (!localStorage.getItem("contactRequests")) {
@@ -138,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateDate()
   initHomePage()
   initAppointmentsPage()
-  initPatientsPage()
+  initPatientsPage()        // <-- initPatientsPage agora chama a função da API internamente
   initPatientDetailPage()
   initCommunityPage()
   initCreatePostPage()
@@ -165,6 +121,7 @@ function updateDate() {
 
 // ===== HOME PAGE =====
 function initHomePage() {
+  carregarSolicitacoesContato();  // <-- ADICIONE AQUI
   const todayAppointmentsContainer = document.getElementById("today-appointments")
   const postsContainer = document.getElementById("posts-container")
   const homePatientSearch = document.getElementById("home-patient-search")
@@ -261,7 +218,8 @@ function renderHomePosts() {
   const container = document.getElementById("posts-container")
   if (!container) return
 
-  const posts = DataManager.getPosts()
+  const userId = localStorage.getItem("userId");
+  const posts = DataManager.getPosts().filter(p => p.professionalId === userId);
 
   if (posts.length === 0) {
     container.innerHTML = '<p class="no-posts">Você ainda não tem postagens publicadas</p>'
@@ -357,6 +315,8 @@ function initAppointmentsPage() {
         type,
         status: "agendada",
         fullDate: dateObj.toISOString(),
+        professionalId: localStorage.getItem("userId")
+
       })
 
       DataManager.saveAppointments(appointments)
@@ -525,6 +485,7 @@ function initPatientsPage() {
   const patientSearch = document.getElementById("patient-search")
   const addPatientBtn = document.getElementById("add-patient-btn")
 
+  // Se não tem o input de busca, não é a página de pacientes -> retorna
   if (!patientSearch) return
 
   const urlParams = new URLSearchParams(window.location.search)
@@ -552,7 +513,6 @@ function initPatientsPage() {
       const phone = document.getElementById("new-patient-phone")?.value
 
       if (name && email && phone) {
-        // Add new patient row to table
         const tbody = document.getElementById("patients-tbody")
         const newId = Date.now()
         const newRow = document.createElement("tr")
@@ -563,36 +523,18 @@ function initPatientsPage() {
           <td class="patient-email">${email}</td>
           <td class="patient-phone">${phone}</td>
           <td class="patient-actions">
-            <button class="action-btn" title="Ver detalhes" onclick="window.location.href='patient-detail.html'">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M14 10L18 14L14 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M18 14H10C7.79086 14 6 12.2091 6 10C6 7.79086 7.79086 6 10 6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </button>
+            <button class="action-btn" title="Ver detalhes" onclick="window.location.href='patient-detail.html?id=${newId}'">Ver</button>
             <button class="action-btn delete-patient" title="Excluir">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M3 5H17M7 5V3C7 2.44772 7.44772 2 8 2H12C12.5523 2 13 2.44772 13 3V5M9 9V14M11 9V14M5 5L6 17C6 17.5523 6.44772 18 7 18H13C13.5523 18 14 17.5523 14 17L15 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="action-btn" title="Editar">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M14.5 2.5L17.5 5.5L7 16H4V13L14.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <img src="assets/icon-delete.svg" width="20">
             </button>
           </td>
         `
         tbody.appendChild(newRow)
 
-        // Clear inputs
-        document.getElementById("new-patient-name").value = ""
-        document.getElementById("new-patient-email").value = ""
-        document.getElementById("new-patient-phone").value = ""
-
-        // Add delete listener to the new row
         newRow.querySelector(".delete-patient").addEventListener("click", (e) => {
-          e.stopPropagation() // Prevent triggering the "View details" or "Edit" button
-          const rowToDelete = e.target.closest("tr")
+          e.stopPropagation()
           const modal = document.getElementById("delete-patient-modal")
+          const rowToDelete = e.target.closest("tr")
           modal.classList.add("active")
 
           document.getElementById("confirm-delete-patient").onclick = () => {
@@ -604,65 +546,10 @@ function initPatientsPage() {
 
       document.getElementById("confirm-add-patient-modal")?.classList.remove("active")
     })
-
-    document.getElementById("close-add-patient")?.addEventListener("click", () => {
-      document.getElementById("add-patient-modal")?.classList.remove("active")
-    })
-
-    document.getElementById("cancel-add-patient")?.addEventListener("click", () => {
-      document.getElementById("add-patient-modal")?.classList.remove("active")
-    })
-
-    document.getElementById("cancel-confirm-patient")?.addEventListener("click", () => {
-      document.getElementById("confirm-add-patient-modal")?.classList.remove("active")
-    })
   }
 
-  // ---- Deletar paciente com modal e persistência ----
-const tbody = document.getElementById("patients-tbody");
-const deleteModal = document.getElementById("delete-patient-modal");
-let patientToDelete = null;
-
-// Carregar pacientes salvos
-let savedPatients = JSON.parse(localStorage.getItem("patients") || "[]");
-
-// Remover pacientes salvos da tabela
-if (savedPatients.length > 0) {
-  Array.from(tbody.rows).forEach(row => {
-    const id = row.getAttribute("data-id");
-    if (savedPatients.includes(id)) {
-      row.remove();
-    }
-  });
-}
-
-// Detectar clique na lixeira
-tbody.querySelectorAll(".delete-patient").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    patientToDelete = e.target.closest("tr");
-    deleteModal.classList.add("active");
-  });
-});
-
-// Cancelar exclusão
-document.getElementById("cancel-delete-patient")?.addEventListener("click", () => {
-  deleteModal.classList.remove("active");
-  patientToDelete = null;
-});
-
-// Confirmar exclusão e salvar no localStorage
-document.getElementById("confirm-delete-patient")?.addEventListener("click", () => {
-  if (patientToDelete) {
-    const id = patientToDelete.getAttribute("data-id");
-    patientToDelete.remove();
-    savedPatients.push(id);
-    localStorage.setItem("patients", JSON.stringify(savedPatients));
-    patientToDelete = null;
-  }
-  deleteModal.classList.remove("active");
-});
-
+  // aqui chamamos a API para carregar pacientes (apenas na página patients)
+  carregarPacientesDoProfissional()
 }
 
 function filterPatients(term) {
@@ -674,247 +561,54 @@ function filterPatients(term) {
   })
 }
 
-// ===== PATIENT DETAIL PAGE =====
-function initPatientDetailPage() {
-  const patientDetailPage = document.querySelector(".container-patient-detail")
-  if (!patientDetailPage) return
+// ===== PATIENT DETAIL PAGE (NOVO E CORRETO) =====
+async function initPatientDetailPage() {
+  const page = document.querySelector(".container-patient-detail");
+  if (!page) return;
 
-  document.getElementById("history-card")?.addEventListener("click", () => {
-    const modal = document.getElementById("history-modal")
-    const list = document.getElementById("history-list")
+  const params = new URLSearchParams(window.location.search);
+  const patientId = params.get("id");
 
-    const appointments = DataManager.getAppointments()
-    const marianaAppts = appointments.filter((apt) => apt.patient === "Mariana Menezes")
-
-    if (marianaAppts.length === 0) {
-      list.innerHTML = '<p class="no-data-text">Este paciente ainda não tem consultas agendadas.</p>'
-    } else {
-      list.innerHTML = marianaAppts
-        .map((apt) => {
-          const statusClass =
-            apt.status === "concluida"
-              ? "status-completed"
-              : apt.status === "cancelada"
-                ? "status-cancelled"
-                : "status-scheduled"
-          const statusText = apt.status.charAt(0).toUpperCase() + apt.status.slice(1)
-          return `
-          <div style="padding: 16px; background: #faf5f1; border-radius: 12px; margin-bottom: 12px;">
-            <div style="font-weight: 600; margin-bottom: 4px;">${apt.date} - ${apt.time}</div>
-            <div style="font-size: 16px; color: #6d523f;">${apt.type === "online" ? "Online" : "Presencial"}</div>
-            <span class="status-badge ${statusClass}" style="margin-top: 8px; display: inline-block;">${statusText}</span>
-          </div>
-        `
-        })
-        .join("")
-    }
-
-    modal.classList.add("active")
-  })
-
-  let analysisSelectionMode = false
-  const selectedAnalyses = new Set()
-
-  document.getElementById("open-analysis-btn")?.addEventListener("click", () => {
-    const modal = document.getElementById("analysis-modal")
-    analysisSelectionMode = false
-    selectedAnalyses.clear()
-    renderAnalyses()
-    modal.classList.add("active")
-  })
-
-  document.getElementById("add-analysis-btn")?.addEventListener("click", () => {
-    if (analysisSelectionMode) {
-      // Toggle to delete mode
-      analysisSelectionMode = false
-      selectedAnalyses.clear()
-      renderAnalyses()
-    } else {
-      // Add new analysis
-      document.getElementById("add-analysis-modal")?.classList.add("active")
-    }
-  })
-
-  document.getElementById("delete-analysis-btn")?.addEventListener("click", () => {
-    if (selectedAnalyses.size > 0) {
-      document.getElementById("delete-analysis-modal")?.classList.add("active")
-    }
-  })
-
-  document.getElementById("confirm-delete-analysis")?.addEventListener("click", () => {
-    const analyses = DataManager.getAnalyses()
-    if (analyses.mariana) {
-      analyses.mariana = analyses.mariana.filter((_, index) => !selectedAnalyses.has(index))
-      DataManager.saveAnalyses(analyses)
-    }
-    selectedAnalyses.clear()
-    analysisSelectionMode = false
-    renderAnalyses()
-    document.getElementById("delete-analysis-modal")?.classList.remove("active")
-  })
-
-  document.getElementById("cancel-delete-analysis")?.addEventListener("click", () => {
-    document.getElementById("delete-analysis-modal")?.classList.remove("active")
-  })
-
-  function renderAnalyses() {
-    const container = document.getElementById("analysis-entries")
-    const deleteBtn = document.getElementById("delete-analysis-btn")
-    const addBtn = document.getElementById("add-analysis-btn")
-
-    if (!container) return
-
-    const analyses = DataManager.getAnalyses()
-    const marianaAnalyses = analyses.mariana || []
-
-    if (addBtn) {
-      addBtn.textContent = analysisSelectionMode ? "Cancelar" : "+ Adicionar uma nova anotação"
-    }
-
-    if (deleteBtn) {
-      deleteBtn.style.display = analysisSelectionMode && selectedAnalyses.size > 0 ? "block" : "none"
-    }
-
-    if (marianaAnalyses.length === 0) {
-      container.innerHTML = '<p class="no-data-text">Não existem notas para este paciente</p>'
-      if (deleteBtn) deleteBtn.style.display = "none"
-      return
-    }
-
-    // Show delete button to enter selection mode
-    const hasEntries = marianaAnalyses.length > 0
-    if (hasEntries && !analysisSelectionMode) {
-      container.innerHTML = marianaAnalyses
-        .map(
-          (analysis, index) => `
-          <div class="analysis-entry">
-            <p class="analysis-date">${analysis.date}</p>
-            <p class="analysis-text">${analysis.text}</p>
-          </div>
-        `,
-        )
-        .join("")
-
-      // Add button to enable selection mode
-      container.innerHTML += `
-        <button class="modal-btn modal-btn-secondary" id="enable-delete-mode" style="margin-top: 12px;">
-          Excluir Anotações
-        </button>
-      `
-
-      document.getElementById("enable-delete-mode")?.addEventListener("click", () => {
-        analysisSelectionMode = true
-        selectedAnalyses.clear()
-        renderAnalyses()
-      })
-    } else if (analysisSelectionMode) {
-      // Selection mode
-      container.innerHTML = marianaAnalyses
-        .map((analysis, index) => {
-          const checked = selectedAnalyses.has(index) ? "checked" : ""
-          return `
-            <div class="analysis-entry selectable">
-              <input type="checkbox" class="analysis-entry-checkbox" data-index="${index}" ${checked}>
-              <p class="analysis-date">${analysis.date}</p>
-              <p class="analysis-text">${analysis.text}</p>
-            </div>
-          `
-        })
-        .join("")
-
-      // Add event listeners to checkboxes
-      container.querySelectorAll(".analysis-entry-checkbox").forEach((checkbox) => {
-        checkbox.addEventListener("change", (e) => {
-          const index = Number.parseInt(e.target.dataset.index)
-          if (e.target.checked) {
-            selectedAnalyses.add(index)
-          } else {
-            selectedAnalyses.delete(index)
-          }
-          if (deleteBtn) {
-            deleteBtn.style.display = selectedAnalyses.size > 0 ? "block" : "none"
-          }
-        })
-      })
-    }
+  if (!patientId) {
+    console.error("❌ Nenhum ID recebido na URL");
+    return;
   }
 
-  document.getElementById("save-analysis")?.addEventListener("click", () => {
-    document.getElementById("add-analysis-modal")?.classList.remove("active")
-    document.getElementById("save-analysis-confirm-modal")?.classList.add("active")
-  })
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-  document.getElementById("confirm-save-analysis")?.addEventListener("click", () => {
-    const text = document.getElementById("new-analysis-text")?.value
-    if (text) {
-      const analyses = DataManager.getAnalyses()
-      if (!analyses.mariana) analyses.mariana = []
+  try {
+    const resp = await fetch(`https://auratccbackend.onrender.com/api/pacientes/${patientId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
 
-      const today = new Date()
-      const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`
+    const paciente = await resp.json();
+    console.log("📌 Dados do paciente:", paciente);
 
-      analyses.mariana.push({ date: dateStr, text })
-      DataManager.saveAnalyses(analyses)
-      renderAnalyses()
+    // Preenche os dados básicos
+    document.querySelector(".patient-detail-name").textContent = paciente.nomeCompleto;
+    document.querySelector(".patient-detail-birth").textContent =
+      paciente.dataNascimento
+        ? `Data de nascimento: ${paciente.dataNascimento}`
+        : "Data de nascimento não informada";
 
-      document.getElementById("new-analysis-text").value = ""
-    }
-    document.getElementById("save-analysis-confirm-modal")?.classList.remove("active")
-    document.getElementById("analysis-modal")?.classList.add("active")
-  })
+    document.querySelector(".patient-detail-type").textContent =
+      paciente.tipoAtendimento
+        ? `Atendimento: ${paciente.tipoAtendimento}`
+        : "Atendimento: -";
 
-  // Tasks modal
-  document.getElementById("patient-tasks-card")?.addEventListener("click", () => {
-    const modal = document.getElementById("patient-tasks-modal")
-    const list = document.getElementById("patient-tasks-list")
+    // Modais
+    const hTitle = document.getElementById("history-title");
+    const tTitle = document.getElementById("tasks-title");
 
-    const activities = DataManager.getActivities()
-    const marianaTasks = activities.filter((act) => act.patient === "mariana")
+    if (hTitle) hTitle.textContent = `Histórico de Consultas - ${paciente.nomeCompleto}`;
+    if (tTitle) tTitle.textContent = `Tarefas - ${paciente.nomeCompleto}`;
 
-    if (marianaTasks.length === 0) {
-      list.innerHTML = '<p class="no-data-text">Este paciente ainda não tem tarefas atribuídas.</p>'
-    } else {
-      list.innerHTML = marianaTasks
-        .map(
-          (task) => `
-        <div style="padding: 20px; background: #faf5f1; border-radius: 12px; margin-bottom: 16px;">
-          <h4 style="font-size: 20px; font-weight: 700; color: #4f3422; margin-bottom: 8px;">${task.title}</h4>
-          <p style="font-size: 16px; color: #6d523f; margin-bottom: 12px;">${task.description}</p>
-          <div style="font-size: 15px; color: #4f3422;"><strong>Prazo:</strong> ${new Date(task.deadline).toLocaleDateString("pt-BR")}</div>
-          <div style="font-size: 15px; color: #4f3422; margin-top: 4px;"><strong>Status:</strong> ${task.status === "completed" ? "Concluída" : "Pendente"}</div>
-          ${task.response ? `<div style="margin-top: 12px; padding: 12px; background: #ffffff; border-radius: 8px;"><strong>Resposta:</strong><br/>${task.response}</div>` : ""}
-        </div>
-      `,
-        )
-        .join("")
-    }
+    // (se quiser carregar histórico e tarefas da API, coloque aqui)
 
-    modal.classList.add("active")
-  })
-
-  // Editable pontuário
-  document.getElementById("edit-pontuario-btn")?.addEventListener("click", () => {
-    document.querySelectorAll(".editable-text").forEach((el) => {
-      el.contentEditable = "true"
-      el.classList.add("editing")
-    })
-    document.getElementById("edit-pontuario-btn").style.display = "none"
-    document.getElementById("save-pontuario-btn").style.display = "inline-block"
-  })
-
-  document.getElementById("save-pontuario-btn")?.addEventListener("click", () => {
-    document.getElementById("save-pontuario-modal")?.classList.add("active")
-  })
-
-  document.getElementById("confirm-save-pontuario")?.addEventListener("click", () => {
-    document.querySelectorAll(".editable-text").forEach((el) => {
-      el.contentEditable = "false"
-      el.classList.remove("editing")
-    })
-    document.getElementById("edit-pontuario-btn").style.display = "inline-block"
-    document.getElementById("save-pontuario-btn").style.display = "none"
-    document.getElementById("save-pontuario-modal")?.classList.remove("active")
-  })
+  } catch (err) {
+    console.error("❌ Erro ao carregar paciente:", err);
+  }
 }
 
 // ===== COMMUNITY PAGE =====
@@ -955,7 +649,8 @@ function initCommunityPage() {
   })
 
   function renderCommunityPosts() {
-    const posts = DataManager.getPosts()
+    const userId = localStorage.getItem("userId");
+    const posts = DataManager.getPosts().filter(p => p.professionalId === userId);
     const postsList = document.getElementById("posts-list")
     const deleteBtn = document.getElementById("delete-posts-btn")
     const selectBtn = document.getElementById("select-posts-btn")
@@ -977,14 +672,13 @@ function initCommunityPage() {
         const checked = selectedPosts.has(post.id) ? "checked" : ""
         return `
         <div class="post-card" ${!selectionMode ? `onclick="window.location.href='community.html?post=${post.id}'"` : ""} style="cursor: ${selectionMode ? "default" : "pointer"}">
-          ${
-            selectionMode
-              ? `
+          ${selectionMode
+            ? `
             <div class="post-checkbox-container">
               <input type="checkbox" class="post-checkbox" data-post-id="${post.id}" ${checked} onclick="event.stopPropagation()">
             </div>
           `
-              : ""
+            : ""
           }
           <h3 class="post-title">${post.title}</h3>
           <p class="post-date">${post.date}</p>
@@ -1023,7 +717,7 @@ function initCommunityPage() {
   }
 }
 
-// ===== CREATE POST PAGE =====
+// ===== CREATE POST PAGE (ATUALIZADO) =====
 function initCreatePostPage() {
   const publishBtn = document.getElementById("publish-btn")
   if (!publishBtn) return
@@ -1041,7 +735,11 @@ function initCreatePostPage() {
     document.getElementById("tags-modal")?.classList.remove("active")
   })
 
-  // Image attachment
+  document.getElementById("cancel-tags")?.addEventListener("click", () => {
+    document.getElementById("tags-modal")?.classList.remove("active")
+  })
+
+  // Image attachment (se existir o botão)
   document.querySelector('.post-icon-btn[title="Anexar"]')?.addEventListener("click", () => {
     const input = document.createElement("input")
     input.type = "file"
@@ -1049,7 +747,7 @@ function initCreatePostPage() {
     input.onchange = (e) => {
       const file = e.target.files[0]
       if (file) {
-        selectedImage = true // In a real app, you'd upload this
+        selectedImage = true
       }
     }
     input.click()
@@ -1057,7 +755,19 @@ function initCreatePostPage() {
 
   // Publish
   publishBtn.addEventListener("click", () => {
+    const title = document.getElementById("post-title")?.value
+    const content = document.getElementById("post-content")?.value
+
+    if (!title || !content) {
+      alert("Por favor, preencha o título e o conteúdo da postagem");
+      return;
+    }
+
     document.getElementById("publish-modal")?.classList.add("active")
+  })
+
+  document.getElementById("cancel-publish")?.addEventListener("click", () => {
+    document.getElementById("publish-modal")?.classList.remove("active")
   })
 
   document.getElementById("confirm-publish")?.addEventListener("click", () => {
@@ -1067,15 +777,27 @@ function initCreatePostPage() {
     if (title && content) {
       const posts = DataManager.getPosts()
       const today = new Date()
-      posts.push({
+
+      // IMPORTANTE: Adicionar isMine: true para posts criados pelo usuário
+      const newPost = {
         id: Date.now(),
         title,
         content,
         tags: selectedTags,
         image: selectedImage,
-        date: `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`,
-      })
+        date: "...",
+        likes: 0,
+        comments: 0,
+        isMine: true,
+        professionalId: localStorage.getItem("userId")
+      }
+
+      posts.push(newPost)
       DataManager.savePosts(posts)
+      
+      console.log('✅ Post criado:', newPost);
+
+      console.log('✅ Post criado:', newPost);
 
       document.getElementById("publish-modal")?.classList.remove("active")
       document.getElementById("success-modal")?.classList.add("active")
@@ -1083,14 +805,27 @@ function initCreatePostPage() {
   })
 
   document.getElementById("success-ok")?.addEventListener("click", () => {
-    window.location.href = "index.html"
+    window.location.href = "community.html"
   })
 }
 
 // ===== ACTIVITIES PAGE =====
+// (mantive tudo igual)
 function initActivitiesPage() {
   const submitBtn = document.getElementById("submit-activity-btn")
   if (!submitBtn) return
+
+  // ====== Carregar pacientes reais no dropdown ======
+  const dropdown = document.getElementById("activity-patient");
+  const pacientesSalvos = JSON.parse(localStorage.getItem("listaPacientesProfissional") || "[]");
+
+  if (dropdown && pacientesSalvos.length > 0) {
+    dropdown.innerHTML = `<option value="">Selecione um paciente</option>` +
+      pacientesSalvos
+        .map(p => `<option value="${p._id}" data-name="${p.nomeCompleto}">${p.nomeCompleto}</option>`)
+        .join("");
+  }
+
 
   renderActivitiesList()
 
@@ -1106,23 +841,19 @@ function initActivitiesPage() {
 
     if (patient && title && description && deadline) {
       const activities = DataManager.getActivities()
-      const patientNames = {
-        mariana: "Mariana Menezes",
-        wesley: "Wesley Oliveira",
-        caetano: "Caetano Viana",
-        luiz: "Luiz da Silva",
-      }
+      const select = document.getElementById("activity-patient");
+      const selectedName = select.options[select.selectedIndex].text;
 
       activities.push({
         id: Date.now(),
-        patient,
-        patientName: patientNames[patient],
+        patient,          // agora é o _id real
+        patientName: selectedName, // nome real vindo da API
         title,
         description,
         deadline,
         status: "pending",
         response: null,
-      })
+      });
 
       DataManager.saveActivities(activities)
       renderActivitiesList()
@@ -1172,7 +903,7 @@ function renderActivitiesList() {
         </span>
       </div>
     </div>
-  `,
+  `
     )
     .join("")
 
@@ -1213,15 +944,14 @@ function showActivityDetails(activityId) {
       <strong style="font-size: 18px; color: #4f3422;">Status:</strong>
       <p style="font-size: 16px; color: #6d523f; margin-top: 8px;">${activity.status === "completed" ? "Concluída" : "Pendente"}</p>
     </div>
-    ${
-      activity.response
-        ? `
+    ${activity.response
+      ? `
       <div style="margin-top: 20px; padding: 16px; background: #faf5f1; border-radius: 12px;">
         <strong style="font-size: 18px; color: #4f3422;">Resposta do Paciente:</strong>
         <p style="font-size: 16px; color: #6d523f; margin-top: 8px;">${activity.response}</p>
       </div>
     `
-        : ""
+      : ""
     }
   `
 
@@ -1330,4 +1060,229 @@ function initModals() {
       btn.closest(".modal")?.classList.remove("active")
     })
   })
+
+  const userName = localStorage.getItem('platformUserName') || "Profissional";
+
+  document.querySelector('.greeting-text').innerHTML = `
+  Olá, Dr(a) ${userName}
+  <img class="wave" src="assets/ola-dr.png" alt="Saudação" style="width:50px; margin-left:6px;">
+`;
+
 }
+
+// ===== FUNÇÃO DE API =====
+
+async function carregarPacientesDoProfissional() {
+  const token = localStorage.getItem("token");
+  const profissionalId = localStorage.getItem("userId");
+
+  if (!token || !profissionalId) {
+    console.error("❌ Token ou userId não encontrados no localStorage.");
+    return;
+  }
+
+  console.log("🔍 Buscando pacientes...");
+  console.log("👤 Profissional ID:", profissionalId);
+  console.log("🔑 Token:", token);
+
+  try {
+    const response = await fetch(
+      `https://auratccbackend.onrender.com/api/profissionais/${profissionalId}/pacientes`,
+      {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("📥 RESPOSTA DA API:", data);
+    // salvar pacientes no localStorage para uso em outras páginas
+    localStorage.setItem("listaPacientesProfissional", JSON.stringify(data));
+
+    if (!response.ok) {
+      console.error("❌ Erro ao buscar pacientes:", data);
+      return;
+    }
+
+    // preencher tabela com retry caso tbody ainda não exista por algum motivo
+    preencherTabelaPacientesWithRetry(data);
+
+  } catch (error) {
+    console.error("❌ Erro ao conectar com o servidor:", error);
+  }
+}
+
+/**
+ * Preencher tabela com retry simples (até 5 tentativas a cada 150ms).
+ * Isso evita erro caso o DOM ainda não tenha o tbody por timing peculiar.
+ */
+function preencherTabelaPacientesWithRetry(pacientes, attempt = 0) {
+  const tbody = document.getElementById("patients-tbody");
+  if (tbody) {
+    preencherTabelaPacientes(pacientes);
+    return;
+  }
+  if (attempt >= 5) {
+    console.error("❌ Não encontrei o tbody (#patients-tbody) após várias tentativas.");
+    return;
+  }
+  setTimeout(() => preencherTabelaPacientesWithRetry(pacientes, attempt + 1), 150);
+}
+
+function preencherTabelaPacientes(pacientes) {
+  const tbody = document.getElementById("patients-tbody");
+
+  if (!tbody) {
+    console.error("❌ Não encontrei o tbody da tabela (#patients-tbody).");
+    return;
+  }
+
+  if (!pacientes || pacientes.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align:center; padding:20px;">
+          Nenhum paciente encontrado.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = pacientes
+    .map(p => `
+    <tr data-id="${p._id}">
+      <td class="patient-name">${p.nomeCompleto}</td>
+      <td class="patient-email">${p.email || "-"}</td>
+      <td class="patient-cpf">${p.cpf || "-"}</td>
+
+      <td class="patient-actions">
+
+        <!-- BOTÃO VER DETALHES -->
+        <button class="action-btn" title="Ver detalhes"
+          onclick="window.location.href='patient-detail.html?id=${p._id}'">
+          <img src="assets/arrow-diagonal.svg" />
+        </button>
+
+        <!-- BOTÃO DELETAR -->
+        <button class="action-btn delete-patient" title="Excluir">
+          <img src="assets/icon-delete.svg" width="20" height="20" />
+        </button>
+
+      </td>
+    </tr>
+  `)
+    .join("");
+
+  // ADICIONA EVENTO PARA EXCLUSÃO
+  document.querySelectorAll(".delete-patient").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+
+      const row = e.target.closest("tr");
+      const patientId = row.getAttribute("data-id");
+
+      const modal = document.getElementById("delete-patient-modal");
+      modal.classList.add("active");
+
+      document.getElementById("confirm-delete-patient").onclick = () => {
+        row.remove();
+        modal.classList.remove("active");
+      };
+
+      document.getElementById("cancel-delete-patient").onclick = () => {
+        modal.classList.remove("active");
+      };
+    });
+  });
+
+}
+// ================================
+// SOLICITAÇÕES DE CONTATO — VERSÃO CORRETA PARA HOME
+// ================================
+async function carregarSolicitacoesContato() {
+  const psicologoId = localStorage.getItem("platformUserId");
+  const token = localStorage.getItem("token");
+
+  if (!psicologoId || !token) {
+    console.log("⛔ Psicólogo não logado");
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://auratccbackend.onrender.com/api/profissionais/${psicologoId}/solicitacoes`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    const solicitacoes = await res.json();
+    console.log("📥 Solicitações recebidas:", solicitacoes);
+
+    const dot = document.getElementById("contact-dot");
+
+    if (dot) dot.style.display = solicitacoes.length > 0 ? "block" : "none";
+
+    window.solicitacoesPendentes = solicitacoes;
+
+  } catch (error) {
+    console.error("❌ Erro ao carregar solicitações:", error);
+  }
+}
+
+// abrir o modal ao clicar no card
+document.getElementById("contact-requests-card")?.addEventListener("click", () => {
+  if (!window.solicitacoesPendentes || window.solicitacoesPendentes.length === 0) {
+    alert("Nenhuma solicitação de contato pendente.");
+    return;
+  }
+
+  const solicitacao = window.solicitacoesPendentes[0];
+  const modal = document.getElementById("contact-request-modal");
+
+  document.getElementById("contact-message").innerText =
+    `${solicitacao.nomeCompleto} quer fazer contato com você`;
+
+  modal.classList.add("show");
+});
+
+// aceitar / recusar
+async function responderSolicitacao(acao) {
+  const psicologoId = localStorage.getItem("platformUserId");
+  const token = localStorage.getItem("token");
+
+  const solicitacao = window.solicitacoesPendentes[0];
+  const pacienteId = solicitacao._id;
+
+  try {
+    const res = await fetch(
+      `https://auratccbackend.onrender.com/api/profissionais/${psicologoId}/solicitacoes/${pacienteId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ acao })
+      }
+    );
+
+    const data = await res.json();
+    console.log("📨 Resposta enviada:", data);
+
+    alert(`Solicitação ${acao === "aceitar" ? "aceita" : "recusada"} com sucesso!`);
+
+    await carregarSolicitacoesContato();
+
+    document.getElementById("contact-request-modal").classList.remove("show");
+
+  } catch (error) {
+    console.error("Erro ao responder solicitação:", error);
+    alert("Erro ao responder solicitação.");
+  }
+}
+
+// botões
+document.getElementById("accept-contact")?.addEventListener("click", () => responderSolicitacao("aceitar"));
+document.getElementById("decline-contact")?.addEventListener("click", () => responderSolicitacao("recusar"));
