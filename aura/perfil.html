@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - Aura</title>
     <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <link rel="stylesheet" href="sidebar-styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* Cores Base para Consistência */
         :root {
-            --color-sidebar: #7B8A6F; 
-            --color-background: #F8F5EE; 
+            --color-sidebar: #7B8A6F;
+            --color-background: #F8F5EE;
             --color-container-bg: #FFFFFF;
-            --color-primary-text: #5C4C3E; 
+            --color-primary-text: #5C4C3E;
             --color-icon-text: #7B8A6F;
         }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--color-background);
@@ -28,47 +30,8 @@
             height: 100vh;
             display: flex;
             background: var(--bg-main);
-            border-radius: 0;
             overflow: hidden;
             box-sizing: border-box;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            background-color: #73804F;
-            width: 100px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-            border-top-right-radius: 25px;
-            border-bottom-right-radius: 25px;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            margin: 10px 0;
-            background-color: transparent;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .sidebar img {
-            width: 68px;
-            height: 28px;
-        }
-
-        .sidebar .icons {
-            margin-top: 130%;
-        }
-
-        .spacer {
-            flex: 1;
         }
 
         /*Configuração*/
@@ -94,24 +57,49 @@
         }
 
         /* Estilos de Layout (Sidebar e Main Content) */
-        #main-content-container { background-color: var(--color-container-bg); border-radius: 2rem; box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); }
-        .icon-nav-active { background-color: white; color: var(--color-sidebar); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .icon-nav-inactive { color: white; transition: background-color 0.2s; }
-        
+        #main-content-container {
+            background-color: var(--color-container-bg);
+            border-radius: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            margin-left: 100px;
+
+        }
+
+        .icon-nav-active {
+            background-color: white;
+            color: var(--color-sidebar);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-nav-inactive {
+            color: white;
+            transition: background-color 0.2s;
+        }
+
         /* Avatar */
         .avatar-circle {
-            background-color: #EFEBE4; 
-            color: var(--color-primary-text); 
+            background-color: #EFEBE4;
+            color: var(--color-primary-text);
             width: 120px;
             height: 120px;
-            overflow: hidden; 
+            overflow: hidden;
         }
-        .avatar-placeholder-icon { width: 70px; height: 70px; }
-        .avatar-action-icon { color: #7A7A7A; background-color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+
+        .avatar-placeholder-icon {
+            width: 70px;
+            height: 70px;
+        }
+
+        .avatar-action-icon {
+            color: #7A7A7A;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
         /* Campo de Input/Select */
-        .profile-input, .profile-select {
-            border-color: #D1D5DB; 
+        .profile-input,
+        .profile-select {
+            border-color: #D1D5DB;
             color: var(--color-primary-text);
             padding: 1rem 1.25rem;
             border-radius: 0.75rem;
@@ -119,8 +107,9 @@
             border-width: 2px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-        
-        .profile-input:focus, .profile-select:focus {
+
+        .profile-input:focus,
+        .profile-select:focus {
             outline: none;
             border-color: var(--color-icon-text);
             box-shadow: 0 0 0 3px rgba(123, 138, 111, 0.4);
@@ -128,18 +117,20 @@
 
         /* Botão Salvar */
         .save-button {
-            background-color: #EFEBE4; 
+            background-color: #EFEBE4;
             color: var(--color-primary-text);
             padding: 0.75rem 3rem;
-            border-radius: 9999px; 
+            border-radius: 9999px;
             font-weight: 600;
             transition: background-color 0.2s;
         }
 
-        .save-button:hover { background-color: #D9D2C8; }
-
+        .save-button:hover {
+            background-color: #D9D2C8;
+        }
     </style>
 </head>
+
 <body class="h-screen overflow-hidden flex">
 
     <script>
@@ -158,24 +149,35 @@
     </script>
 
     <div class="app-container" role="main">
-        <nav class="sidebar">
-            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-            <div class="icons">
-                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-                        style="width: 35px; height: 25px; margin-top:50%"></a>
-                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-                        style="width: 38px; margin-top: 160%;"></a>
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="home.html">
+                    <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+                </a>
             </div>
-            <div class="spacer"></div>
-            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-        </nav>
+            <nav class="sidebar-nav">
+                <a href="home.html" class="nav-item active" title="Home">
+                    <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+                </a>
+                <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+                    <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28"
+                        viewBox="0 0 28 28">
+                </a>
+                <a href="metricas.html" class="nav-item" title="Métricas">
+                    <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+                </a>
+                <a href="comunidade.html" class="nav-item" title="Comunidade">
+                    <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28"
+                        viewBox="0 0 28 28">
+                </a>
+            </nav>
+            <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+                <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
+            </button>
+        </aside>
 
         <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-              <a href="Configuracoes.html">
+            <a href="Configuracoes.html">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="3"></circle>
@@ -183,176 +185,191 @@
                         d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
                     </path>
                 </svg>
-                </a>
-            </button>
+            </a>
+        </button>
 
-    <div class="flex-1 ml-20 p-8 overflow-hidden">
-        <div id="main-content-container" class="h-full w-full p-12 overflow-y-auto flex flex-col items-center">
-            
-            <div class="w-full flex justify-between items-start mb-10">
-                <h1 class="text-4xl font-extrabold text-primaryText">Perfil</h1>
-            </div>
+        <div class="flex-1 ml-20 p-8 overflow-hidden">
+            <div id="main-content-container" class="h-full w-full p-12 overflow-y-auto flex flex-col items-center">
 
-            <div class="w-full max-w-xl">
-                
-                <div class="flex flex-col items-center mb-10 relative">
-                    <div id="avatar-container" class="avatar-circle rounded-full flex items-center justify-center mb-3">
-                        <i id="avatar-icon-placeholder" data-lucide="user" class="avatar-placeholder-icon" stroke-width="1.5"></i>
-                        <img id="profile-image" src="" alt="Foto de Perfil" class="w-full h-full object-cover hidden">
-                    </div>
-                    
-                    <div class="flex space-x-4">
-                        <button type="button" id="btn-delete-avatar" class="avatar-action-icon p-2 rounded-full hover:opacity-80 transition duration-150" title="Remover Foto">
-                            <i data-lucide="trash-2" class="w-5 h-5"></i>
-                        </button>
-                        <button type="button" id="btn-edit-avatar" class="avatar-action-icon p-2 rounded-full hover:opacity-80 transition duration-150" title="Alterar Foto">
-                            <i data-lucide="pencil" class="w-5 h-5"></i>
-                        </button>
-                        <input type="file" id="avatar-upload" accept="image/*" class="hidden">
-                    </div>
+                <div class="w-full flex justify-between items-start mb-10">
+                    <h1 class="text-4xl font-extrabold text-primaryText">Perfil</h1>
                 </div>
 
-                <form id="profile-form" class="space-y-6">
+                <div class="w-full max-w-xl">
 
-                    <div>
-                        <label for="display-name" class="block text-sm font-semibold text-primaryText mb-2">Nome de exibição</label>
-                        <input type="text" id="display-name" value="" placeholder="Seu nome completo ou apelido" class="profile-input w-full">
-                    </div>
+                    <div class="flex flex-col items-center mb-10 relative">
+                        <div id="avatar-container"
+                            class="avatar-circle rounded-full flex items-center justify-center mb-3">
+                            <i id="avatar-icon-placeholder" data-lucide="user" class="avatar-placeholder-icon"
+                                stroke-width="1.5"></i>
+                            <img id="profile-image" src="" alt="Foto de Perfil"
+                                class="w-full h-full object-cover hidden">
+                        </div>
 
-                    <div>
-                        <label for="email" class="block text-sm font-semibold text-primaryText mb-2">E-mail</label>
-                        <input type="email" id="email" value="" placeholder="Seu e-mail" class="profile-input w-full">
-                    </div>
-                    
-                    <div>
-                        <label for="gender" class="block text-sm font-semibold text-primaryText mb-2">Gênero</label>
-                        <select id="gender" class="profile-select w-full">
-                            <option value="">Selecione...</option>
-                            <option value="Feminino">Feminino</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="NaoBinario">Não Binário</option>
-                            <option value="Outro">Prefiro não dizer / Outro</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="location" class="block text-sm font-semibold text-primaryText mb-2">Localização</label>
-                        <div class="relative">
-                            <i data-lucide="map-pin" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" id="location" value="" placeholder="Carregando sua localização..." class="profile-input w-full pl-12 bg-gray-50 cursor-default" readonly>
-                            <p class="text-xs text-gray-500 mt-1 ml-1">Localização puxada automaticamente via GPS/IP (Simulado).</p>
+                        <div class="flex space-x-4">
+                            <button type="button" id="btn-delete-avatar"
+                                class="avatar-action-icon p-2 rounded-full hover:opacity-80 transition duration-150"
+                                title="Remover Foto">
+                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            </button>
+                            <button type="button" id="btn-edit-avatar"
+                                class="avatar-action-icon p-2 rounded-full hover:opacity-80 transition duration-150"
+                                title="Alterar Foto">
+                                <i data-lucide="pencil" class="w-5 h-5"></i>
+                            </button>
+                            <input type="file" id="avatar-upload" accept="image/*" class="hidden">
                         </div>
                     </div>
 
-                    <div class="pt-8 text-center">
-                        <button type="submit" class="save-button shadow-lg">
-                            Salvar
-                        </button>
-                    </div>
-                </form>
+                    <form id="profile-form" class="space-y-6">
+
+                        <div>
+                            <label for="display-name" class="block text-sm font-semibold text-primaryText mb-2">Nome de
+                                exibição</label>
+                            <input type="text" id="display-name" value="" placeholder="Seu nome completo ou apelido"
+                                class="profile-input w-full">
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-primaryText mb-2">E-mail</label>
+                            <input type="email" id="email" value="" placeholder="Seu e-mail"
+                                class="profile-input w-full">
+                        </div>
+
+                        <div>
+                            <label for="gender" class="block text-sm font-semibold text-primaryText mb-2">Gênero</label>
+                            <select id="gender" class="profile-select w-full">
+                                <option value="">Selecione...</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="NaoBinario">Não Binário</option>
+                                <option value="Outro">Prefiro não dizer / Outro</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="location"
+                                class="block text-sm font-semibold text-primaryText mb-2">Localização</label>
+                            <div class="relative">
+                                <i data-lucide="map-pin"
+                                    class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input type="text" id="location" value="" placeholder="Carregando sua localização..."
+                                    class="profile-input w-full pl-12 bg-gray-50 cursor-default" readonly>
+                                <p class="text-xs text-gray-500 mt-1 ml-1">Localização puxada automaticamente via GPS/IP
+                                    (Simulado).</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 text-center">
+                            <button type="submit" class="save-button shadow-lg">
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
-
         </div>
-    </div>
 
 
-    <script>
-        // --- Lógica de Avatar ---
-        const avatarUpload = document.getElementById('avatar-upload');
-        const btnEditAvatar = document.getElementById('btn-edit-avatar');
-        const btnDeleteAvatar = document.getElementById('btn-delete-avatar');
-        const profileImage = document.getElementById('profile-image');
-        const avatarIconPlaceholder = document.getElementById('avatar-icon-placeholder');
-        
-        let currentAvatarUrl = localStorage.getItem('profileAvatarUrl') || ''; 
-        
-        function loadAvatar() {
-            if (currentAvatarUrl) {
-                profileImage.src = currentAvatarUrl;
-                profileImage.classList.remove('hidden');
-                avatarIconPlaceholder.classList.add('hidden');
-            } else {
-                profileImage.classList.add('hidden');
-                avatarIconPlaceholder.classList.remove('hidden');
-                profileImage.src = ''; 
-            }
-        }
-        
-        btnEditAvatar.addEventListener('click', () => {
-            avatarUpload.click();
-        });
+        <script>
+            // --- Lógica de Avatar ---
+            const avatarUpload = document.getElementById('avatar-upload');
+            const btnEditAvatar = document.getElementById('btn-edit-avatar');
+            const btnDeleteAvatar = document.getElementById('btn-delete-avatar');
+            const profileImage = document.getElementById('profile-image');
+            const avatarIconPlaceholder = document.getElementById('avatar-icon-placeholder');
 
-        avatarUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    currentAvatarUrl = event.target.result;
-                    localStorage.setItem('profileAvatarUrl', currentAvatarUrl); 
-                    loadAvatar();
-                    console.log('Nova imagem selecionada e salva no LocalStorage.');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+            let currentAvatarUrl = localStorage.getItem('profileAvatarUrl') || '';
 
-        btnDeleteAvatar.addEventListener('click', () => {
-            if (currentAvatarUrl) {
-                const confirmed = confirm('Tem certeza que deseja remover sua foto de perfil?');
-                if (confirmed) {
-                    currentAvatarUrl = '';
-                    localStorage.removeItem('profileAvatarUrl'); 
-                    loadAvatar();
-                    console.log('Foto de perfil removida.');
+            function loadAvatar() {
+                if (currentAvatarUrl) {
+                    profileImage.src = currentAvatarUrl;
+                    profileImage.classList.remove('hidden');
+                    avatarIconPlaceholder.classList.add('hidden');
+                } else {
+                    profileImage.classList.add('hidden');
+                    avatarIconPlaceholder.classList.remove('hidden');
+                    profileImage.src = '';
                 }
             }
-        });
-        
 
-        // --- Lógica de Formulário e LocalStorage (Todos os Campos) ---
-        
-        function loadProfileData() {
-            // Dados padrão para a primeira vez que o app for aberto
-            const defaultData = {
-                name: "Usuário Teste",
-                email: "user@email.com",
-                gender: "Masculino",
-                location: "Carapicuiba, São Paulo, Brasil"
+            btnEditAvatar.addEventListener('click', () => {
+                avatarUpload.click();
+            });
+
+            avatarUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        currentAvatarUrl = event.target.result;
+                        localStorage.setItem('profileAvatarUrl', currentAvatarUrl);
+                        loadAvatar();
+                        console.log('Nova imagem selecionada e salva no LocalStorage.');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            btnDeleteAvatar.addEventListener('click', () => {
+                if (currentAvatarUrl) {
+                    const confirmed = confirm('Tem certeza que deseja remover sua foto de perfil?');
+                    if (confirmed) {
+                        currentAvatarUrl = '';
+                        localStorage.removeItem('profileAvatarUrl');
+                        loadAvatar();
+                        console.log('Foto de perfil removida.');
+                    }
+                }
+            });
+
+
+            // --- Lógica de Formulário e LocalStorage (Todos os Campos) ---
+
+            function loadProfileData() {
+                // Dados padrão para a primeira vez que o app for aberto
+                const defaultData = {
+                    name: "Usuário Teste",
+                    email: "user@email.com",
+                    gender: "Masculino",
+                    location: "Carapicuiba, São Paulo, Brasil"
+                };
+
+                // Tenta carregar os dados salvos, senão usa os padrão
+                const profileData = JSON.parse(localStorage.getItem('profileData')) || defaultData;
+
+                document.getElementById('display-name').value = profileData.name;
+                document.getElementById('email').value = profileData.email;
+                document.getElementById('gender').value = profileData.gender;
+                document.getElementById('location').value = profileData.location;
+            }
+
+            document.getElementById('profile-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Coleta TODOS os dados do formulário
+                const formData = {
+                    name: document.getElementById('display-name').value,
+                    email: document.getElementById('email').value,
+                    gender: document.getElementById('gender').value,
+                    location: document.getElementById('location').value,
+                };
+
+                // Salva TODOS os dados no LocalStorage
+                localStorage.setItem('profileData', JSON.stringify(formData));
+                alert('Dados do Perfil Atualizados com Sucesso!');
+            });
+
+
+            // --- Inicialização ---
+            window.onload = () => {
+                lucide.createIcons();
+                loadAvatar();
+                loadProfileData(); // Carrega todos os dados salvos ao iniciar a tela
             };
-            
-            // Tenta carregar os dados salvos, senão usa os padrão
-            const profileData = JSON.parse(localStorage.getItem('profileData')) || defaultData;
-            
-            document.getElementById('display-name').value = profileData.name;
-            document.getElementById('email').value = profileData.email;
-            document.getElementById('gender').value = profileData.gender;
-            document.getElementById('location').value = profileData.location;
-        }
-
-        document.getElementById('profile-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Coleta TODOS os dados do formulário
-            const formData = {
-                name: document.getElementById('display-name').value,
-                email: document.getElementById('email').value,
-                gender: document.getElementById('gender').value,
-                location: document.getElementById('location').value,
-            };
-            
-            // Salva TODOS os dados no LocalStorage
-            localStorage.setItem('profileData', JSON.stringify(formData)); 
-            alert('Dados do Perfil Atualizados com Sucesso!');
-        });
-
-
-        // --- Inicialização ---
-        window.onload = () => {
-            lucide.createIcons(); 
-            loadAvatar(); 
-            loadProfileData(); // Carrega todos os dados salvos ao iniciar a tela
-        };
-    </script>
+        </script>
 
 </body>
+
 </html>

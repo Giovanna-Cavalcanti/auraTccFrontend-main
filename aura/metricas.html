@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <title>Métricas - Aura</title>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link rel="stylesheet" href="sidebar-styles.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom font similar to original */
@@ -83,52 +86,8 @@
       height: 100vh;
       display: flex;
       background: var(--bg-main);
-      border-radius: 0;
       overflow: hidden;
-      overflow-y: auto;  
       box-sizing: border-box;
-    }
-
-    /* Sidebar styles */
-    .sidebar {
-      background-color: #73804F;
-      width: 100px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 10;
-    }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      margin: 10px 0;
-      background-color: transparent;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    .sidebar img {
-      width: 68px;
-      height: 28px;
-    }
-
-    .sidebar .icons {
-      margin-top: 130%;
-    }
-
-    .spacer {
-      flex: 1;
     }
 
     /* Main content area */
@@ -239,35 +198,44 @@
 <body class="bg-[#F9F7F3] font-sans text-[#4B3A2B]">
   <div class="app-container">
     <!-- Sidebar -->
-    <nav class="sidebar">
-      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-      <div class="icons">
-        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-            style="width: 35px; height: 25px; margin-top:50%"></a>
-        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-            style="width: 38px; margin-top: 160%;"></a>
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <a href="home.html">
+          <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+        </a>
       </div>
-      <div class="spacer"></div>
-      <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-    </nav>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-item active" title="Home">
+          <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+          <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="metricas.html" class="nav-item" title="Métricas">
+          <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="comunidade.html" class="nav-item" title="Comunidade">
+          <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+      </nav>
+      <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+        <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
+      </button>
+    </aside>
 
     <!-- Main Content -->
     <div class="main-content">
       <!-- Botão de Configurações no canto superior direito -->
-       <a href="Configuracoes.html">
-      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path
-            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-          </path>
-        </svg>
-      </button>
+      <a href="Configuracoes.html">
+        <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+          </svg>
+        </button>
       </a>
 
       <header class="flex justify-between items-center mb-10">
@@ -370,14 +338,16 @@
                 <div class="card-image-placeholder" aria-hidden="true"></div>
                 <div class="flex flex-col text-sm text-[#4b3721]">
                   <strong class="font-semibold">Alteração de Humor</strong>
-                  <span>Nos últimos dias, percebi que minhas manhãs costumam ser mais calmas e produtivas, enquanto à tarde...</span>
+                  <span>Nos últimos dias, percebi que minhas manhãs costumam ser mais calmas e produtivas, enquanto à
+                    tarde...</span>
                 </div>
               </div>
               <div class="card flex gap-4 p-4">
                 <div class="card-image-placeholder" aria-hidden="true"></div>
                 <div class="flex flex-col text-sm text-[#4b3721]">
                   <strong class="font-semibold">Alivio</strong>
-                  <span>Percebo que escrever sobre meus sentimentos me ajuda a entender melhor o que estou sentindo...</span>
+                  <span>Percebo que escrever sobre meus sentimentos me ajuda a entender melhor o que estou
+                    sentindo...</span>
                 </div>
               </div>
             </div>
@@ -388,14 +358,16 @@
             <h2 class="font-semibold mb-4 text-lg" style="color:#4b3721;">Recomendações feitas para você</h2>
             <div class="flex gap-6">
               <a href="comunidade_post.html"
-                class="card flex flex-col p-4 gap-3 no-underline hover:shadow-lg transition-shadow duration-300 flex-1"> <img src="img/comunidade/post1.jpg" alt="">
-                <div aria-hidden ="true"></div>
-                <strong class="font-semibold text-sm text-[#4b3721]">A ansiedade tem solução</strong> 
+                class="card flex flex-col p-4 gap-3 no-underline hover:shadow-lg transition-shadow duration-300 flex-1">
+                <img src="img/comunidade/post1.jpg" alt="">
+                <div aria-hidden="true"></div>
+                <strong class="font-semibold text-sm text-[#4b3721]">A ansiedade tem solução</strong>
                 <p class="text-xs text-[#4b3721]">Crises, preocupações, e um monte de outras coisas a mais...</p>
               </a>
               <a href="comunidade_post2.html"
-                class="card flex flex-col p-4 gap-3 no-underline hover:shadow-lg transition-shadow duration-300 flex-1"> <img src="img/comunidade/post2.jpg" alt="">
-                <div  aria-hidden="true"></div>
+                class="card flex flex-col p-4 gap-3 no-underline hover:shadow-lg transition-shadow duration-300 flex-1">
+                <img src="img/comunidade/post2.jpg" alt="">
+                <div aria-hidden="true"></div>
                 <strong class="font-semibold text-sm text-[#4b3721]">Técnicas de Redução de Estresse</strong>
                 <p class="text-xs text-[#4b3721]">A saúde mental é tão importante quanto a saúde física...</p>
               </a>
@@ -472,6 +444,45 @@
         // In a real app, update the graph data based on period here.
         // For demonstration, just show tooltip reset and highlight selected option.
         tooltip.style.opacity = 0;
+      });
+    })();
+  </script>
+
+  <nav class="mobile-bottom-menu">
+    <a href="home.html" class="mobile-menu-item" data-page="home">
+      <img src="img/icons-menu/home.png" alt="Home">
+    </a>
+
+    <a href="banco.html" class="mobile-menu-item" data-page="banco">
+      <img src="img/icons-menu/banco.png" alt="Banco">
+    </a>
+
+    <!-- Botão Central - Redireciona para CVV -->
+    <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
+      <img src="img/icons-menu/sair.png" alt="CVV - Centro de Valorização da Vida">
+    </a>
+
+    <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
+      <img src="img/icons-menu/metricas.png" alt="Métricas">
+    </a>
+
+    <a href="comunidade.html" class="mobile-menu-item" data-page="comunidade">
+      <img src="img/icons-menu/comunidade.png" alt="Comunidade">
+    </a>
+  </nav>
+
+  <!-- Script para marcar item ativo automaticamente -->
+  <script>
+    // Detecta a página atual e adiciona classe 'active'
+    (function () {
+      const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
+      const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
+
+      menuItems.forEach(item => {
+        const page = item.getAttribute('data-page');
+        if (page === currentPage) {
+          item.classList.add('active');
+        }
       });
     })();
   </script>

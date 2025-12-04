@@ -8,7 +8,8 @@
         rel="stylesheet">
     <title>Diário - Aura</title>
     <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
-    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <link rel="stylesheet" href="mobile-responsive.css">
+    <link rel="stylesheet" href="sidebar-styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom green tones matching the screenshot (Copied from home.html) */
@@ -52,47 +53,8 @@
             height: 100vh;
             display: flex;
             background: var(--bg-main);
-            border-radius: 0;
             overflow: hidden;
             box-sizing: border-box;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            background-color: #73804F;
-            width: 100px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-            border-top-right-radius: 25px;
-            border-bottom-right-radius: 25px;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            margin: 10px 0;
-            background-color: transparent;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .sidebar img {
-            width: 68px;
-            height: 28px;
-        }
-
-        .sidebar .icons {
-            margin-top: 130%;
-        }
-
-        .spacer {
-            flex: 1;
         }
 
         /* Main content panel */
@@ -328,21 +290,32 @@
 
 <body>
     <div class="app-container" role="main">
-        <nav class="sidebar">
-            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-            <div class="icons">
-                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-                        style="width: 35px; height: 25px; margin-top:50%"></a>
-                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-                        style="width: 38px; margin-top: 160%;"></a>
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="home.html">
+                    <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+                </a>
             </div>
-            <div class="spacer"></div>
-            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-        </nav>
+            <nav class="sidebar-nav">
+                <a href="home.html" class="nav-item active" title="Home">
+                    <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+                </a>
+                <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+                    <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28"
+                        viewBox="0 0 28 28">
+                </a>
+                <a href="metricas.html" class="nav-item" title="Métricas">
+                    <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+                </a>
+                <a href="comunidade.html" class="nav-item" title="Comunidade">
+                    <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28"
+                        viewBox="0 0 28 28">
+                </a>
+            </nav>
+            <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+                <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
+            </button>
+        </aside>
 
         <main class="content" role="region" aria-label="Página do Diário Interativo">
 
@@ -1230,6 +1203,44 @@ document.addEventListener('DOMContentLoaded', async () => {
 console.log("✅ Script do diário carregado com sucesso!");
     </script>
 
+    <nav class="mobile-bottom-menu">
+        <a href="home.html" class="mobile-menu-item" data-page="home">
+            <img src="img/icons-menu/home.png" alt="Home">
+        </a>
+
+        <a href="banco.html" class="mobile-menu-item" data-page="banco">
+            <img src="img/icons-menu/banco.png" alt="Banco">
+        </a>
+
+        <!-- Botão Central - Redireciona para CVV -->
+        <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
+            <img src="img/icons-menu/sair.png" alt="CVV - Centro de Valorização da Vida">
+        </a>
+
+        <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
+            <img src="img/icons-menu/metricas.png" alt="Métricas">
+        </a>
+
+        <a href="comunidade.html" class="mobile-menu-item" data-page="comunidade">
+            <img src="img/icons-menu/comunidade.png" alt="Comunidade">
+        </a>
+    </nav>
+
+    <!-- Script para marcar item ativo automaticamente -->
+    <script>
+        // Detecta a página atual e adiciona classe 'active'
+        (function () {
+            const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
+            const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
+
+            menuItems.forEach(item => {
+                const page = item.getAttribute('data-page');
+                if (page === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
