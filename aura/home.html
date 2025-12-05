@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="sidebar-styles.css">
     <title>Home - Aura</title>
     <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <link rel="stylesheet" href="mobile-responsive.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom green tones matching the screenshot */
@@ -57,6 +59,9 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             user-select: none;
+            overflow-x: hidden;
+            /* remove scroll lateral */
+            display: block;
         }
 
         /* Container full screen with border radius and border */
@@ -65,13 +70,13 @@
             height: 100vh;
             display: flex;
             background: var(--bg-main);
-            border-radius: 0;
-            overflow: hidden;
             box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         /* Sidebar styles */
-        .sidebar {
+        /* .sidebar {
             background-color: #73804F;
             width: 100px;
             height: 100vh;
@@ -106,10 +111,11 @@
 
         .spacer {
             flex: 1;
-        }
+        } */
 
         /* Main content panel */
         main.content {
+            margin-left: 100px;
             flex-grow: 1;
             padding: 32px 48px;
             display: flex;
@@ -279,11 +285,11 @@
             transition: box-shadow 0.2s ease, transform 0.2s ease;
             height: 250px;
             box-sizing: border-box;
-            
+
             /* Remove a decoração de link e bordas de botão */
             text-decoration: none;
             border: none;
-            background-color: var(--box-bg); 
+            background-color: var(--box-bg);
         }
 
         .metric-box:hover {
@@ -660,21 +666,33 @@
 
 <body>
     <div class="app-container" role="main">
-        <nav class="sidebar">
-            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-            <div class="icons">
-                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-                        style="width: 35px; height: 25px; margin-top:50%"></a>
-                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-                        style="width: 38px; margin-top: 160%;"></a>
+        <!-- Sidebar ((padronizei aqui) -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="home.html">
+                    <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+                </a>
             </div>
-            <div class="spacer"></div>
-            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-        </nav>
+            <nav class="sidebar-nav">
+                <a href="home.html" class="nav-item active" title="Home">
+                    <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+                </a>
+                <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+                    <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28"
+                        viewBox="0 0 28 28">
+                </a>
+                <a href="metricas.html" class="nav-item" title="Métricas">
+                    <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+                </a>
+                <a href="comunidade.html" class="nav-item" title="Comunidade">
+                    <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28"
+                        viewBox="0 0 28 28">
+                </a>
+            </nav>
+            <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+                <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
+            </button>
+        </aside>
 
         <main class="content" role="region" aria-label="Página inicial da plataforma">
             <time class="date" aria-live="polite" id="date-display" datetime=""></time>
@@ -694,14 +712,14 @@
             </section>
 
             <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-              <a href="Configuracoes.html">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path
-                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-                    </path>
-                </svg>
+                <a href="Configuracoes.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
                 </a>
             </button>
 
@@ -758,7 +776,8 @@
                     <a href="Atividade_vis.html" class="metric-box atividades" aria-label="Registre atividades">
                         <div class="icon-circle">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M17 5H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"></path>
+                                <path d="M17 5H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z">
+                                </path>
                                 <path d="M12 9v6"></path>
                                 <path d="M10 13l2-2 2 2"></path>
                             </svg>
@@ -771,15 +790,16 @@
             </section>
 
             <section aria-label="Lembretes do usuário" class="reminders-section">
-                <div class="section-header" style="display:flex; justify-content: space-between; align-items: flex-end;">
+                <div class="section-header"
+                    style="display:flex; justify-content: space-between; align-items: flex-end;">
                     <h2 class="section-title" style="margin-bottom: 12px;">Lembretes</h2>
                     <button class="add-reminder-btn" style="margin-top: 40px;" type="button" id="addReminderBtn"
                         aria-label="Adicionar lembrete" title="Adicionar lembrete" onclick="">
                         Adicionar
                         <span class="add-icon-circle" aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" viewBox="0 0 24 24">
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                viewBox="0 0 24 24">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
@@ -788,7 +808,7 @@
                 </div>
 
                 <div class="reminders-container" id="remindersContainer" aria-live="polite" aria-atomic="true">
-                    </div>
+                </div>
             </section>
 
             <div class="modal" id="triagemModal">
@@ -912,8 +932,7 @@
                 </div>
             </div>
             <div class="modal" id="viewReminderModal">
-                <div class="modal-content"
-                    style="max-width: 600px; padding: 0; border-radius: 20px; overflow: hidden;">
+                <div class="modal-content" style="max-width: 600px; padding: 0; border-radius: 20px; overflow: hidden;">
                     <div class="modal-header">
                         Detalhes do Lembrete
                         <span class="close" id="closeViewReminder">&times;</span>
@@ -1155,58 +1174,29 @@
     </script>
     <script src="triagem.js"></script>
 
-    <!-- <script>
-        // Mantém a lógica da triagem (Modal original)
-    // -- tirando daqui pra eu fazer o script separado ---
-    //     const modal = document.getElementById("triagemModal");
-    //     const confirmModal = document.getElementById("confirmModal");
-    //     const openBtn = document.getElementById("openModalBtn");
-    //     const closeBtn = document.getElementById("closeModal");
-    //     const closeConfirmBtn = document.getElementById("closeConfirm");
+    <nav class="mobile-bottom-menu">
+        <a href="home.html" class="mobile-menu-item" data-page="home">
+            <img src="img/icons-menu/home.png" alt="Home">
+        </a>
 
-    //     function abrirTriagem() { // Função que é chamada no botão HTML
-    //          modal.style.display = "flex";
-    //     };
+        <a href="banco.html" class="mobile-menu-item" data-page="banco">
+            <img src="img/icons-menu/banco.png" alt="Banco">
+        </a>
 
-    //     // Abrir modal
-    //     if(openBtn) {
-    //         openBtn.onclick = abrirTriagem;
-    //     }
+        <!-- Botão Central - Redireciona para CVV -->
+        <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
+            <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
+        </a>
 
-    //     // Fechar modal no botão X
-    //     if(closeBtn) {
-    //         closeBtn.onclick = function () {
-    //             modal.style.display = "none";
-    //         };
-    //     }
+        <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
+            <img src="img/icons-menu/metricas.png" alt="Métricas">
+        </a>
 
-    //     // Fechar confirmação
-    //     if(closeConfirmBtn) {
-    //          closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
-    //     }
+        <a href="comunidade.html" class="mobile-menu-item" data-page="comunidade">
+            <img src="img/icons-menu/comunidade.png" alt="Comunidade">
+        </a>
+    </nav>
 
-    //     // Fechar modal clicando fora
-    //     window.onclick = function (event) {
-    //         if (event.target === modal) {
-    //             modal.style.display = "none";
-    //         }
-    //         if (event.target === confirmModal) {
-    //             confirmModal.style.display = "none";
-    //         }
-    //     };
-
-    //     // Capturar envio do formulário
-    //     document.getElementById("triagemForm").addEventListener("submit", function (e) {
-    //         e.preventDefault();
-    //         triagemModal.style.display = "none";
-    //         confirmModal.style.display = "flex";
-    //         const formData = new FormData(this);
-    //         const dados = {};
-    //         formData.forEach((value, key) => (dados[key] = value));
-    //         console.log("Respostas:", dados);
-
-    //     });
-    </script> -->
 </body>
 
 </html>

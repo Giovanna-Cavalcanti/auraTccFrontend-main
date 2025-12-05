@@ -2,960 +2,951 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Humor - Aura</title>
-    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        /* Variáveis para consistência (Opcional, mas recomendado) */
-        :root {
-            --bg-main: #F8F5EE;
-            /* Fundo Creme/Bege */
-            --green-sidebar: #73804F;
-            /* Cor principal da Sidebar */
-            --green-light: #6B7A5C;
-            /* Texto/Hover Claro */
-            --brown-dark: #5C4C3E;
-            /* Títulos/Texto Escuro */
-            --btn-primary: #7B8A6F;
-            /* Botão principal */
-            --box-bg: #FFFFFF;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humor - Aura</title>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sidebar-styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Variáveis para consistência (Opcional, mas recomendado) */
+    :root {
+      --bg-main: #F8F5EE;
+      /* Fundo Creme/Bege */
+      --green-sidebar: #73804F;
+      /* Cor principal da Sidebar */
+      --green-light: #6B7A5C;
+      /* Texto/Hover Claro */
+      --brown-dark: #5C4C3E;
+      /* Títulos/Texto Escuro */
+      --btn-primary: #7B8A6F;
+      /* Botão principal */
+      --box-bg: #FFFFFF;
+    }
 
-        /* Estilos Personalizados */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            /* Garante que o corpo use 100% da altura para o app-container funcionar */
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            /* Controla o scroll dentro do app-container */
-        }
+    /* Estilos Personalizados */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      /* Garante que o corpo use 100% da altura para o app-container funcionar */
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      /* Controla o scroll dentro do app-container */
+    }
 
-        /* Container principal da aplicação (Sidebar + Conteúdo) */
-        .app-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            background: var(--bg-main);
-            border-radius: 0;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
+    /* Container principal da aplicação (Sidebar + Conteúdo) */
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      background: var(--bg-main);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
 
-        /* SIDEBAR FIXA */
-        .sidebar {
-            background-color: var(--green-sidebar);
-            width: 100px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-            border-top-right-radius: 25px;
-            border-bottom-right-radius: 25px;
-            flex-shrink: 0;
-            /* Impede que a sidebar encolha */
-        }
+    /* CONTAINER PRINCIPAL DO CONTEÚDO */
+    .main-content-wrapper {
+      flex-grow: 1;
+      /* Ocupa o espaço restante */
+      overflow-y: auto;
+      /* Permite scroll no conteúdo principal */
+      padding-top: 5rem;
+      /* Espaço para o header */
+      position: relative;
+    }
 
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            margin: 10px 0;
-            background-color: transparent;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+    .main-container {
+      min-height: calc(100vh - 5rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
+    /* HEADER FIXO E BOTÃO DE MENU */
+    /* O header foi removido/adaptado, o settings-btn é o elemento fixo mais importante */
 
-        .sidebar img {
-            /* Tamanho da imagem é variado no HTML. Mantenha os valores inline. */
-        }
+    /* Configuração (CORRIGIDO: Agora usa o SVG do settings para herdar cor) */
+    .settings-btn {
+      position: absolute;
+      top: 32px;
+      right: 48px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--brown-dark);
+      /* Usa a cor escura do tema */
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      /* Garante que fique acima do conteúdo */
+    }
 
-        .sidebar .icons {
-            margin-top: 130%;
-        }
+    .settings-btn:hover {
+      opacity: 1;
+    }
 
-        .spacer {
-            flex: 1;
-        }
+    .settings-btn svg {
+      color: var(--brown-dark);
+      /* Força a cor do SVG */
+    }
 
-        /* CONTAINER PRINCIPAL DO CONTEÚDO */
-        .main-content-wrapper {
-            flex-grow: 1;
-            /* Ocupa o espaço restante */
-            overflow-y: auto;
-            /* Permite scroll no conteúdo principal */
-            padding-top: 5rem;
-            /* Espaço para o header */
-            position: relative;
-        }
+    /* Estilo do Botão Principal */
+    .btn-primary {
+      background-color: var(--btn-primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: background-color 0.2s, transform 0.2s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        .main-container {
-            min-height: calc(100vh - 5rem);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 1rem;
-            max-width: 800px;
-            /* Limita a largura do conteúdo interno */
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .btn-primary:hover {
+      background-color: #6B7A5C;
+      transform: translateY(-1px);
+    }
 
-        /* HEADER FIXO E BOTÃO DE MENU */
-        /* O header foi removido/adaptado, o settings-btn é o elemento fixo mais importante */
+    /* Estilos do Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(92, 76, 62, 0.5);
+      /* Fundo escuro ajustado para o tema */
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+    }
 
-        /* Configuração (CORRIGIDO: Agora usa o SVG do settings para herdar cor) */
-        .settings-btn {
-            position: absolute;
-            top: 32px;
-            right: 48px;
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            color: var(--brown-dark);
-            /* Usa a cor escura do tema */
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            /* Garante que fique acima do conteúdo */
-        }
+    .modal-content {
+      background-color: var(--box-bg);
+      padding: 3rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+    }
 
-        .settings-btn:hover {
-            opacity: 1;
-        }
+    .modal-title {
+      color: var(--brown-dark);
+      font-size: 1.75rem;
+      /* Ajustado para ficar maior */
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
 
-        .settings-btn svg {
-            color: var(--brown-dark);
-            /* Força a cor do SVG */
-        }
+    /* Estilos Emojis (Mood Selector) */
+    .mood-selector-container {
+      display: flex;
+      justify-content: space-around;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+    }
 
-        /* Estilo do Botão Principal */
-        .btn-primary {
-            background-color: var(--btn-primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: background-color 0.2s, transform 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .mood-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.75rem;
+      border-radius: 1rem;
+      transition: background-color 0.2s, transform 0.2s;
+      width: 18%;
+      min-width: 90px;
+    }
 
-        .btn-primary:hover {
-            background-color: #6B7A5C;
-            transform: translateY(-1px);
-        }
+    .mood-option:hover {
+      background-color: #E3E8DB;
+      transform: translateY(-2px);
+    }
 
-        /* Estilos do Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(92, 76, 62, 0.5);
-            /* Fundo escuro ajustado para o tema */
-            backdrop-filter: blur(4px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
+    .mood-option.selected {
+      background-color: #D9D2BF;
+      border: 2px solid var(--btn-primary);
+    }
 
-        .modal-content {
-            background-color: var(--box-bg);
-            padding: 3rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-        }
+    .mood-emoji-svg {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.5rem;
+    }
 
-        .modal-title {
-            color: var(--brown-dark);
-            font-size: 1.75rem;
-            /* Ajustado para ficar maior */
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
+    .mood-label {
+      font-size: 0.8rem;
+      color: var(--green-light);
+      text-align: center;
+      font-weight: 500;
+    }
 
-        /* Estilos Emojis (Mood Selector) */
-        .mood-selector-container {
-            display: flex;
-            justify-content: space-around;
-            gap: 0.75rem;
-            margin-top: 2rem;
-            margin-bottom: 3rem;
-        }
+    /* Estilos Confirmação */
+    .confirmation-icon-container {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #E3E8DB;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 1.5rem;
+    }
 
-        .mood-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            padding: 0.75rem;
-            border-radius: 1rem;
-            transition: background-color 0.2s, transform 0.2s;
-            width: 18%;
-            min-width: 90px;
-        }
+    .confirmation-icon {
+      color: var(--btn-primary);
+      width: 40px;
+      height: 40px;
+      stroke-width: 3;
+    }
 
-        .mood-option:hover {
-            background-color: #E3E8DB;
-            transform: translateY(-2px);
-        }
+    .confirmation-message {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--brown-dark);
+    }
 
-        .mood-option.selected {
-            background-color: #D9D2BF;
-            border: 2px solid var(--btn-primary);
-        }
+    /* Estilos Gráfico/Histórico */
+    .chart-card {
+      background-color: var(--box-bg);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
 
-        .mood-emoji-svg {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 0.5rem;
-        }
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background-color: #FDFCF8;
+      border-radius: 0.5rem;
+      border: 1px solid #E3E8DB;
+    }
 
-        .mood-label {
-            font-size: 0.8rem;
-            color: var(--green-light);
-            text-align: center;
-            font-weight: 500;
-        }
+    /* Estilo para Emojis na Lista de Histórico */
+    .history-emoji-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--brown-dark);
+    }
 
-        /* Estilos Confirmação */
-        .confirmation-icon-container {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: #E3E8DB;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 1.5rem;
-        }
-
-        .confirmation-icon {
-            color: var(--btn-primary);
-            width: 40px;
-            height: 40px;
-            stroke-width: 3;
-        }
-
-        .confirmation-message {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--brown-dark);
-        }
-
-        /* Estilos Gráfico/Histórico */
-        .chart-card {
-            background-color: var(--box-bg);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: #FDFCF8;
-            border-radius: 0.5rem;
-            border: 1px solid #E3E8DB;
-        }
-
-        /* Estilo para Emojis na Lista de Histórico */
-        .history-emoji-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--brown-dark);
-        }
-
-        .history-emoji-container svg {
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-        }
+    .history-emoji-container svg {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+    }
 
 
-        /* Animações */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
+    /* Animações */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
 
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-    </style>
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="app-container" role="main">
+  <div class="app-container" role="main">
+    <!-- Sidebar ((padronizei aqui) -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <a href="home.html">
+          <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-item active" title="Home">
+          <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+          <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="metricas.html" class="nav-item" title="Métricas">
+          <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="comunidade.html" class="nav-item" title="Comunidade">
+          <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+      </nav>
+      <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+        <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
+      </button>
+    </aside>
 
-        <nav class="sidebar">
-            <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-            <div class="icons">
-                <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-                        style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-                <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-                        style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-                <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-                        style="width: 35px; height: 25px; margin-top:50%"></a>
-                <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-                        style="width: 38px; margin-top: 160%;"></a>
-            </div>
-            <div class="spacer"></div>
-            <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-        </nav>
+    <div class="main-content-wrapper">
 
-        <div class="main-content-wrapper">
+      <a href="Configuracoes.html">
+        <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+          </svg>
+        </button>
+      </a>
 
-            <a href="Configuracoes.html">
-                <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path
-                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-                        </path>
-                    </svg>
-                </button>
-            </a>
+      <div class="main-container w-full max-w-4xl mx-auto">
+        <h1 class="text-4xl font-extrabold mb-8 text-[--brown-dark] w-full text-center">Meu Diário de Emoções
+        </h1>
 
-            <div class="main-container w-full max-w-4xl mx-auto">
-                <h1 class="text-4xl font-extrabold mb-8 text-[--brown-dark] w-full text-center">Meu Diário de Emoções
-                </h1>
-
-                <div class="w-full flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold text-[--green-light]">Histórico de Humor</h2>
-                    <button id="btnOpenMoodModal" class="btn-primary flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            stroke-width="2" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                        Humor do Dia
-                    </button>
-                </div>
-
-                <div class="chart-card w-full">
-                    <h3 class="text-xl font-semibold mb-4 text-[--brown-dark]">Evolução Semanal</h3>
-                    <div style="height: 300px;">
-                        <canvas id="moodChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="w-full">
-                    <h3 class="text-xl font-semibold mb-4 text-[--brown-dark]">Registros Diários</h3>
-                    <div id="moodHistoryList" class="space-y-3">
-                    </div>
-                </div>
-            </div>
+        <div class="w-full flex justify-between items-center mb-8">
+          <h2 class="text-2xl font-bold text-[--green-light]">Histórico de Humor</h2>
+          <button id="btnOpenMoodModal" class="btn-primary flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Humor do Dia
+          </button>
         </div>
-    </div>
 
-    <div id="moodSelectModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="absolute top-4 right-4 text-[--green-light] hover:text-[--brown-dark]"
-                id="btnCloseMoodSelectModal" aria-label="Fechar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                    stroke-width="2" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="modal-title">Registrar emoção</h3>
-            <p class="text-center text-lg font-medium mb-8 text-[--brown-dark]">Como você se sente hoje?</p>
-
-            <div class="mood-selector-container">
-                <div class="mood-option" data-mood="Muito Feliz" data-value="5">
-                    <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" fill="#FFD700" />
-                        <circle cx="8.5" cy="10" r="1.5" fill="#333" />
-                        <circle cx="15.5" cy="10" r="1.5" fill="#333" />
-                        <path d="M8 15.5C8 15.5 9 17.5 12 17.5C15 17.5 16 15.5 16 15.5" stroke="#333" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="mood-label">Muito Feliz</span>
-                </div>
-                <div class="mood-option" data-mood="Feliz" data-value="4">
-                    <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" fill="#A3B18A" />
-                        <circle cx="8.5" cy="10" r="1.5" fill="#333" />
-                        <circle cx="15.5" cy="10" r="1.5" fill="#333" />
-                        <path d="M8 14.5C8 14.5 9 15.5 12 15.5C15 15.5 16 14.5 16 14.5" stroke="#333" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="mood-label">Feliz</span>
-                </div>
-                <div class="mood-option" data-mood="Neutro" data-value="3">
-                    <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" fill="#A9A9A9" />
-                        <circle cx="8.5" cy="10" r="1.5" fill="#333" />
-                        <circle cx="15.5" cy="10" r="1.5" fill="#333" />
-                        <line x1="8" y1="15" x2="16" y2="15" stroke="#333" stroke-width="1.5" stroke-linecap="round" />
-                    </svg>
-                    <span class="mood-label">Neutro</span>
-                </div>
-                <div class="mood-option" data-mood="Triste" data-value="2">
-                    <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" fill="#FF7F50" />
-                        <circle cx="8.5" cy="10" r="1.5" fill="#333" />
-                        <circle cx="15.5" cy="10" r="1.5" fill="#333" />
-                        <path d="M8 16.5C8 16.5 9 14.5 12 14.5C15 14.5 16 16.5 16 16.5" stroke="#333" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="mood-label">Triste</span>
-                </div>
-                <div class="mood-option" data-mood="Muito Triste" data-value="1">
-                    <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" fill="#8A2BE2" />
-                        <circle cx="8.5" cy="10" r="1.5" fill="#333" />
-                        <circle cx="15.5" cy="10" r="1.5" fill="#333" />
-                        <path d="M8 16.5C8 16.5 9 14.5 12 14.5C15 14.5 16 16.5 16 16.5" stroke="#333" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M7 10L6.5 12M17 10L17.5 12" stroke="#333" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    <span class="mood-label">Muito Triste</span>
-                </div>
-            </div>
-
-            <button id="btnRegisterMood" class="btn-primary w-full opacity-50 cursor-not-allowed" disabled>
-                Registrar
-            </button>
+        <div class="chart-card w-full">
+          <h3 class="text-xl font-semibold mb-4 text-[--brown-dark]">Evolução Semanal</h3>
+          <div style="height: 300px;">
+            <canvas id="moodChart"></canvas>
+          </div>
         </div>
-    </div>
 
-    <div id="moodConfirmModal" class="modal-overlay">
-        <div class="modal-content text-center">
-            <button class="absolute top-4 right-4 text-[#6B7A5C] hover:text-[#5C4C3E]" id="btnCloseMoodConfirmModal"
-                aria-label="Fechar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                    stroke-width="2" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="modal-title mb-8">Registro Concluído</h3>
-            <div class="confirmation-content">
-                <div class="confirmation-icon-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        class="confirmation-icon">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-                <p class="confirmation-message">Humor registrado!</p>
-            </div>
+        <div class="w-full">
+          <h3 class="text-xl font-semibold mb-4 text-[--brown-dark]">Registros Diários</h3>
+          <div id="moodHistoryList" class="space-y-3">
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div id="settingsModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="absolute top-4 right-4 text-[--green-light] hover:text-[--brown-dark]"
-                id="btnCloseSettingsModal" aria-label="Fechar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                    stroke-width="2" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="modal-title">Configurações</h3>
+  <div id="moodSelectModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="absolute top-4 right-4 text-[--green-light] hover:text-[--brown-dark]" id="btnCloseMoodSelectModal"
+        aria-label="Fechar">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 class="modal-title">Registrar emoção</h3>
+      <p class="text-center text-lg font-medium mb-8 text-[--brown-dark]">Como você se sente hoje?</p>
 
-            <div class="space-y-6">
-                <div class="border-b pb-4 border-gray-200">
-                    <h4 class="text-lg font-semibold text-[--brown-dark] mb-2">Gerenciamento de Dados</h4>
-                    <p class="text-sm text-gray-600 mb-4">Esta ação apagará todos os seus registros de humor
-                        permanentemente.</p>
-                    <button id="btnClearData"
-                        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
-                        Apagar Todos os Registros
-                    </button>
-                </div>
-                <a href="Configuracoes.html">
-                    <button id="btnClearData"
-                        class="w-full bg-green-600 hover:bg-grey-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
-                        Configurações
-                    </button>
-                </a>
-
-            </div>
+      <div class="mood-selector-container">
+        <div class="mood-option" data-mood="Muito Feliz" data-value="5">
+          <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#FFD700" />
+            <circle cx="8.5" cy="10" r="1.5" fill="#333" />
+            <circle cx="15.5" cy="10" r="1.5" fill="#333" />
+            <path d="M8 15.5C8 15.5 9 17.5 12 17.5C15 17.5 16 15.5 16 15.5" stroke="#333" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="mood-label">Muito Feliz</span>
         </div>
+        <div class="mood-option" data-mood="Feliz" data-value="4">
+          <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#A3B18A" />
+            <circle cx="8.5" cy="10" r="1.5" fill="#333" />
+            <circle cx="15.5" cy="10" r="1.5" fill="#333" />
+            <path d="M8 14.5C8 14.5 9 15.5 12 15.5C15 15.5 16 14.5 16 14.5" stroke="#333" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="mood-label">Feliz</span>
+        </div>
+        <div class="mood-option" data-mood="Neutro" data-value="3">
+          <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#A9A9A9" />
+            <circle cx="8.5" cy="10" r="1.5" fill="#333" />
+            <circle cx="15.5" cy="10" r="1.5" fill="#333" />
+            <line x1="8" y1="15" x2="16" y2="15" stroke="#333" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span class="mood-label">Neutro</span>
+        </div>
+        <div class="mood-option" data-mood="Triste" data-value="2">
+          <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#FF7F50" />
+            <circle cx="8.5" cy="10" r="1.5" fill="#333" />
+            <circle cx="15.5" cy="10" r="1.5" fill="#333" />
+            <path d="M8 16.5C8 16.5 9 14.5 12 14.5C15 14.5 16 16.5 16 16.5" stroke="#333" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="mood-label">Triste</span>
+        </div>
+        <div class="mood-option" data-mood="Muito Triste" data-value="1">
+          <svg class="mood-emoji-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#8A2BE2" />
+            <circle cx="8.5" cy="10" r="1.5" fill="#333" />
+            <circle cx="15.5" cy="10" r="1.5" fill="#333" />
+            <path d="M8 16.5C8 16.5 9 14.5 12 14.5C15 14.5 16 16.5 16 16.5" stroke="#333" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M7 10L6.5 12M17 10L17.5 12" stroke="#333" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span class="mood-label">Muito Triste</span>
+        </div>
+      </div>
+
+      <button id="btnRegisterMood" class="btn-primary w-full opacity-50 cursor-not-allowed" disabled>
+        Registrar
+      </button>
     </div>
+  </div>
+
+  <div id="moodConfirmModal" class="modal-overlay">
+    <div class="modal-content text-center">
+      <button class="absolute top-4 right-4 text-[#6B7A5C] hover:text-[#5C4C3E]" id="btnCloseMoodConfirmModal"
+        aria-label="Fechar">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 class="modal-title mb-8">Registro Concluído</h3>
+      <div class="confirmation-content">
+        <div class="confirmation-icon-container">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            class="confirmation-icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <p class="confirmation-message">Humor registrado!</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="absolute top-4 right-4 text-[--green-light] hover:text-[--brown-dark]" id="btnCloseSettingsModal"
+        aria-label="Fechar">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 class="modal-title">Configurações</h3>
+
+      <div class="space-y-6">
+        <div class="border-b pb-4 border-gray-200">
+          <h4 class="text-lg font-semibold text-[--brown-dark] mb-2">Gerenciamento de Dados</h4>
+          <p class="text-sm text-gray-600 mb-4">Esta ação apagará todos os seus registros de humor
+            permanentemente.</p>
+          <button id="btnClearData"
+            class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+            Apagar Todos os Registros
+          </button>
+        </div>
+        <a href="Configuracoes.html">
+          <button id="btnClearData"
+            class="w-full bg-green-600 hover:bg-grey-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+            Configurações
+          </button>
+        </a>
+
+      </div>
+    </div>
+  </div>
 
 
-    <script>
-// ============================================
-// FUNÇÕES DE BACKEND (DECLARADAS PRIMEIRO)
-// ============================================
+  <script>
+    // ============================================
+    // FUNÇÕES DE BACKEND (DECLARADAS PRIMEIRO)
+    // ============================================
 
-// --- Função para obter o token ---
-function getToken() {
-  return localStorage.getItem('token');
-}
-
-// --- Função para obter o ID do paciente ---
-function getPacienteId() {
-  const id = localStorage.getItem("pacienteId");
-  if (!id) {
-    alert("⚠️ ID do paciente não encontrado. Faça login novamente.");
-    throw new Error("Paciente ID não encontrado no localStorage.");
-  }
-  return id;
-}
-
-// --- Função para registrar humor ---
-async function registrarHumor(humorSelecionado) {
-  try {
-    // Garante que é string e remove espaços
-    const humorStr = String(humorSelecionado).trim();
-    
-    if (!humorStr) {
-      throw new Error('Humor vazio - cancelando envio.');
+    // --- Função para obter o token ---
+    function getToken() {
+      return localStorage.getItem('token');
     }
 
-    const pacienteId = getPacienteId();
-
-    // Monta payload
-    const dados = {
-      pacienteId: pacienteId,
-      humor: humorStr
-    };
-
-    console.log("📤 [REGISTRO] Enviando payload:", dados);
-
-    const headers = { 'Content-Type': 'application/json' };
-    const token = getToken();
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-
-    // Faz a requisição
-    const response = await fetch('https://auratccbackend.onrender.com/api/humor', {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(dados)
-    });
-
-    const text = await response.text();
-    let resultado;
-    
-    try {
-      resultado = text ? JSON.parse(text) : {};
-    } catch (err) {
-      resultado = { raw: text };
+    // --- Função para obter o ID do paciente ---
+    function getPacienteId() {
+      const id = localStorage.getItem("pacienteId");
+      if (!id) {
+        alert("⚠️ ID do paciente não encontrado. Faça login novamente.");
+        throw new Error("Paciente ID não encontrado no localStorage.");
+      }
+      return id;
     }
 
-    console.log("📥 [REGISTRO] Resposta do servidor:", resultado, "status:", response.status);
+    // --- Função para registrar humor ---
+    async function registrarHumor(humorSelecionado) {
+      try {
+        // Garante que é string e remove espaços
+        const humorStr = String(humorSelecionado).trim();
 
-    if (response.ok) {
-      console.log('✅ Humor registrado com sucesso no backend!');
-      mostrarHumorAtual(humorStr);
-      return true;
-    } else {
-      const msg = resultado.message || resultado.error || JSON.stringify(resultado);
-      console.error('❌ Erro do servidor:', msg);
-      alert('❌ Erro ao registrar humor: ' + msg);
-      return false;
+        if (!humorStr) {
+          throw new Error('Humor vazio - cancelando envio.');
+        }
+
+        const pacienteId = getPacienteId();
+
+        // Monta payload
+        const dados = {
+          pacienteId: pacienteId,
+          humor: humorStr
+        };
+
+        console.log("📤 [REGISTRO] Enviando payload:", dados);
+
+        const headers = { 'Content-Type': 'application/json' };
+        const token = getToken();
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        // Faz a requisição
+        const response = await fetch('https://auratccbackend.onrender.com/api/humor', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(dados)
+        });
+
+        const text = await response.text();
+        let resultado;
+
+        try {
+          resultado = text ? JSON.parse(text) : {};
+        } catch (err) {
+          resultado = { raw: text };
+        }
+
+        console.log("📥 [REGISTRO] Resposta do servidor:", resultado, "status:", response.status);
+
+        if (response.ok) {
+          console.log('✅ Humor registrado com sucesso no backend!');
+          mostrarHumorAtual(humorStr);
+          return true;
+        } else {
+          const msg = resultado.message || resultado.error || JSON.stringify(resultado);
+          console.error('❌ Erro do servidor:', msg);
+          alert('❌ Erro ao registrar humor: ' + msg);
+          return false;
+        }
+
+      } catch (error) {
+        console.error('❌ Erro em registrarHumor:', error);
+        alert('❌ Erro ao conectar com o servidor');
+        return false;
+      }
     }
 
-  } catch (error) {
-    console.error('❌ Erro em registrarHumor:', error);
-    alert('❌ Erro ao conectar com o servidor');
-    return false;
-  }
-}
+    // --- Função para carregar humores (CORRIGIDA - NÃO CHAMA MAIS AUTOMATICAMENTE) ---
+    async function carregarHumores() {
+      try {
+        const pacienteId = getPacienteId();
 
-// --- Função para carregar humores (CORRIGIDA - NÃO CHAMA MAIS AUTOMATICAMENTE) ---
-async function carregarHumores() {
-  try {
-    const pacienteId = getPacienteId();
-    
-    // IMPORTANTE: Verifica se seu backend tem um endpoint GET separado
-    // Se não tiver, comente esta função ou ajuste o endpoint
-    console.log("📋 Carregando histórico de humores...");
+        // IMPORTANTE: Verifica se seu backend tem um endpoint GET separado
+        // Se não tiver, comente esta função ou ajuste o endpoint
+        console.log("📋 Carregando histórico de humores...");
 
-    const headers = { 'Content-Type': 'application/json' };
-    const token = getToken();
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+        const headers = { 'Content-Type': 'application/json' };
+        const token = getToken();
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    // OPÇÃO 1: Se seu backend tem um endpoint GET /api/humor/:pacienteId
-    const response = await fetch(`https://auratccbackend.onrender.com/api/humor/${pacienteId}`, {
-      method: 'GET',
-      headers: headers
-    });
+        // OPÇÃO 1: Se seu backend tem um endpoint GET /api/humor/:pacienteId
+        const response = await fetch(`https://auratccbackend.onrender.com/api/humor/${pacienteId}`, {
+          method: 'GET',
+          headers: headers
+        });
 
-    // OPÇÃO 2: Se precisa usar POST, certifique-se que o backend diferencia
-    // entre "registrar" e "buscar" de alguma forma (query param, endpoint diferente, etc)
-    
-    const text = await response.text();
-    let humores;
-    
-    try {
-      humores = text ? JSON.parse(text) : [];
-    } catch (err) {
-      console.warn('Resposta não-JSON:', text);
-      return;
+        // OPÇÃO 2: Se precisa usar POST, certifique-se que o backend diferencia
+        // entre "registrar" e "buscar" de alguma forma (query param, endpoint diferente, etc)
+
+        const text = await response.text();
+        let humores;
+
+        try {
+          humores = text ? JSON.parse(text) : [];
+        } catch (err) {
+          console.warn('Resposta não-JSON:', text);
+          return;
+        }
+
+        console.log("📥 Humores recebidos:", humores);
+
+        if (response.ok) {
+          exibirHistoricoHumores(humores);
+        }
+
+      } catch (error) {
+        console.error('❌ Erro ao carregar humores:', error);
+      }
     }
 
-    console.log("📥 Humores recebidos:", humores);
-
-    if (response.ok) {
-      exibirHistoricoHumores(humores);
+    // --- Funções auxiliares ---
+    function mostrarHumorAtual(humor) {
+      const emojis = {
+        "Muito Feliz": "😄",
+        "Feliz": "😊",
+        "Neutro": "😐",
+        "Triste": "😢",
+        "Muito Triste": "😭"
+      };
+      console.log(`✅ Humor registrado: ${emojis[humor] || '😊'} ${humor}`);
     }
 
-  } catch (error) {
-    console.error('❌ Erro ao carregar humores:', error);
-  }
-}
-
-// --- Funções auxiliares ---
-function mostrarHumorAtual(humor) {
-  const emojis = {
-    "Muito Feliz": "😄",
-    "Feliz": "😊",
-    "Neutro": "😐",
-    "Triste": "😢",
-    "Muito Triste": "😭"
-  };
-  console.log(`✅ Humor registrado: ${emojis[humor] || '😊'} ${humor}`);
-}
-
-function exibirHistoricoHumores(humores) {
-  console.log("📊 Total de registros:", humores.length);
-}
-
-// ============================================
-// CÓDIGO PRINCIPAL DO DOM
-// ============================================
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("🎯 Página de humor carregada!");
-  console.log("👤 Paciente ID:", localStorage.getItem('pacienteId'));
-
-  // --- Funções de Persistência Local ---
-  function loadMoodData() {
-    const storedData = localStorage.getItem('dailyMoods');
-    try {
-      return storedData ? JSON.parse(storedData) : {};
-    } catch (e) {
-      console.error("Erro ao carregar localStorage:", e);
-      return {};
-    }
-  }
-
-  function saveMoodData(data) {
-    localStorage.setItem('dailyMoods', JSON.stringify(data));
-  }
-
-  // --- Variáveis de Estado ---
-  let dailyMoods = loadMoodData();
-  const today = new Date();
-  const todayKey = today.toISOString().split('T')[0];
-  let selectedMood = null;
-  let selectedValue = null;
-  let selectedEmoji = null;
-  let moodChartInstance = null;
-
-  const moodLabels = {
-    5: "Muito Feliz",
-    4: "Feliz",
-    3: "Neutro",
-    2: "Triste",
-    1: "Muito Triste"
-  };
-
-  // --- Elementos do DOM ---
-  const btnOpenMoodModal = document.getElementById('btnOpenMoodModal');
-  const moodSelectModal = document.getElementById('moodSelectModal');
-  const moodConfirmModal = document.getElementById('moodConfirmModal');
-  const moodOptions = document.querySelectorAll('.mood-option');
-  const btnRegisterMood = document.getElementById('btnRegisterMood');
-  const moodHistoryList = document.getElementById('moodHistoryList');
-  const settingsBtn = document.getElementById('settingsBtn');
-  const settingsModal = document.getElementById('settingsModal');
-  const btnClearData = document.getElementById('btnClearData');
-
-  // --- Funções de Modal ---
-  function openModal(modal) {
-    modal.style.display = 'flex';
-  }
-
-  function closeModal(modal) {
-    modal.style.display = 'none';
-  }
-
-  // --- Botões de Fechar ---
-  const closeButtons = document.querySelectorAll('[id^="btnCloseMood"], #btnCloseSettingsModal');
-  closeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeModal(moodSelectModal);
-      closeModal(moodConfirmModal);
-      closeModal(settingsModal);
-    });
-  });
-
-  // --- Botão de Configurações ---
-  if (settingsBtn) {
-    settingsBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openModal(settingsModal);
-    });
-  }
-
-  // --- Funções de Renderização ---
-  function prepareChartData() {
-    const chartLabels = [];
-    const chartData = [];
-    const dates = [];
-
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(today.getDate() - i);
-      dates.push(d.toISOString().split('T')[0]);
+    function exibirHistoricoHumores(humores) {
+      console.log("📊 Total de registros:", humores.length);
     }
 
-    dates.forEach(dateKey => {
-      const moodEntry = dailyMoods[dateKey];
-      const d = new Date(dateKey + 'T00:00:00');
-      chartLabels.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
-      chartData.push(moodEntry ? moodEntry.value : 3);
-    });
+    // ============================================
+    // CÓDIGO PRINCIPAL DO DOM
+    // ============================================
 
-    return { labels: chartLabels, data: chartData };
-  }
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("🎯 Página de humor carregada!");
+      console.log("👤 Paciente ID:", localStorage.getItem('pacienteId'));
 
-  function renderMoodChart() {
-    const data = prepareChartData();
-    const ctx = document.getElementById('moodChart').getContext('2d');
+      // --- Funções de Persistência Local ---
+      function loadMoodData() {
+        const storedData = localStorage.getItem('dailyMoods');
+        try {
+          return storedData ? JSON.parse(storedData) : {};
+        } catch (e) {
+          console.error("Erro ao carregar localStorage:", e);
+          return {};
+        }
+      }
 
-    if (moodChartInstance) {
-      moodChartInstance.destroy();
-    }
+      function saveMoodData(data) {
+        localStorage.setItem('dailyMoods', JSON.stringify(data));
+      }
 
-    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--btn-primary').trim();
-    const secondaryColor = '#A3B18A';
-    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--brown-dark').trim();
-    const gridColor = '#E3E8DB';
+      // --- Variáveis de Estado ---
+      let dailyMoods = loadMoodData();
+      const today = new Date();
+      const todayKey = today.toISOString().split('T')[0];
+      let selectedMood = null;
+      let selectedValue = null;
+      let selectedEmoji = null;
+      let moodChartInstance = null;
 
-    moodChartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: data.labels,
-        datasets: [{
-          label: 'Nível de Humor',
-          data: data.data,
-          backgroundColor: `${primaryColor}66`,
-          borderColor: primaryColor,
-          borderWidth: 3,
-          tension: 0.4,
-          pointRadius: 6,
-          pointBackgroundColor: secondaryColor,
-          fill: true,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            min: 1,
-            max: 5,
-            ticks: {
-              callback: function (value) {
-                return moodLabels[value] || '';
-              },
-              stepSize: 1,
-              color: textColor,
-            },
-            grid: { color: gridColor }
+      const moodLabels = {
+        5: "Muito Feliz",
+        4: "Feliz",
+        3: "Neutro",
+        2: "Triste",
+        1: "Muito Triste"
+      };
+
+      // --- Elementos do DOM ---
+      const btnOpenMoodModal = document.getElementById('btnOpenMoodModal');
+      const moodSelectModal = document.getElementById('moodSelectModal');
+      const moodConfirmModal = document.getElementById('moodConfirmModal');
+      const moodOptions = document.querySelectorAll('.mood-option');
+      const btnRegisterMood = document.getElementById('btnRegisterMood');
+      const moodHistoryList = document.getElementById('moodHistoryList');
+      const settingsBtn = document.getElementById('settingsBtn');
+      const settingsModal = document.getElementById('settingsModal');
+      const btnClearData = document.getElementById('btnClearData');
+
+      // --- Funções de Modal ---
+      function openModal(modal) {
+        modal.style.display = 'flex';
+      }
+
+      function closeModal(modal) {
+        modal.style.display = 'none';
+      }
+
+      // --- Botões de Fechar ---
+      const closeButtons = document.querySelectorAll('[id^="btnCloseMood"], #btnCloseSettingsModal');
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          closeModal(moodSelectModal);
+          closeModal(moodConfirmModal);
+          closeModal(settingsModal);
+        });
+      });
+
+      // --- Botão de Configurações ---
+      if (settingsBtn) {
+        settingsBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal(settingsModal);
+        });
+      }
+
+      // --- Funções de Renderização ---
+      function prepareChartData() {
+        const chartLabels = [];
+        const chartData = [];
+        const dates = [];
+
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(today.getDate() - i);
+          dates.push(d.toISOString().split('T')[0]);
+        }
+
+        dates.forEach(dateKey => {
+          const moodEntry = dailyMoods[dateKey];
+          const d = new Date(dateKey + 'T00:00:00');
+          chartLabels.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
+          chartData.push(moodEntry ? moodEntry.value : 3);
+        });
+
+        return { labels: chartLabels, data: chartData };
+      }
+
+      function renderMoodChart() {
+        const data = prepareChartData();
+        const ctx = document.getElementById('moodChart').getContext('2d');
+
+        if (moodChartInstance) {
+          moodChartInstance.destroy();
+        }
+
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--btn-primary').trim();
+        const secondaryColor = '#A3B18A';
+        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--brown-dark').trim();
+        const gridColor = '#E3E8DB';
+
+        moodChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Nível de Humor',
+              data: data.data,
+              backgroundColor: `${primaryColor}66`,
+              borderColor: primaryColor,
+              borderWidth: 3,
+              tension: 0.4,
+              pointRadius: 6,
+              pointBackgroundColor: secondaryColor,
+              fill: true,
+            }]
           },
-          x: {
-            grid: { display: false },
-            ticks: { color: textColor }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                return `Humor: ${moodLabels[context.parsed.y]}`;
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                min: 1,
+                max: 5,
+                ticks: {
+                  callback: function (value) {
+                    return moodLabels[value] || '';
+                  },
+                  stepSize: 1,
+                  color: textColor,
+                },
+                grid: { color: gridColor }
+              },
+              x: {
+                grid: { display: false },
+                ticks: { color: textColor }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    return `Humor: ${moodLabels[context.parsed.y]}`;
+                  }
+                }
               }
             }
           }
-        }
-      }
-    });
-  }
-
-  function renderMoodHistory() {
-    moodHistoryList.innerHTML = '';
-    const dateTextColor = '#6B7A5C';
-
-    Object.keys(dailyMoods)
-      .sort((a, b) => new Date(b) - new Date(a))
-      .forEach(dateKey => {
-        const moodEntry = dailyMoods[dateKey];
-        const dateFormatted = new Date(dateKey + 'T00:00:00').toLocaleDateString('pt-BR', { 
-          day: 'numeric', 
-          month: 'long', 
-          year: 'numeric' 
         });
+      }
 
-        const li = document.createElement('div');
-        li.className = 'history-item';
-        li.innerHTML = `
+      function renderMoodHistory() {
+        moodHistoryList.innerHTML = '';
+        const dateTextColor = '#6B7A5C';
+
+        Object.keys(dailyMoods)
+          .sort((a, b) => new Date(b) - new Date(a))
+          .forEach(dateKey => {
+            const moodEntry = dailyMoods[dateKey];
+            const dateFormatted = new Date(dateKey + 'T00:00:00').toLocaleDateString('pt-BR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            });
+
+            const li = document.createElement('div');
+            li.className = 'history-item';
+            li.innerHTML = `
           <span class="text-sm font-medium" style="color: ${dateTextColor};">${dateFormatted}</span>
           <div class="history-emoji-container">
             ${moodEntry.emoji} <span>${moodEntry.mood}</span>
           </div>
         `;
-        moodHistoryList.appendChild(li);
-      });
-  }
+            moodHistoryList.appendChild(li);
+          });
+      }
 
-  function openMoodSelectModal() {
-    selectedMood = null;
-    selectedValue = null;
-    selectedEmoji = null;
-    btnRegisterMood.disabled = true;
-    btnRegisterMood.classList.add('opacity-50', 'cursor-not-allowed');
-    moodOptions.forEach(o => o.classList.remove('selected'));
+      function openMoodSelectModal() {
+        selectedMood = null;
+        selectedValue = null;
+        selectedEmoji = null;
+        btnRegisterMood.disabled = true;
+        btnRegisterMood.classList.add('opacity-50', 'cursor-not-allowed');
+        moodOptions.forEach(o => o.classList.remove('selected'));
 
-    const currentMood = dailyMoods[todayKey];
-    let confirmation = true;
+        const currentMood = dailyMoods[todayKey];
+        let confirmation = true;
 
-    if (currentMood) {
-      confirmation = confirm(`Você já registrou o humor de hoje (${currentMood.mood}). Deseja alterar?`);
+        if (currentMood) {
+          confirmation = confirm(`Você já registrou o humor de hoje (${currentMood.mood}). Deseja alterar?`);
 
-      if (confirmation) {
-        const currentOption = document.querySelector(`.mood-option[data-mood="${currentMood.mood}"]`);
-        if (currentOption) {
-          currentOption.classList.add('selected');
-          selectedMood = currentMood.mood;
-          selectedValue = currentMood.value;
-          selectedEmoji = currentOption.querySelector('.mood-emoji-svg').outerHTML;
-          btnRegisterMood.disabled = false;
-          btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
+          if (confirmation) {
+            const currentOption = document.querySelector(`.mood-option[data-mood="${currentMood.mood}"]`);
+            if (currentOption) {
+              currentOption.classList.add('selected');
+              selectedMood = currentMood.mood;
+              selectedValue = currentMood.value;
+              selectedEmoji = currentOption.querySelector('.mood-emoji-svg').outerHTML;
+              btnRegisterMood.disabled = false;
+              btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+          }
+        }
+
+        if (confirmation) {
+          openModal(moodSelectModal);
         }
       }
-    }
 
-    if (confirmation) {
-      openModal(moodSelectModal);
-    }
-  }
+      function clearMoodData() {
+        if (confirm("Tem certeza que deseja apagar TODOS os seus registros de humor? Esta ação é irreversível.")) {
+          dailyMoods = {};
+          saveMoodData(dailyMoods);
+          renderMoodChart();
+          renderMoodHistory();
+          closeModal(settingsModal);
+          alert("Todos os registros de humor foram apagados com sucesso!");
+        }
+      }
 
-  function clearMoodData() {
-    if (confirm("Tem certeza que deseja apagar TODOS os seus registros de humor? Esta ação é irreversível.")) {
-      dailyMoods = {};
-      saveMoodData(dailyMoods);
+      // --- Event Listeners ---
+
+      // 1. Abrir Modal
+      btnOpenMoodModal.addEventListener('click', openMoodSelectModal);
+
+      // 2. Seleção de Humor
+      moodOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          moodOptions.forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+
+          selectedMood = option.getAttribute('data-mood');
+          selectedValue = parseInt(option.getAttribute('data-value'));
+          selectedEmoji = option.querySelector('.mood-emoji-svg').outerHTML;
+
+          btnRegisterMood.disabled = false;
+          btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
+        });
+      });
+
+      // 3. Registro de Humor (CORRIGIDO - SEM CARREGAR HUMORES DEPOIS)
+      btnRegisterMood.addEventListener('click', async () => {
+        if (!selectedMood) {
+          console.error('❌ Nenhum humor selecionado!');
+          return;
+        }
+
+        const moodToSend = String(selectedMood).trim();
+        console.log('🎯 Humor selecionado para envio:', moodToSend);
+
+        // Salva localmente
+        dailyMoods[todayKey] = {
+          mood: moodToSend,
+          emoji: selectedEmoji,
+          value: selectedValue
+        };
+        saveMoodData(dailyMoods);
+
+        // Fecha modal e mostra confirmação
+        closeModal(moodSelectModal);
+        openModal(moodConfirmModal);
+
+        // Atualiza UI local
+        renderMoodChart();
+        renderMoodHistory();
+
+        // Envia para o backend
+        try {
+          const success = await registrarHumor(moodToSend);
+          if (success) {
+            console.log("✅ Humor sincronizado com sucesso!");
+            // NÃO chama carregarHumores() aqui para evitar sobrescrever!
+          }
+        } catch (err) {
+          console.error("❌ Erro ao sincronizar:", err);
+          alert("Registro salvo localmente, mas houve erro ao sincronizar com o servidor.");
+        }
+
+        // Fecha confirmação
+        setTimeout(() => {
+          closeModal(moodConfirmModal);
+        }, 2000);
+      });
+
+      // 4. Limpar Dados
+      btnClearData.addEventListener('click', clearMoodData);
+
+      // --- Inicialização ---
       renderMoodChart();
       renderMoodHistory();
-      closeModal(settingsModal);
-      alert("Todos os registros de humor foram apagados com sucesso!");
-    }
-  }
 
-  // --- Event Listeners ---
-
-  // 1. Abrir Modal
-  btnOpenMoodModal.addEventListener('click', openMoodSelectModal);
-
-  // 2. Seleção de Humor
-  moodOptions.forEach(option => {
-    option.addEventListener('click', () => {
-      moodOptions.forEach(o => o.classList.remove('selected'));
-      option.classList.add('selected');
-
-      selectedMood = option.getAttribute('data-mood');
-      selectedValue = parseInt(option.getAttribute('data-value'));
-      selectedEmoji = option.querySelector('.mood-emoji-svg').outerHTML;
-
-      btnRegisterMood.disabled = false;
-      btnRegisterMood.classList.remove('opacity-50', 'cursor-not-allowed');
+      // REMOVIDO: carregarHumores() na inicialização
+      // Você pode criar um botão específico para "Carregar Histórico do Servidor" se precisar
     });
-  });
 
-  // 3. Registro de Humor (CORRIGIDO - SEM CARREGAR HUMORES DEPOIS)
-  btnRegisterMood.addEventListener('click', async () => {
-    if (!selectedMood) {
-      console.error('❌ Nenhum humor selecionado!');
-      return;
-    }
+    console.log("✅ Script de humor carregado com sucesso!");
+  </script>
 
-    const moodToSend = String(selectedMood).trim();
-    console.log('🎯 Humor selecionado para envio:', moodToSend);
+  <nav class="mobile-bottom-menu">
+    <a href="home.html" class="mobile-menu-item" data-page="home">
+      <img src="img/icons-menu/home.png" alt="Home">
+    </a>
 
-    // Salva localmente
-    dailyMoods[todayKey] = {
-      mood: moodToSend,
-      emoji: selectedEmoji,
-      value: selectedValue
-    };
-    saveMoodData(dailyMoods);
+    <a href="banco.html" class="mobile-menu-item" data-page="banco">
+      <img src="img/icons-menu/banco.png" alt="Banco">
+    </a>
 
-    // Fecha modal e mostra confirmação
-    closeModal(moodSelectModal);
-    openModal(moodConfirmModal);
+    <!-- Botão Central - Redireciona para CVV -->
+    <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
+      <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
+    </a>
 
-    // Atualiza UI local
-    renderMoodChart();
-    renderMoodHistory();
+    <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
+      <img src="img/icons-menu/metricas.png" alt="Métricas">
+    </a>
 
-    // Envia para o backend
-    try {
-      const success = await registrarHumor(moodToSend);
-      if (success) {
-        console.log("✅ Humor sincronizado com sucesso!");
-        // NÃO chama carregarHumores() aqui para evitar sobrescrever!
-      }
-    } catch (err) {
-      console.error("❌ Erro ao sincronizar:", err);
-      alert("Registro salvo localmente, mas houve erro ao sincronizar com o servidor.");
-    }
-
-    // Fecha confirmação
-    setTimeout(() => {
-      closeModal(moodConfirmModal);
-    }, 2000);
-  });
-
-  // 4. Limpar Dados
-  btnClearData.addEventListener('click', clearMoodData);
-
-  // --- Inicialização ---
-  renderMoodChart();
-  renderMoodHistory();
-  
-  // REMOVIDO: carregarHumores() na inicialização
-  // Você pode criar um botão específico para "Carregar Histórico do Servidor" se precisar
-});
-
-console.log("✅ Script de humor carregado com sucesso!");
-</script>
+    <a href="comunidade.html" class="mobile-menu-item" data-page="comunidade">
+      <img src="img/icons-menu/comunidade.png" alt="Comunidade">
+    </a>
+  </nav>
 
 </body>
 

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ansiedade tem Solução - Comunidade</title>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <link rel="stylesheet" href="sidebar-styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom font for the heading to match style */
@@ -69,44 +72,6 @@
       box-sizing: border-box;
     }
 
-    /* Sidebar styles */
-    .sidebar {
-      background-color: #73804F;
-      width: 100px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-    }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      margin: 10px 0;
-      background-color: transparent;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    .sidebar img {
-      width: 68px;
-      height: 28px;
-    }
-
-    .sidebar .icons {
-      margin-top: 130%;
-    }
-
-    .spacer {
-      flex: 1;
-    }
-
     /*Configuração*/
     .settings-btn {
       position: absolute;
@@ -135,12 +100,9 @@
       border-top-right-radius: 32px;
       border-bottom-right-radius: 32px;
       padding: 40px 48px 48px 40px;
-      overflow-y: auto;
       flex-direction: column;
       padding: 2rem;
       position: relative;
-      min-height: 100vh;
-
     }
 
     header {
@@ -276,6 +238,17 @@
       user-select: text;
     }
 
+    .main-content {
+      margin-left: 100px;
+      flex: 1;
+      padding: 2rem;
+      position: relative;
+      min-height: 100vh;
+      width: calc(100% - 100px);
+      box-sizing: border-box;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
 
     /* Responsive adjustments */
     @media (max-width: 740px) {
@@ -294,92 +267,104 @@
 
 <body class="bg-[#F9F7F3] font-sans text-[#4B3A2B] h-screen flex">
   <div class="app-container" role="main">
-    <nav class="sidebar">
-      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-      <div class="icons">
-        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-            style="width: 35px; height: 25px; margin-top:50%"></a>
-        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-            style="width: 38px; margin-top: 160%;"></a>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <a href="home.html">
+          <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+        </a>
       </div>
-      <div class="spacer"></div>
-      <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-    </nav>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-item" title="Home">
+          <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+          <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="metricas.html" class="nav-item" title="Métricas">
+          <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="comunidade.html" class="nav-item active" title="Comunidade">
+          <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+      </nav>
+      <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+        <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
+      </button>
+    </aside>
 
-    <!-- Botão de Configurações no canto superior direito -->
-    <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path
-          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-        </path>
-      </svg>
-    </button>
-
-
-    <main aria-label="Article read more content">
-      <header>
-        <h1>Comunidade</h1>
-
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M19.4 15a7.97 7.97 0 01-1.3 2.4c-.28.28-.62.49-1 .62a9 9 0 01-9.2 0c-.35-.15-.66-.39-.9-.7a8 8 0 01.1-11.3c.3-.3.69-.53 1.12-.65a9 9 0 0111.4 7.8zM12 9a3 3 0 100 6 3 3 0 000-6z" />
+    <div class="main-content">
+      <!-- Botão de Configurações no canto superior direito -->
+      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
         </svg>
-        </button>
-      </header>
+      </button>
 
-      <section class="article-header" aria-label="Article information">
-        <div class="article-info-left">
-          <h2 tabindex="0">Saúde Mental no Trabalho</h2>
-          <small tabindex="0">Por: Psicólogo Michele</small>
-        </div>
-        <div class="article-info-right" role="region" aria-live="polite" aria-atomic="true" aria-label="Interações">
-          <div class="action-group like-button" role="button" tabindex="0" aria-pressed="false"
-            aria-label="Curtir artigo" title="Curtir artigo">
-            <span class="like-count" aria-live="polite" aria-atomic="true">223</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" role="img" aria-hidden="true"
-              aria-label="Like heart icon" viewBox="0 0 24 24">
-              <path stroke-linejoin="round" stroke-linecap="round"
-                d="M12 21c-4-2.7-6.9-4.3-7-7.6c-.1-2 1-4 3.3-4a3.7 3.7 0 012.6 1.7a3.7 3.7 0 012.6-1.7c2.3 0 3.4 2 3.3 4c0 3.3-3 4.9-7 7.6z" />
-            </svg>
+      <main aria-label="Article read more content">
+        <header>
+          <h1>Comunidade</h1>
+
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M19.4 15a7.97 7.97 0 01-1.3 2.4c-.28.28-.62.49-1 .62a9 9 0 01-9.2 0c-.35-.15-.66-.39-.9-.7a8 8 0 01.1-11.3c.3-.3.69-.53 1.12-.65a9 9 0 0111.4 7.8zM12 9a3 3 0 100 6 3 3 0 000-6z" />
+          </svg>
+          </button>
+        </header>
+
+        <section class="article-header" aria-label="Article information">
+          <div class="article-info-left">
+            <h2 tabindex="0">Saúde Mental no Trabalho</h2>
+            <small tabindex="0">Por: Psicólogo Michele</small>
           </div>
-          <div class="action-group save-button" role="button" tabindex="0" aria-pressed="false"
-            aria-label="Salvar artigo para mais tarde" title="Salvar artigo para mais tarde">
-            <span class="save-count" aria-live="polite" aria-atomic="true">223</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" role="img" aria-hidden="true"
-              aria-label="Save flag icon" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 5v14l7-7 7 7V5H5z" />
-            </svg>
+          <div class="article-info-right" role="region" aria-live="polite" aria-atomic="true" aria-label="Interações">
+            <div class="action-group like-button" role="button" tabindex="0" aria-pressed="false"
+              aria-label="Curtir artigo" title="Curtir artigo">
+              <span class="like-count" aria-live="polite" aria-atomic="true">223</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" role="img" aria-hidden="true"
+                aria-label="Like heart icon" viewBox="0 0 24 24">
+                <path stroke-linejoin="round" stroke-linecap="round"
+                  d="M12 21c-4-2.7-6.9-4.3-7-7.6c-.1-2 1-4 3.3-4a3.7 3.7 0 012.6 1.7a3.7 3.7 0 012.6-1.7c2.3 0 3.4 2 3.3 4c0 3.3-3 4.9-7 7.6z" />
+              </svg>
+            </div>
+            <div class="action-group save-button" role="button" tabindex="0" aria-pressed="false"
+              aria-label="Salvar artigo para mais tarde" title="Salvar artigo para mais tarde">
+              <span class="save-count" aria-live="polite" aria-atomic="true">223</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" role="img" aria-hidden="true"
+                aria-label="Save flag icon" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 5v14l7-7 7 7V5H5z" />
+              </svg>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <div class="article-image" role="img"
-        aria-label="Imagem relacionada ao artigo sobre ansiedade, cinza claro em retângulo"></div>
+        <!-- <div class="article-image" role="img"
+          aria-label="Imagem relacionada ao artigo sobre ansiedade, cinza claro em retângulo"></div> -->
 
-      <article>
-        <p class="mb-4 leading-relaxed text-justify">
-          O ambiente de trabalho pode afetar muito nossa saúde mental. Pressão excessiva e sobrecarga prejudicam produtividade e bem-estar.
-          <br>
-          Dicas para cuidar da mente no trabalho:
-        </p>
-
-        <p class="mb-4 leading-relaxed text-justify">
-         - Organize tarefas e estabeleça prioridades;
+        <article>
+          <p class="mb-4 leading-relaxed text-justify">
+            O ambiente de trabalho pode afetar muito nossa saúde mental. Pressão excessiva e sobrecarga prejudicam
+            produtividade e bem-estar.
             <br>
-         - Faça pequenas pausas ao longo do dia;
+            Dicas para cuidar da mente no trabalho:
+          </p>
 
-         - Mantenha comunicação aberta com colegas e líderes;
+          <p class="mb-4 leading-relaxed text-justify">
+            - Organize tarefas e estabeleça prioridades;
+            <br>
+            - Faça pequenas pausas ao longo do dia;
 
-         - Separe momentos de lazer fora do trabalho;
+            - Mantenha comunicação aberta com colegas e líderes;
 
-         - Busque ajuda profissional quando perceber sinais de estresse intenso.
+            - Separe momentos de lazer fora do trabalho;
 
-    </main>
+            - Busque ajuda profissional quando perceber sinais de estresse intenso.
+
+      </main>
+    </div>
   </div>
 
   <script>
@@ -442,6 +427,29 @@
       }
     });
   </script>
+  <nav class="mobile-bottom-menu">
+    <a href="home.html" class="mobile-menu-item" data-page="home">
+      <img src="img/icons-menu/home.png" alt="Home">
+    </a>
+
+    <a href="banco.html" class="mobile-menu-item" data-page="banco">
+      <img src="img/icons-menu/banco.png" alt="Banco">
+    </a>
+
+    <!-- Botão Central - Redireciona para CVV -->
+    <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
+      <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
+    </a>
+
+    <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
+      <img src="img/icons-menu/metricas.png" alt="Métricas">
+    </a>
+
+    <a href="comunidade.html" class="mobile-menu-item" data-page="comunidade">
+      <img src="img/icons-menu/comunidade.png" alt="Comunidade">
+    </a>
+  </nav>
+
 </body>
 
 </html>

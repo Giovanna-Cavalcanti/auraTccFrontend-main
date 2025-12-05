@@ -1,64 +1,48 @@
 <!DOCTYPE html>
 
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Atividades - Aura</title>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sidebar-styles.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom scrollbar for activity list */
-    #activity-list::-webkit-scrollbar { height: 6px; width: 6px; }
-    #activity-list::-webkit-scrollbar-track { background: transparent; }
-    #activity-list::-webkit-scrollbar-thumb { background-color: #a3b18a; border-radius: 3px; }
+    #activity-list::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    #activity-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #activity-list::-webkit-scrollbar-thumb {
+      background-color: #a3b18a;
+      border-radius: 3px;
+    }
 
     /* Progress circle styles */
-    .progress-bg { stroke: #e6e3de; }
-    .progress-bar { stroke-linecap: round; stroke: #9cbf7a; transition: stroke-dashoffset 0.5s ease; }
+    .progress-bg {
+      stroke: #e6e3de;
+    }
+
+    .progress-bar {
+      stroke-linecap: round;
+      stroke: #9cbf7a;
+      transition: stroke-dashoffset 0.5s ease;
+    }
 
     /* Rotaciona apenas os círculos, mantendo o texto correto */
-  .progress-svg circle.progress-bg,
-  .progress-svg circle.progress-bar {
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-  }
-    /* Sidebar styles */
-    .sidebar {
-      background-color: #73804F;
-      width: 100px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-    }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      margin: 10px 0;
-      background-color: transparent;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    .sidebar img {
-      width: 68px;
-      height: 28px;
-    }
-
-    .sidebar .icons {
-      margin-top: 130%;
-    }
-
-    .spacer {
-      flex: 1;
+    .progress-svg circle.progress-bg,
+    .progress-svg circle.progress-bar {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
     }
 
     /*Configuração*/
@@ -84,70 +68,123 @@
     }
 
     /* Buttons custom focus */
-    button:focus-visible { outline: 2px solid #9cbf7a; outline-offset: 2px; }
+    button:focus-visible {
+      outline: 2px solid #9cbf7a;
+      outline-offset: 2px;
+    }
 
     /* Tab buttons */
-    .tab-btn { background:#bbbbbb; color:#7e6c4d; }
-    .tab-active { background:#c9c5be; box-shadow: inset 0 0 0 2px #b0b0b0; }
+    .tab-btn {
+      background: #bbbbbb;
+      color: #7e6c4d;
+    }
+
+    .tab-active {
+      background: #c9c5be;
+      box-shadow: inset 0 0 0 2px #b0b0b0;
+    }
+
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      background: var(--bg-main);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .main-content {
+      margin-left: 100px;
+      flex: 1;
+      padding: 2rem;
+      position: relative;
+      min-height: 100vh;
+      width: calc(100% - 100px);
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      font-family: 'Urbanist', sans-serif;
+    }
   </style>
 </head>
+
 <body class="bg-[#f7f5f0] h-screen flex font-sans text-[#4b3a22] select-none">
-  <!-- Sidebar -->
-    <nav class="sidebar">
-      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
-      <div class="icons">
-        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
-            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
-        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
-            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
-        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
-            style="width: 35px; height: 25px; margin-top:50%"></a>
-        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
-            style="width: 38px; margin-top: 160%;"></a>
+  <div class="app-container" role="main">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <a href="home.html">
+          <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+        </a>
       </div>
-      <div class="spacer"></div>
-      <a href="#"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
-    </nav>
-
-  <!-- Main -->
-  <main class="flex-1 p-8 max-w-5xl mx-auto flex flex-col gap-6 select-text relative">
-    <header class="flex justify-between items-center text-[#4b3a22cc] text-sm font-medium" aria-label="Current date and settings">
-      <div id="current-date">Qui, 04 Abr. 2025</div>
-      <!-- Botão de Configurações no canto superior direito -->
-      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path
-            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-          </path>
-        </svg>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-item active" title="Home">
+          <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+          <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="metricas.html" class="nav-item" title="Métricas">
+          <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+        <a href="comunidade.html" class="nav-item" title="Comunidade">
+          <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28" viewBox="0 0 28 28">
+        </a>
+      </nav>
+      <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+        <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
       </button>
-    </header>
+    </aside>
+    <!-- Main -->
+    <div class="main-content">
+      <main class="flex-1 p-8 max-w-5xl mx-auto flex flex-col gap-6 select-text relative">
+        <header class="flex justify-between items-center text-[#4b3a22cc] text-sm font-medium"
+          aria-label="Current date and settings">
+          <div id="current-date">Qui, 04 Abr. 2025</div>
+          <!-- Botão de Configurações no canto superior direito -->
+          <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+              </path>
+            </svg>
+          </button>
+        </header>
 
-    <h1 class="font-extrabold text-4xl mb-1">Atividades</h1>
+        <h1 class="font-extrabold text-4xl mb-1">Atividades</h1>
 
-    <div class="flex items-center gap-2 text-[#4b3a22cc] font-semibold text-sm mb-6 select-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"></path>
-        <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"></circle>
-      </svg>
-      <span>Tempo semanal:</span>
-      <span id="weekly-timer" class="font-bold tabular-nums tracking-widest">00:00</span>
+        <div class="flex items-center gap-2 text-[#4b3a22cc] font-semibold text-sm mb-6 select-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"></path>
+            <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"></circle>
+          </svg>
+          <span>Tempo semanal:</span>
+          <span id="weekly-timer" class="font-bold tabular-nums tracking-widest">00:00</span>
+        </div>
+
+        <!-- Tabs -->
+        <nav class="flex gap-6 mb-6 select-none" role="tablist" aria-label="Filter activities">
+          <button id="in-time-tab" role="tab" aria-selected="true" tabindex="0"
+            class="tab-btn tab-active px-6 py-1 rounded-full font-semibold">Em prazo</button>
+          <button id="overdue-tab" role="tab" aria-selected="false" tabindex="-1"
+            class="tab-btn px-6 py-1 rounded-full font-semibold">Vencida</button>
+          <button id="delivered-tab" role="tab" aria-selected="false" tabindex="-1"
+            class="tab-btn px-6 py-1 rounded-full font-semibold">Entregue</button>
+        </nav>
+
+        <!-- List -->
+        <section id="activity-list" role="tabpanel" aria-labelledby="in-time-tab" tabindex="0"
+          class="flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-270px)]">
+          <!-- Activities will be inserted here dynamically -->
+        </section>
+      </main>
     </div>
-
-    <!-- Tabs -->
-    <nav class="flex gap-6 mb-6 select-none" role="tablist" aria-label="Filter activities">
-      <button id="in-time-tab" role="tab" aria-selected="true" tabindex="0" class="tab-btn tab-active px-6 py-1 rounded-full font-semibold">Em prazo</button>
-      <button id="overdue-tab" role="tab" aria-selected="false" tabindex="-1" class="tab-btn px-6 py-1 rounded-full font-semibold">Vencida</button>
-      <button id="delivered-tab" role="tab" aria-selected="false" tabindex="-1" class="tab-btn px-6 py-1 rounded-full font-semibold">Entregue</button>
-    </nav>
-
-    <!-- List -->
-    <section id="activity-list" role="tabpanel" aria-labelledby="in-time-tab" tabindex="0" class="flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-270px)]">
-      <!-- Activities will be inserted here dynamically -->
-    </section>
-  </main>
+  </div>
 
   <script>
     // ===== Date display (e.g., "Qui, 04 Abr. 2025")
@@ -155,7 +192,7 @@
     const now = new Date();
     const weekdayPt = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     const monthShortPt = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-    dateEl.textContent = `${weekdayPt[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')} ${monthShortPt[now.getMonth()]}. ${now.getFullYear()}`;
+    dateEl.textContent = `${weekdayPt[now.getDay()]}, ${String(now.getDate()).padStart(2, '0')} ${monthShortPt[now.getMonth()]}. ${now.getFullYear()}`;
 
     // ===== Weekly timer (accumulates while any activity is running)
     const weeklyTimerEl = document.getElementById('weekly-timer');
@@ -197,7 +234,7 @@
       ],
       'delivered': [
         { id: 5, title: 'Atividade 5', description: 'Descrição entregue', deadline: '25/03', progress: 100 },
-        { id:10, title: 'Atividade 10', description: 'Descrição entregue', deadline: '05/08', progress: 100 },
+        { id: 10, title: 'Atividade 10', description: 'Descrição entregue', deadline: '05/08', progress: 100 },
       ],
     };
 
@@ -215,58 +252,58 @@
 
     // ===== Progress circle
     function createProgressCircle(percent) {
-  const size = 60;
-  const strokeWidth = 8;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percent / 100) * circumference;
+      const size = 60;
+      const strokeWidth = 8;
+      const radius = (size - strokeWidth) / 2;
+      const circumference = 2 * Math.PI * radius;
+      const offset = circumference - (percent / 100) * circumference;
 
-  const ns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(ns, "svg");
-  svg.setAttribute("width", size);
-  svg.setAttribute("height", size);
-  svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
-  svg.classList.add("progress-svg"); 
-  // NÃO rotacionar o SVG inteiro
+      const ns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(ns, "svg");
+      svg.setAttribute("width", size);
+      svg.setAttribute("height", size);
+      svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+      svg.classList.add("progress-svg");
+      // NÃO rotacionar o SVG inteiro
 
-  // Círculo de fundo
-  const bg = document.createElementNS(ns, "circle");
-  bg.setAttribute("class", "progress-bg");
-  bg.setAttribute("cx", size / 2);
-  bg.setAttribute("cy", size / 2);
-  bg.setAttribute("r", radius);
-  bg.setAttribute("stroke-width", strokeWidth);
-  bg.setAttribute("fill", "none");
+      // Círculo de fundo
+      const bg = document.createElementNS(ns, "circle");
+      bg.setAttribute("class", "progress-bg");
+      bg.setAttribute("cx", size / 2);
+      bg.setAttribute("cy", size / 2);
+      bg.setAttribute("r", radius);
+      bg.setAttribute("stroke-width", strokeWidth);
+      bg.setAttribute("fill", "none");
 
-  // Barra de progresso
-  const bar = document.createElementNS(ns, "circle");
-  bar.setAttribute("class", "progress-bar");
-  bar.setAttribute("cx", size / 2);
-  bar.setAttribute("cy", size / 2);
-  bar.setAttribute("r", radius);
-  bar.setAttribute("stroke-width", strokeWidth);
-  bar.setAttribute("fill", "none");
-  bar.setAttribute("stroke-dasharray", circumference);
-  bar.setAttribute("stroke-dashoffset", offset);
-  // Rotaciona apenas a barra para começar do topo
-  bar.setAttribute("transform", `rotate(-90 ${size/2} ${size/2})`);
+      // Barra de progresso
+      const bar = document.createElementNS(ns, "circle");
+      bar.setAttribute("class", "progress-bar");
+      bar.setAttribute("cx", size / 2);
+      bar.setAttribute("cy", size / 2);
+      bar.setAttribute("r", radius);
+      bar.setAttribute("stroke-width", strokeWidth);
+      bar.setAttribute("fill", "none");
+      bar.setAttribute("stroke-dasharray", circumference);
+      bar.setAttribute("stroke-dashoffset", offset);
+      // Rotaciona apenas a barra para começar do topo
+      bar.setAttribute("transform", `rotate(-90 ${size / 2} ${size / 2})`);
 
-  // Texto central
-  const text = document.createElementNS(ns, "text");
-  text.setAttribute("x", "50%");
-  text.setAttribute("y", "50%");
-  text.setAttribute("dominant-baseline", "middle");
-  text.setAttribute("text-anchor", "middle");
-  text.setAttribute("fill", "#4b3a22");
-  text.setAttribute("font-weight", "700");
-  text.setAttribute("font-size", "14");
-  text.textContent = `${percent}%`;
+      // Texto central
+      const text = document.createElementNS(ns, "text");
+      text.setAttribute("x", "50%");
+      text.setAttribute("y", "50%");
+      text.setAttribute("dominant-baseline", "middle");
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("fill", "#4b3a22");
+      text.setAttribute("font-weight", "700");
+      text.setAttribute("font-size", "14");
+      text.textContent = `${percent}%`;
 
-  svg.appendChild(bg);
-  svg.appendChild(bar);
-  svg.appendChild(text);
-  return svg;
-}
+      svg.appendChild(bg);
+      svg.appendChild(bar);
+      svg.appendChild(text);
+      return svg;
+    }
 
 
     // ===== Render list
@@ -363,5 +400,29 @@
     setActiveTabStyles();
     renderActivities();
   </script>
+
+  <nav class="mobile-bottom-menu">
+    <a href="home.html" class="mobile-menu-item" data-page="home">
+      <img src="img/icons-menu/home.png" alt="Home">
+    </a>
+
+    <a href="banco.html" class="mobile-menu-item" data-page="banco">
+      <img src="img/icons-menu/banco.png" alt="Banco">
+    </a>
+
+    <!-- Botão Central - Redireciona para CVV -->
+    <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
+      <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
+    </a>
+
+    <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
+      <img src="img/icons-menu/metricas.png" alt="Métricas">
+    </a>
+
+    <a href="comunidade.html" class="mobile-menu-item" data-page="comunidade">
+      <img src="img/icons-menu/comunidade.png" alt="Comunidade">
+    </a>
+  </nav>
 </body>
+
 </html>
