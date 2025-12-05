@@ -1,12 +1,3 @@
-/* ========================================
-   PROFESSIONAL MOBILE-RESPONSIVE.CSS
-   Sistema completo de responsividade para área do profissional
-   ======================================== */
-
-/* ========================================
-   PARTE 1: MENU MOBILE FIXO INFERIOR
-   ======================================== */
-
 .mobile-bottom-nav {
     display: none;
 }
