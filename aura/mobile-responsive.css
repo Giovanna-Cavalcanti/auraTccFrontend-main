@@ -29,7 +29,6 @@
         border-top-right-radius: 24px;
     }
 
-    /* Recorte côncavo no centro */
     .mobile-bottom-menu::before {
         content: '';
         position: absolute;
@@ -120,8 +119,8 @@
     /* Container principal */
     .app-container {
         flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
+        min-height: 100vh !important;
+        overflow-y: auto !important;
     }
 
     /* Main content geral */
@@ -487,6 +486,67 @@
             right: 16px !important;
             top: 16px !important;
         }
+    }
+
+    /* ========================================
+   COMUNIDADE — SETAS E SLIDER NO MOBILE
+   ======================================== */
+    @media(max-width: 768px) {
+
+        /* Esconder as setas no mobile */
+        #prev,
+        #next {
+            display: none !important;
+        }
+
+        /* Ajustar o container */
+        #posts-wrapper {
+            justify-content: flex-start !important;
+            padding-left: 8px;
+        }
+
+        /* O container vira scroll no dedo */
+        #posts-container {
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 12px;
+        }
+
+        /* Cada card vira "card tipo carrossel mobile" */
+        #slider article {
+            flex: 0 0 260px !important;
+            min-width: 260px !important;
+            scroll-snap-align: start;
+        }
+
+        /* Gap menor no mobile */
+        #slider {
+            gap: 12px !important;
+        }
+    }
+
+    /* Corrigir scroll horizontal no banco */
+    #bank-cards-container {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+        gap: 20px !important;
+        padding-right: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .bank-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Impede o scroll horizontal global */
+    body,
+    html,
+    .app-container,
+    #main-content-container {
+        overflow-x: hidden !important;
     }
 
 }

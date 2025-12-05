@@ -1,0 +1,1160 @@
+/* ========================================
+   PROFESSIONAL MOBILE-RESPONSIVE.CSS
+   Sistema completo de responsividade para área do profissional
+   ======================================== */
+
+/* ========================================
+   PARTE 1: MENU MOBILE FIXO INFERIOR
+   ======================================== */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: #73804F;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 16px;
+        box-sizing: border-box;
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #E8E4DC;
+        transition: all 0.2s ease;
+        padding: 10px;
+        border-radius: 12px;
+        position: relative;
+        width: 60px;
+        height: 60px;
+    }
+
+    .mobile-nav-item.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+    }
+
+    .mobile-nav-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+    }
+
+    .mobile-nav-item svg {
+        width: 28px;
+        height: 28px;
+        opacity: 0.85;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .mobile-nav-item.active svg,
+    .mobile-nav-item:active svg {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* ========================================
+   PARTE 2: ADAPTAÇÕES GERAIS MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    /* Esconde sidebar desktop */
+    .sidebar {
+        display: none !important;
+    }
+
+    /* Container principal */
+    body {
+        padding-bottom: 90px;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-bottom: 90px !important;
+        min-height: 100vh;
+    }
+
+    .container,
+    .container-patient-detail {
+        padding: 24px 16px 90px 16px !important;
+        max-width: 100% !important;
+    }
+
+    /* ========================================
+       DASHBOARD HOME - ADAPTAÇÕES
+       ======================================== */
+
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 32px;
+    }
+
+    .date-text {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .greeting-section {
+        margin-top: 16px;
+        gap: 12px;
+    }
+
+    .avatar-wrapper {
+        width: 80px;
+        height: 80px;
+    }
+
+    .avatar-outer {
+        width: 76px;
+        height: 76px;
+    }
+
+    .avatar-inner svg {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .greeting-text {
+        font-size: 32px;
+    }
+
+    .wave {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .settings-btn {
+        position: absolute;
+        top: 24px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Grid de conteúdo */
+    .content-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
+    .main-column {
+        gap: 24px;
+    }
+
+    .sidebar-column {
+        gap: 16px;
+    }
+
+    /* Cards */
+    .card {
+        padding: 20px;
+        border-radius: 24px;
+    }
+
+    .card-header {
+        margin-bottom: 24px;
+        align-items: center;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .arrow-btn {
+        width: 48px;
+        height: 48px;
+    }
+
+    .plus-btn {
+        width: 56px;
+        height: 56px;
+    }
+
+    /* Consultas de hoje */
+    .appointments-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
+    }
+
+    .appointment-card {
+        border-radius: 16px;
+    }
+
+    .appointment-header {
+        height: 72px;
+        padding: 10px 12px;
+    }
+
+    .date-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .date-number {
+        font-size: 20px;
+    }
+
+    .day-name {
+        font-size: 16px;
+    }
+
+    .time {
+        font-size: 18px;
+    }
+
+    .appointment-body {
+        padding: 12px 16px;
+    }
+
+    .appointment-desc {
+        font-size: 14px;
+    }
+
+    /* Posts */
+    .posts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
+    }
+
+    .post-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .post-title {
+        font-size: 20px;
+    }
+
+    .post-date {
+        font-size: 14px;
+    }
+
+    .post-actions {
+        gap: 16px;
+    }
+
+    /* Info cards sidebar */
+    .info-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .info-card-content {
+        gap: 12px;
+    }
+
+    .info-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    .info-icon svg,
+    .patient-icon svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .info-title {
+        font-size: 20px;
+    }
+
+    .info-text {
+        font-size: 16px;
+    }
+
+    .search-wrapper {
+        margin-top: 12px;
+    }
+
+    .search-input {
+        height: 36px;
+        font-size: 15px;
+    }
+
+    /* ========================================
+       APPOINTMENTS - ADAPTAÇÕES
+       ======================================== */
+
+    .page-title {
+        font-size: 36px;
+        margin-bottom: 24px;
+    }
+
+    .filter-tabs {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .filter-tab {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .add-appointment-btn {
+        padding: 10px !important;
+    }
+
+    .add-appointment-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Tabela de consultas */
+    .appointments-table-wrapper {
+        padding: 16px;
+        border-radius: 16px;
+        overflow-x: auto;
+    }
+
+    .appointments-table {
+        min-width: 600px;
+        border-spacing: 0 8px;
+    }
+
+    .appointments-table thead th {
+        font-size: 16px;
+        padding: 0 16px 12px;
+    }
+
+    .appointments-table tbody td {
+        padding: 16px;
+        font-size: 15px;
+    }
+
+    .appointment-datetime {
+        font-size: 15px;
+    }
+
+    .time-small {
+        font-size: 14px;
+    }
+
+    .status-badge {
+        padding: 6px 16px;
+        font-size: 14px;
+    }
+
+    .action-btn-small {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* ========================================
+       PATIENTS - ADAPTAÇÕES
+       ======================================== */
+
+    .search-section {
+        margin-bottom: 32px;
+    }
+
+    .search-wrapper-large {
+        max-width: 100%;
+    }
+
+    .search-input-large {
+        height: 48px;
+        font-size: 16px;
+        padding: 0 20px 0 52px;
+    }
+
+    .search-icon-left {
+        left: 16px;
+    }
+
+    /* Tabela de pacientes */
+    .patients-table-wrapper {
+        padding: 16px;
+        border-radius: 16px;
+        overflow-x: auto;
+    }
+
+    .patients-table {
+        min-width: 600px;
+        border-spacing: 0 12px;
+    }
+
+    .patients-table thead th {
+        font-size: 16px;
+        padding: 0 16px 12px;
+    }
+
+    .patients-table tbody td {
+        padding: 16px;
+        font-size: 15px;
+    }
+
+    .patient-actions {
+        gap: 8px;
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* ========================================
+       PATIENT DETAIL - ADAPTAÇÕES
+       ======================================== */
+
+    .patient-detail-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 24px;
+        border-radius: 24px;
+    }
+
+    .patient-detail-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .patient-detail-avatar svg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .patient-detail-name {
+        font-size: 32px;
+    }
+
+    .patient-detail-birth,
+    .patient-detail-type {
+        font-size: 16px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Grid de detalhes */
+    .patient-detail-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
+    .patient-detail-main {
+        order: 2;
+    }
+
+    .patient-detail-sidebar {
+        order: 1;
+        gap: 12px;
+    }
+
+    /* Pontuário */
+    .pontuario-card {
+        padding: 24px;
+        border-radius: 24px;
+    }
+
+    .pontuario-header {
+        margin-bottom: 24px;
+    }
+
+    .pontuario-title-wrapper {
+        gap: 12px;
+    }
+
+    .pontuario-title {
+        font-size: 28px;
+    }
+
+    .pontuario-title-wrapper svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .add-note-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .pontuario-section {
+        margin-bottom: 24px;
+    }
+
+    .pontuario-section-title {
+        font-size: 20px;
+    }
+
+    .pontuario-text {
+        font-size: 16px;
+    }
+
+    .detail-actions {
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .detail-btn {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    /* Action cards */
+    .detail-action-card {
+        padding: 20px;
+        border-radius: 20px;
+        gap: 12px;
+    }
+
+    .detail-action-title {
+        font-size: 18px;
+    }
+
+    .detail-action-text {
+        font-size: 15px;
+    }
+
+    .detail-action-card svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* ========================================
+       COMMUNITY - ADAPTAÇÕES
+       ======================================== */
+
+    .posts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
+    }
+
+    .detail-btn-primary {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    /* Modal de post */
+    .post-modal-overlay.active {
+        display: block;
+    }
+
+    .post-modal-container {
+        padding: 24px 16px;
+    }
+
+    .post-modal-title {
+        font-size: 32px;
+    }
+
+    .post-modal-stats {
+        gap: 16px;
+    }
+
+    .post-stat {
+        font-size: 16px;
+    }
+
+    .post-modal-content {
+        padding: 32px 20px;
+        border-radius: 20px;
+    }
+
+    .post-modal-text {
+        font-size: 16px;
+    }
+
+    .settings-icon-modal {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* ========================================
+       CREATE POST - ADAPTAÇÕES
+       ======================================== */
+
+    .create-post-card,
+    .create-activity-card {
+        padding: 24px;
+        border-radius: 24px;
+    }
+
+    .post-input-title {
+        font-size: 20px;
+        padding: 12px 0;
+    }
+
+    .post-textarea {
+        min-height: 300px;
+        font-size: 16px;
+        padding: 16px 0;
+    }
+
+    .form-label {
+        font-size: 16px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        padding: 10px 14px;
+        font-size: 15px;
+    }
+
+    .post-actions-bar {
+        padding: 16px 0;
+    }
+
+    .tags-btn {
+        padding: 8px 20px;
+        font-size: 15px;
+    }
+
+    .publish-btn,
+    .submit-activity-btn {
+        padding: 12px 32px;
+        font-size: 16px;
+    }
+
+    /* ========================================
+       STATS/ACTIVITIES - ADAPTAÇÕES
+       ======================================== */
+
+    .activities-layout {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
+    .activities-sidebar {
+        max-height: 400px;
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .activities-sidebar h3 {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .activity-card-item {
+        padding: 14px;
+        margin-bottom: 10px;
+    }
+
+    .section-title-small {
+        font-size: 24px;
+    }
+
+    /* ========================================
+       SETTINGS - ADAPTAÇÕES
+       ======================================== */
+
+    .settings-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+
+    .settings-header .settings-btn {
+        position: static;
+        align-self: flex-end;
+    }
+
+    .settings-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+
+    .settings-section {
+        padding: 24px;
+        border-radius: 20px;
+    }
+
+    .settings-section-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .settings-item {
+        gap: 12px;
+    }
+
+    .user-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .settings-label {
+        font-size: 18px;
+    }
+
+    .settings-value,
+    .settings-link {
+        font-size: 16px;
+    }
+
+    .settings-interactions {
+        gap: 16px;
+    }
+
+    .interaction-item {
+        padding: 8px 0;
+    }
+
+    .interaction-label {
+        font-size: 17px;
+    }
+
+    .toggle-item {
+        padding: 12px 0;
+    }
+
+    .toggle-label {
+        font-size: 17px;
+    }
+
+    .settings-option {
+        padding: 14px 0;
+        font-size: 17px;
+    }
+
+    /* ========================================
+       MODAIS RESPONSIVOS
+       ======================================== */
+
+    .modal-content,
+    .modal-content-large {
+        width: 95% !important;
+        max-width: 95% !important;
+        padding: 24px !important;
+        border-radius: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        margin-bottom: 20px;
+    }
+
+    .modal-title {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .modal-title-large {
+        font-size: 28px;
+    }
+
+    .modal-text,
+    .modal-subtitle {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-btn {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    .modal-btn-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .close-modal-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Contact request modal */
+    .contact-request-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact-avatar svg {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .modal-actions.contact-actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    /* Analysis entries */
+    .analysis-entries {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    .analysis-entry {
+        padding: 14px;
+        margin-bottom: 10px;
+    }
+
+    .analysis-date {
+        font-size: 15px;
+    }
+
+    .analysis-text {
+        font-size: 15px;
+    }
+
+    .add-annotation-btn {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    /* History and tasks lists */
+    .history-list,
+    .tasks-list {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    /* Tags grid */
+    .tags-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+
+    .tag-item {
+        padding: 10px;
+    }
+
+    .tag-label {
+        font-size: 15px;
+    }
+
+    /* Form groups */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* ========================================
+       ESTADOS VAZIOS
+       ======================================== */
+
+    .no-appointments,
+    .no-posts,
+    .no-data-message,
+    .no-data-text {
+        padding: 32px 16px;
+        font-size: 16px;
+    }
+}
+
+/* ========================================
+   PARTE 3: MOBILE PEQUENO (≤ 480px)
+   ======================================== */
+@media (max-width: 480px) {
+
+    .container,
+    .container-patient-detail {
+        padding: 20px 12px 90px 12px !important;
+    }
+
+    .date-text {
+        font-size: 18px;
+    }
+
+    .greeting-text {
+        font-size: 28px;
+    }
+
+    .avatar-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+
+    .avatar-outer {
+        width: 66px;
+        height: 66px;
+    }
+
+    .page-title {
+        font-size: 32px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .arrow-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .plus-btn {
+        width: 52px;
+        height: 52px;
+    }
+
+    .post-title {
+        font-size: 18px;
+    }
+
+    .info-title {
+        font-size: 18px;
+    }
+
+    .info-text {
+        font-size: 15px;
+    }
+
+    .patient-detail-name {
+        font-size: 28px;
+    }
+
+    .pontuario-title {
+        font-size: 24px;
+    }
+
+    .detail-action-title {
+        font-size: 17px;
+    }
+
+    .post-modal-title {
+        font-size: 28px;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+
+    .modal-title-large {
+        font-size: 24px;
+    }
+
+    .filter-tab {
+        padding: 8px 16px;
+        font-size: 15px;
+    }
+
+    /* Tabelas ainda menores */
+    .appointments-table,
+    .patients-table {
+        min-width: 500px;
+    }
+
+    .appointments-table thead th,
+    .patients-table thead th {
+        font-size: 14px;
+        padding: 0 12px 10px;
+    }
+
+    .appointments-table tbody td,
+    .patients-table tbody td {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+
+/* ========================================
+   PARTE 4: CORREÇÕES ESPECÍFICAS
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    /* Prevenir scroll horizontal */
+    body,
+    html {
+        overflow-x: hidden !important;
+        max-width: 100vw;
+    }
+
+    /* Garantir que tabelas não quebrem o layout */
+    .appointments-table-wrapper,
+    .patients-table-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Dropdowns */
+    .dropdown-menu {
+        max-width: 90vw;
+    }
+
+    /* Imagens responsivas */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* SVGs responsivos */
+    svg {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Inputs em iOS */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+        /* Previne zoom no iOS */
+    }
+
+    /* Smooth scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Touch targets mínimos */
+    button,
+    a,
+    .clickable {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* ========================================
+   PARTE 5: LANDSCAPE MOBILE
+   ======================================== */
+
+@media (max-width: 896px) and (orientation: landscape) {
+    .mobile-bottom-nav {
+        height: 60px;
+        padding: 0 12px;
+    }
+
+    .mobile-nav-item {
+        width: 52px;
+        height: 52px;
+    }
+
+    .mobile-nav-item svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .main-content {
+        padding-bottom: 70px !important;
+    }
+
+    .container,
+    .container-patient-detail {
+        padding-bottom: 70px !important;
+    }
+
+    /* Modais em landscape */
+    .modal-content,
+    .modal-content-large {
+        max-height: 90vh;
+    }
+}
+
+/* ========================================
+   PARTE 6: ANIMAÇÕES E TRANSIÇÕES
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    /* Transições suaves */
+    .mobile-nav-item,
+    .filter-tab,
+    .detail-btn,
+    .modal-btn {
+        transition: all 0.2s ease;
+    }
+
+    /* Feedback tátil */
+    .mobile-nav-item:active,
+    button:active,
+    .clickable:active {
+        transform: scale(0.95);
+    }
+
+    /* Fade in para modais */
+    .modal.active {
+        animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+/* ========================================
+   PARTE 7: ACESSIBILIDADE MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    /* Foco visível */
+    *:focus {
+        outline: 2px solid #9bb167;
+        outline-offset: 2px;
+    }
+
+    /* Skip links */
+    .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #4f3422;
+        color: white;
+        padding: 8px;
+        text-decoration: none;
+        z-index: 100;
+    }
+
+    .skip-link:focus {
+        top: 0;
+    }
+
+    /* Aumentar área de toque */
+    .mobile-nav-item::before,
+    button::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+    }
+}
+
+/* FIM DO ARQUIVO */

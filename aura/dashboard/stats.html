@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="professional-mobile-responsive.css">
 </head>
 
 <body>
@@ -36,7 +37,7 @@
                 <img src="assets/icon-comunidade.svg" width="28" height="28" viewBox="0 0 28 28"></svg>
             </a>
         </nav>
-         <button class="sidebar-back" onclick="window.location.href='/aura/login_prof.html'">
+        <button class="sidebar-back" onclick="window.location.href='/aura/login_prof.html'">
             <img src="assets/icon-sair.svg" width="28" height="28">
         </button>
     </aside>
@@ -133,6 +134,50 @@
     </div>
 
     <script src="script.js"></script>
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+        <a href="dashboard-home.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 12L12 3L21 12V21C21 21.55 20.55 22 20 22H14V16H10V22H4C3.45 22 3 21.55 3 21V12Z"
+                    fill="currentColor" />
+            </svg>
+        </a>
+        <a href="patients.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="9" r="4" fill="currentColor" />
+                <path d="M4 22C4 18 7.5 15 12 15C16.5 15 20 18 20 22" fill="currentColor" />
+            </svg>
+        </a>
+        <a href="stats.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="14" width="5" height="8" fill="currentColor" rx="1" />
+                <rect x="10" y="9" width="5" height="13" fill="currentColor" rx="1" />
+                <rect x="17" y="3" width="5" height="19" fill="currentColor" rx="1" />
+            </svg>
+        </a>
+        <a href="community.html" class="mobile-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="7" r="3" fill="currentColor" />
+                <circle cx="17" cy="7" r="3" fill="currentColor" />
+                <path d="M2 19C2 16.5 4.5 14 9 14C10 14 11 14.2 12 14.5" fill="currentColor" />
+                <path d="M14 14.5C15 14.2 16 14 17 14C21.5 14 24 16.5 24 19" fill="currentColor" />
+            </svg>
+        </a>
+    </nav>
+
+    <script>
+        (function () {
+            const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'dashboard-home';
+            const menuItems = document.querySelectorAll('.mobile-nav-item');
+
+            menuItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href && href.includes(currentPage)) {
+                    item.classList.add('active');
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

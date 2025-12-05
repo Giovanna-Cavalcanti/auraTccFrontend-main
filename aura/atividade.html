@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Atividades - Aura</title>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="sidebar-styles.css">
   <link rel="stylesheet" href="mobile-responsive.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -100,6 +101,11 @@
       min-height: 100vh;
       width: calc(100% - 100px);
       box-sizing: border-box;
+    }
+
+    body,
+    html {
+      font-family: 'Urbanist', sans-serif;
     }
   </style>
 </head>
@@ -406,7 +412,7 @@
 
     <!-- Botão Central - Redireciona para CVV -->
     <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
-      <img src="img/icons-menu/sair.png" alt="CVV - Centro de Valorização da Vida">
+      <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
     </a>
 
     <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
@@ -417,23 +423,6 @@
       <img src="img/icons-menu/comunidade.png" alt="Comunidade">
     </a>
   </nav>
-
-  <!-- Script para marcar item ativo automaticamente -->
-  <script>
-    // Detecta a página atual e adiciona classe 'active'
-    (function () {
-      const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
-      const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
-
-      menuItems.forEach(item => {
-        const page = item.getAttribute('data-page');
-        if (page === currentPage) {
-          item.classList.add('active');
-        }
-      });
-    })();
-  </script>
-
 </body>
 
 </html>

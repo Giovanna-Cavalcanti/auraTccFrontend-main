@@ -8,6 +8,8 @@
     <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
     <link rel="stylesheet" href="sidebar-styles.css">
     <link rel="stylesheet" href="mobile-responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -31,7 +33,7 @@
 
         body,
         html {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Urbanist', sans-serif;
             margin: 0;
             padding: 0;
             height: 100%;
@@ -1076,9 +1078,9 @@
             <img src="img/icons-menu/banco.png" alt="Banco">
         </a>
 
-        <!-- Botão Central - CVV -->
+        <!-- Botão Central - Redireciona para CVV -->
         <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
-            <img src="img/icons-menu/sair.png" alt="CVV">
+            <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
         </a>
 
         <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
@@ -1089,21 +1091,6 @@
             <img src="img/icons-menu/comunidade.png" alt="Comunidade">
         </a>
     </nav>
-
-    <script>
-        (function () {
-            const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
-            const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
-
-            menuItems.forEach(item => {
-                const page = item.getAttribute('data-page');
-                if (page === currentPage) {
-                    item.classList.add('active');
-                }
-            });
-        })();
-    </script>
-
 </body>
 
 </html>

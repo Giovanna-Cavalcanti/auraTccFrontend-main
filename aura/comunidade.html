@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Comunidade - Aura</title>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="sidebar-styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -46,77 +47,6 @@
       background-color: #C2C2C2;
       border-radius: 100px;
     }
-
-    /* Sidebar styles */
-    /* aside.sidebar {
-      position: fixed; 
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 72px;
-      background-color: var(--green-bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 36px;
-      padding-top: 32px;
-      box-sizing: border-box;
-      z-index: 50;
-    }
-
-    aside.sidebar .logo {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 48px;
-      cursor: default;
-      color: white;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-    } */
-
-    /* Sidebar icons container for grouping */
-    /* aside.sidebar nav {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      align-items: center;
-    }
-    aside.sidebar nav button, aside.sidebar nav a {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: white;
-      opacity: 0.85;
-      transition: opacity 0.3s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 32px;
-      height: 32px;
-    }
-    aside.sidebar nav button:hover, aside.sidebar nav a:hover {
-      opacity: 1;
-    } */
-
-    /* Bottom logout icon */
-    /* aside.sidebar .logout-btn {
-      margin-bottom: 32px;
-      filter: invert(98%) sepia(12%) saturate(58%) hue-rotate(52deg) brightness(88%) contrast(85%);
-      cursor: pointer;
-      opacity: 0.85;
-      transition: opacity 0.3s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 32px;
-      height: 32px;
-    }
-    aside.sidebar .logout-btn:hover {
-      opacity: 1;
-    } */
 
     /*Configuração*/
     .settings-btn {
@@ -181,260 +111,275 @@
       right: -40px;
       /* afasta do container */
     }
+
+    @media(max-width: 768px) {
+      main {
+        margin-left: 0 !important;
+      }
+    }
+
+     body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--bg-main);
+            font-family: 'Urbanist', sans-serif;
+      }
   </style>
 </head>
 
-<body class="bg-[#F9F7F3] font-sans text-[#4B3A2B] h-screen flex">
-  <div class="app-container" role="main">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        <a href="home.html">
-          <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
-        </a>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="home.html" class="nav-item active" title="Home">
-          <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
-        </a>
-        <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
-          <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
-        </a>
-        <a href="metricas.html" class="nav-item" title="Métricas">
-          <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
-        </a>
-        <a href="comunidade.html" class="nav-item" title="Comunidade">
-          <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28" viewBox="0 0 28 28">
-        </a>
-      </nav>
-      <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
-        <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
-      </button>
-    </aside>
-
-    <!-- Botão de Configurações no canto superior direito -->
-    <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path
-          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-        </path>
-      </svg>
+<body class="bg-[#F9F7F3] font-urbanist text-[#4B3A2B] min-h-screen flex flex-col">
+  <div class=" app-container" role="main">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="home.html">
+        <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="home.html" class="nav-item " title="Home">
+        <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+      </a>
+      <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
+        <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
+      </a>
+      <a href="metricas.html" class="nav-item" title="Métricas">
+        <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+      </a>
+      <a href="comunidade.html" class="nav-item active" title="Comunidade">
+        <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28" viewBox="0 0 28 28">
+      </a>
+    </nav>
+    <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
+      <img src="img/icons-menu/sair.png" alt="Sair" width="28" height="28">
     </button>
+  </aside>
 
-    <!-- Main Content -->
-    <main class="ml-20 flex-1 max-w-[1420px] mx-auto p-8">
-      <header class="flex justify-between items-center mb-10">
-        <h1 class="text-3xl font-bold">Comunidade</h1>
-      </header>
+  <!-- Botão de Configurações no canto superior direito -->
+  <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+      </path>
+    </svg>
+  </button>
 
-      <!-- Categories -->
-      <nav aria-label="Categorias da comunidade" class="mb-12">
-        <ul class="category-scroll flex space-x-4 overflow-x-auto no-scrollbar">
-          <li>
-            <button
-              class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
-              data-category="Saúde Mental Juvenil" type="button">
-              Saúde Mental Juvenil
-            </button>
-          </li>
-          <li>
-            <button
-              class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
-              data-category="Dicas de Relaxamento" type="button">
-              Dicas de Relaxamento
-            </button>
-          </li>
-          <li>
-            <button
-              class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
-              data-category="Tratamento de Ansiedade" type="button">
-              Ansiedade no dia a dia
-            </button>
-          </li>
-          <li>
-            <button
-              class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
-              data-category="Saúde Mental Juvenil" type="button">
-              Pressão no Ambiente Corporativo
-            </button>
-          </li>
-          <li>
-            <button
-              class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
-              data-category="Dicas de Relaxamento" type="button">
-              Conceitos e Preconceitos
-            </button>
-          </li>
-          <li>
-            <button
-              class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
-              data-category="Tratamento de Ansiedade" type="button">
-              Tratamento de Ansiedade
-            </button>
-          </li>
-        </ul>
-      </nav>
+  <!-- Main Content -->
+  <main class="ml-20 flex-1 max-w-[1420px] mx-auto p-8">
+    <header class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold">Comunidade</h1>
+    </header>
 
-      <section id="posts-wrapper" class="relative w-full flex items-center justify-center">
-        <!-- Seta esquerda -->
-        <button id="prev"
-          class="absolute left-0 top-1/2 -translate-y-1/2 bg-[#E6DCD2] p-4 rounded-full shadow-md hover:bg-[#d4c3b6] z-20 hidden">
-          &#10094;
-        </button>
+    <!-- Categories -->
+    <nav aria-label="Categorias da comunidade" class="mb-12">
+      <ul class="category-scroll flex space-x-4 overflow-x-auto no-scrollbar">
+        <li>
+          <button
+            class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
+            data-category="Saúde Mental Juvenil" type="button">
+            Saúde Mental Juvenil
+          </button>
+        </li>
+        <li>
+          <button
+            class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
+            data-category="Dicas de Relaxamento" type="button">
+            Dicas de Relaxamento
+          </button>
+        </li>
+        <li>
+          <button
+            class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
+            data-category="Tratamento de Ansiedade" type="button">
+            Ansiedade no dia a dia
+          </button>
+        </li>
+        <li>
+          <button
+            class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
+            data-category="Saúde Mental Juvenil" type="button">
+            Pressão no Ambiente Corporativo
+          </button>
+        </li>
+        <li>
+          <button
+            class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
+            data-category="Dicas de Relaxamento" type="button">
+            Conceitos e Preconceitos
+          </button>
+        </li>
+        <li>
+          <button
+            class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]"
+            data-category="Tratamento de Ansiedade" type="button">
+            Tratamento de Ansiedade
+          </button>
+        </li>
+      </ul>
+    </nav>
 
-        <!-- Container visível para 4 cards -->
-        <div id="posts-container" class="overflow-hidden"> <!-- 4 * 344px -->
-          <div id="slider" class="flex gap-6 transition-transform duration-500 ease-in-out">
+    <section id="posts-wrapper" class="relative w-full flex items-center justify-center">
+      <!-- Seta esquerda -->
+      <button id="prev"
+        class="absolute left-0 top-1/2 -translate-y-1/2 bg-[#E6DCD2] p-4 rounded-full shadow-md hover:bg-[#d4c3b6] z-20 hidden">
+        &#10094;
+      </button>
 
-            <!-- CARD 1 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post1.jpg" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Ansiedade tem Solução</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                Crises frequentes, preocupações constantes e insônia podem ser sinais de um transtorno de ansiedade.
-              </p>
-              <a href="comunidade_post.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+      <!-- Container visível para 4 cards -->
+      <div id="posts-container" class="overflow-hidden"> <!-- 4 * 344px -->
+        <div id="slider" class="flex gap-6 transition-transform duration-500 ease-in-out">
 
-            <!-- CARD 2 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post2.jpg" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Técnicas de Redução de Estresse</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                Existem tratamentos eficazes que podem devolver sua qualidade de vida.
-              </p>
-              <a href="comunidade_post2.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 1 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post1.jpg" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Ansiedade tem Solução</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              Crises frequentes, preocupações constantes e insônia podem ser sinais de um transtorno de ansiedade.
+            </p>
+            <a href="comunidade_post.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 3 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post3.jpg" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Reconhecendo Sinais de Depressão</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                A boa notícia? Sempre há soluções que ajudam.
-              </p>
-              <a href="comunidade_post3.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 2 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post2.jpg" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Técnicas de Redução de Estresse</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              Existem tratamentos eficazes que podem devolver sua qualidade de vida.
+            </p>
+            <a href="comunidade_post2.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 4 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post4.png" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Fortalecendo a Autoestima</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                A autoestima é a forma como nos valorizamos e nos percebemos.
-              </p>
-              <a href="comunidade_post4.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 3 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post3.jpg" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Reconhecendo Sinais de Depressão</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              A boa notícia? Sempre há soluções que ajudam.
+            </p>
+            <a href="comunidade_post3.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 5 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post5.jpg" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Autocuidado: Priorize-se</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                Cuidar de si mesmo não é egoísmo, é essencial para manter a saúde mental.
-              </p>
-              <a href="comunidade_post5.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 4 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post4.png" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Fortalecendo a Autoestima</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              A autoestima é a forma como nos valorizamos e nos percebemos.
+            </p>
+            <a href="comunidade_post4.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 6 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post6.png" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Hábitos Saudáveis para a Mente</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                A rotina influencia diretamente a saúde mental. Pequenas mudanças diárias podem prevenir estresse e
-                ansiedade.
-              </p>
-              <a href="comunidade_post6.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 5 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post5.jpg" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Autocuidado: Priorize-se</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              Cuidar de si mesmo não é egoísmo, é essencial para manter a saúde mental.
+            </p>
+            <a href="comunidade_post5.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 7 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post7.png" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Gerenciamento de Emoções</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                Saber lidar com emoções é fundamental para evitar conflitos internos e externos.
-              </p>
-              <a href="comunidade_post7.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 6 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post6.png" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Hábitos Saudáveis para a Mente</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              A rotina influencia diretamente a saúde mental. Pequenas mudanças diárias podem prevenir estresse e
+              ansiedade.
+            </p>
+            <a href="comunidade_post6.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 8 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post8.jpg" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Saúde Mental no Trabalho</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                O ambiente de trabalho pode afetar muito nossa saúde mental. Pressão excessiva e sobrecarga prejudicam
-                produtividade e bem-estar.
-              </p>
-              <a href="comunidade_post8.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 7 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post7.png" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Gerenciamento de Emoções</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              Saber lidar com emoções é fundamental para evitar conflitos internos e externos.
+            </p>
+            <a href="comunidade_post7.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-            <!-- CARD 9 -->
-            <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
-              <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
-                <img src="img/comunidade/post9.png" class="w-full h-full object-cover rounded-2xl">
-              </div>
-              <h2 class="font-semibold text-lg mb-2">Saúde Mental no Trabalho</h2>
-              <p class="text-sm mb-6 leading-relaxed text-justify">
-                O ambiente de trabalho pode afetar muito nossa saúde mental.
-              </p>
-              <a href="comunidade_post9.html"
-                class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
-                Leia mais +
-              </a>
-            </article>
+          <!-- CARD 8 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post8.jpg" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Saúde Mental no Trabalho</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              O ambiente de trabalho pode afetar muito nossa saúde mental. Pressão excessiva e sobrecarga prejudicam
+              produtividade e bem-estar.
+            </p>
+            <a href="comunidade_post8.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
 
-          </div>
+          <!-- CARD 9 -->
+          <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+            <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+              <img src="img/comunidade/post9.png" class="w-full h-full object-cover rounded-2xl">
+            </div>
+            <h2 class="font-semibold text-lg mb-2">Saúde Mental no Trabalho</h2>
+            <p class="text-sm mb-6 leading-relaxed text-justify">
+              O ambiente de trabalho pode afetar muito nossa saúde mental.
+            </p>
+            <a href="comunidade_post9.html"
+              class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+              Leia mais +
+            </a>
+          </article>
+
         </div>
+      </div>
 
-        <!-- Seta direita -->
-        <button id="next"
-          class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#E6DCD2] p-3 rounded-full shadow-md hover:bg-[#d4c3b6] z-20 hidden">
-          &#10095;
-        </button>
-      </section>
-    </main>
+      <!-- Seta direita -->
+      <button id="next"
+        class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#E6DCD2] p-3 rounded-full shadow-md hover:bg-[#d4c3b6] z-20 hidden">
+        &#10095;
+      </button>
+    </section>
+  </main>
   </div>
 
   <script>
@@ -503,7 +448,7 @@
 
     <!-- Botão Central - Redireciona para CVV -->
     <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
-      <img src="img/icons-menu/sair.png" alt="CVV - Centro de Valorização da Vida">
+      <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
     </a>
 
     <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
@@ -514,22 +459,6 @@
       <img src="img/icons-menu/comunidade.png" alt="Comunidade">
     </a>
   </nav>
-
-  <!-- Script para marcar item ativo automaticamente -->
-  <script>
-    // Detecta a página atual e adiciona classe 'active'
-    (function () {
-      const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
-      const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
-
-      menuItems.forEach(item => {
-        const page = item.getAttribute('data-page');
-        if (page === currentPage) {
-          item.classList.add('active');
-        }
-      });
-    })();
-  </script>
 </body>
 
 </html>

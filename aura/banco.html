@@ -22,9 +22,19 @@
             text-decoration: none;
         }
 
-        body {
+        /* body {
             background-color: #F7F4F2;
             display: flex;
+        } */
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #F7F4F2;
+            /* background-color: var(--bg-main); */
+            font-family: 'Urbanist', sans-serif;
         }
 
         .corpo {
@@ -469,6 +479,37 @@
             min-height: 100vh;
             /* Garante altura mínima */
         }
+
+        .sidebar img {
+            display: block;
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            /* Mantém a proporção da imagem */
+        }
+
+        .sidebar-logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-item {
+            width: 56px;
+            height: 56px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item img {
+            pointer-events: none;
+            /* Evita problemas de clique */
+        }
     </style>
 </head>
 
@@ -478,23 +519,21 @@
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <a href="home.html">
-                    <img src="img/Logo.png" alt="Logo Aura" width="40" height="40" viewBox="0 0 40 40">
+                    <img src="img/Logo.png" alt="Logo Aura" width="40" height="40">
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <a href="home.html" class="nav-item active" title="Home">
-                    <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
+                <a href="home.html" class="nav-item" title="Home">
+                    <img src="img/icons-menu/home.png" alt="Home" width="28" height="28">
                 </a>
-                <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
-                    <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28"
-                        viewBox="0 0 28 28">
+                <a href="banco.html" class="nav-item active" title="Banco de Psicólogos">
+                    <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28">
                 </a>
                 <a href="metricas.html" class="nav-item" title="Métricas">
-                    <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
+                    <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28">
                 </a>
                 <a href="comunidade.html" class="nav-item" title="Comunidade">
-                    <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28"
-                        viewBox="0 0 28 28">
+                    <img src="img/icons-menu/comunidade.png" alt="Comunidade" width="28" height="28">
                 </a>
             </nav>
             <button class="sidebar-back" onclick="window.location.href='login.html'" alt="Sair">
@@ -938,7 +977,7 @@
 
         <!-- Botão Central - Redireciona para CVV -->
         <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
-            <img src="img/icons-menu/sair.png" alt="CVV - Centro de Valorização da Vida">
+            <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
         </a>
 
         <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
@@ -949,21 +988,6 @@
             <img src="img/icons-menu/comunidade.png" alt="Comunidade">
         </a>
     </nav>
-
-    <!-- Script para marcar item ativo automaticamente -->
-    <script>
-        // Detecta a página atual e adiciona classe 'active'
-        (function () {
-            const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
-            const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
-
-            menuItems.forEach(item => {
-                const page = item.getAttribute('data-page');
-                if (page === currentPage) {
-                    item.classList.add('active');
-                }
-            });
-        })();
-    </script>
 </body>
+
 </html>

@@ -45,9 +45,6 @@
       background-color: var(--bg-main);
       font-family: 'Urbanist', sans-serif;
       color: var(--text-dark);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      user-select: none;
     }
 
     /* Scrollbar style for graph container */
@@ -86,7 +83,8 @@
       height: 100vh;
       display: flex;
       background: var(--bg-main);
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       box-sizing: border-box;
     }
 
@@ -205,13 +203,13 @@
         </a>
       </div>
       <nav class="sidebar-nav">
-        <a href="home.html" class="nav-item active" title="Home">
+        <a href="home.html" class="nav-item" title="Home">
           <img src="img/icons-menu/home.png" alt="Home" width="28" height="28" viewBox="0 0 28 28">
         </a>
         <a href="banco.html" class="nav-item" title="Banco de Psicólogos">
           <img src="img/icons-menu/banco.png" alt="Banco de Psicólogos" width="28" height="28" viewBox="0 0 28 28">
         </a>
-        <a href="metricas.html" class="nav-item" title="Métricas">
+        <a href="metricas.html" class="nav-item active" title="Métricas">
           <img src="img/icons-menu/metricas.png" alt="Métricas" width="28" height="28" viewBox="0 0 28 28">
         </a>
         <a href="comunidade.html" class="nav-item" title="Comunidade">
@@ -459,7 +457,7 @@
 
     <!-- Botão Central - Redireciona para CVV -->
     <a href="https://www.cvv.org.br/" target="_blank" class="mobile-menu-item center-btn">
-      <img src="img/icons-menu/sair.png" alt="CVV - Centro de Valorização da Vida">
+      <img src="img/icons-menu/telefone.svg" alt="CVV - Centro de Valorização da Vida">
     </a>
 
     <a href="metricas.html" class="mobile-menu-item" data-page="metricas">
@@ -470,22 +468,6 @@
       <img src="img/icons-menu/comunidade.png" alt="Comunidade">
     </a>
   </nav>
-
-  <!-- Script para marcar item ativo automaticamente -->
-  <script>
-    // Detecta a página atual e adiciona classe 'active'
-    (function () {
-      const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
-      const menuItems = document.querySelectorAll('.mobile-menu-item[data-page]');
-
-      menuItems.forEach(item => {
-        const page = item.getAttribute('data-page');
-        if (page === currentPage) {
-          item.classList.add('active');
-        }
-      });
-    })();
-  </script>
 </body>
 
 </html>
