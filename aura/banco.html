@@ -839,23 +839,21 @@
                 card.className = 'card-profissional';
                 card.setAttribute('data-index', index);
 
-                // campos do seu JSON: nomeCompleto, tipoAtuacao, email, valorConsulta, convenios, modalidadesAtendimento
+                // campos do seu JSON: nomeCompleto, tipoAtuacao, email, crp, convenios, modalidadesAtendimento
                 const nome = p.nomeCompleto || 'Sem nome';
                 const tipo = p.tipoAtuacao || 'Sem tipo definido';
-                const valor = p.valorConsulta || 'Não informado';
+                const crp = p.crp || 'Não informado';
                 const convenios = Array.isArray(p.convenios) && p.convenios.length ? p.convenios.join(', ') : 'Nenhum';
                 const modalidades = Array.isArray(p.modalidadesAtendimento) && p.modalidadesAtendimento.length ? p.modalidadesAtendimento.join(', ') : 'Não informado';
-                const email = p.email || '';
-
+                
                 card.innerHTML = `
-            <div class="card-topo">
-                <div>
-                    <div class="card-nome">${nome}</div>
-                    <div class="card-descricao">${tipo}</div>
+                <div class="card-topo">
+                    <div>
+                        <div class="card-nome">${nome}</div>
+                        <div class="card-descricao">${tipo}</div>
                 </div>
             </div>
-            <div class="card-telefone">E-mail: ${email}</div>
-            <div class="card-telefone">Valor: ${valor}</div>
+            <div class="card-telefone">CRP: ${crp}</div>
             <div class="card-telefone">Convênios: ${convenios}</div>
             <div class="card-telefone">Modalidade: ${modalidades}</div>
         `;
@@ -891,7 +889,7 @@
                 }
 
                 renderizarProfissionais(profissionais);
-
+                
             } catch (erro) {
                 console.error('Erro ao carregar profissionais:', erro);
                 container.innerHTML = '<p style="color:red;">Erro ao carregar profissionais. Tente novamente mais tarde.</p>';
@@ -908,27 +906,25 @@
 
             // Mapeamento seguro dos campos do JSON
             const nome = p.nomeCompleto || p.nome || 'Sem nome';
-            const descricao = p.tipoAtuacao || p.descricao || '';
+            const descricao = p.descricao || 'Não informado';
             const cidade = p.cidade || '';
             const endereco = p.endereco || '';
             const linkedin = p.linkedin || '';
-            const email = p.email || '';
-            const telefone = p.telefone || '';
+            const telefone = p.telefone || 'Não informado';
             const atendimento = (Array.isArray(p.modalidadesAtendimento) ? p.modalidadesAtendimento.join(', ') : (p.atendimento || 'Não informado'));
             const conveniosAceitos = Array.isArray(p.convenios) && p.convenios.length ? p.convenios.join(', ') : 'Nenhum';
             const valor = p.valorConsulta || p.valor || 'Não informado';
+            const local = p.localizacao || 'Não informado';
 
             // Preenche os elementos do modal (os IDs já existem no seu HTML)
             document.getElementById("modal-nome").textContent = nome;
             // descrição — montamos uma string curta com tipo + valor
-            document.getElementById("modal-descricao").textContent = `${descricao}${descricao ? ' • ' : ''}Valor: ${valor}`;
-            document.getElementById("modal-cidade").textContent = cidade;
+            document.getElementById("modal-descricao").textContent = `Valor de consultas particulares: ${valor}`;
+            document.getElementById("modal-cidade").textContent = `Me encontro em: ${local}`;
             document.getElementById("modal-endereco").textContent = endereco;
             document.getElementById("modal-linkedin").textContent = linkedin ? `LinkedIn: ${linkedin}` : '';
-            document.getElementById("modal-email").textContent = email ? `E-mail: ${email}` : '';
-            document.getElementById("modal-telefone").textContent = telefone ? `Telefone: ${telefone}` : '';
-            document.getElementById("modal-atendimento").textContent = `Atendimento: ${atendimento}`;
-            document.getElementById("modal-convenios").textContent = `Convênios aceitos: ${conveniosAceitos}`;
+            document.getElementById("modal-email").textContent = `WhatsApp: ${telefone}`;
+            document.getElementById("modal-convenios").textContent = `Mais sobe mim: ${descricao}`;
 
             // Mostra o overlay/modal (seu HTML já tem #overlay com display none por padrão)
             const overlay = document.getElementById('overlay');
